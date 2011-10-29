@@ -14,12 +14,12 @@ import com.google.gwt.canvas.dom.client.Context2d.TextBaseline;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.utility.GameColors;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.utility.event.GravityChangedEvent;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.utility.event.GravityChangedListener;
-import com.google.gwt.maeglin89273.mengine.component.GeneralComponent;
-import com.google.gwt.maeglin89273.mengine.core.MEngine;
-import com.google.gwt.maeglin89273.mengine.physics.Point;
-import com.google.gwt.maeglin89273.mengine.sprite.SpriteSheet;
-import com.google.gwt.maeglin89273.mengine.timer.RepeatingTimer;
-import com.google.gwt.maeglin89273.mengine.timer.TimerTask;
+import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
+import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteSheet;
+import com.google.gwt.maeglin89273.game.mengine.timer.RepeatingTimer;
+import com.google.gwt.maeglin89273.game.mengine.timer.TimerTask;
 import com.google.gwt.user.client.Random;
 
 
@@ -118,7 +118,7 @@ public class VariableGravityClock extends GeneralComponent {
 		return gravityMagnitude;
 	}
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.component.GeneralComponent#draw(com.google.gwt.canvas.dom.client.Context2d)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.GeneralComponent#draw(com.google.gwt.canvas.dom.client.Context2d)
 	 */
 	@Override
 	public void draw(Context2d context) {

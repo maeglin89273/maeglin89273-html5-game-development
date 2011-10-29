@@ -10,8 +10,8 @@ import com.google.gwt.maeglin89273.game.physicsbattle.client.component.shape.Cir
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.shape.Polygon;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.shape.Rectangle;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.utility.GameColors;
-import com.google.gwt.maeglin89273.mengine.physics.Point;
-import com.google.gwt.maeglin89273.mengine.physics.Vector;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
 import com.google.gwt.user.client.Random;
 
 /**
@@ -26,7 +26,7 @@ public class ShapesLine extends Line {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.component.GeneralComponent#update()
+	 * @see com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent#update()
 	 */
 	@Override
 	public void update() {
@@ -35,7 +35,7 @@ public class ShapesLine extends Line {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.component.GeneralComponent#draw(com.google.gwt.canvas.dom.client.Context2d)
+	 * @see com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent#draw(com.google.gwt.canvas.dom.client.Context2d)
 	 */
 	@Override
 	public void draw(Context2d context) {

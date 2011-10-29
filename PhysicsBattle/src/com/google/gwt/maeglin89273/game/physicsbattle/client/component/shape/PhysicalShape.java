@@ -11,12 +11,12 @@ import org.jbox2d.dynamics.Fixture;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.PhysicalWorld;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.utility.GameColors;
-import com.google.gwt.maeglin89273.mengine.component.GeneralComponent;
-import com.google.gwt.maeglin89273.mengine.component.Physical;
-import com.google.gwt.maeglin89273.mengine.component.Spacial;
-import com.google.gwt.maeglin89273.mengine.physics.PixelAABB;
-import com.google.gwt.maeglin89273.mengine.physics.Point;
-import com.google.gwt.maeglin89273.mengine.utility.CoordinateConverter;
+import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
+import com.google.gwt.maeglin89273.game.mengine.component.Physical;
+import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
+import com.google.gwt.maeglin89273.game.mengine.physics.PixelAABB;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.utility.CoordinateConverter;
 import com.google.gwt.user.client.Random;
 
 /**
@@ -48,7 +48,7 @@ public abstract class PhysicalShape extends GeneralComponent implements
 		body=world.getWorld().createBody(bodyDef);
 	}
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.component.Physical#getBody()
+	 * @see com.google.gwt.maeglin89273.game.mengine.component.Physical#getBody()
 	 */
 	public CssColor getColor(){
 		return borderColor;
@@ -61,7 +61,7 @@ public abstract class PhysicalShape extends GeneralComponent implements
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.component.Physical#getSpace()
+	 * @see com.google.gwt.maeglin89273.game.mengine.component.Physical#getSpace()
 	 */
 	@Override
 	public Spacial getSpace() {
@@ -69,7 +69,7 @@ public abstract class PhysicalShape extends GeneralComponent implements
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.component.Physical#destory()
+	 * @see com.google.gwt.maeglin89273.game.mengine.component.Physical#destory()
 	 */
 	@Override
 	public void destory() {
@@ -82,7 +82,7 @@ public abstract class PhysicalShape extends GeneralComponent implements
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.component.Physical#getAABB()
+	 * @see com.google.gwt.maeglin89273.game.mengine.component.Physical#getAABB()
 	 */
 	@Override
 	public PixelAABB getAABB() {
@@ -91,7 +91,7 @@ public abstract class PhysicalShape extends GeneralComponent implements
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.component.GeneralComponent#update()
+	 * @see com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent#update()
 	 */
 	@Override
 	public void update() {

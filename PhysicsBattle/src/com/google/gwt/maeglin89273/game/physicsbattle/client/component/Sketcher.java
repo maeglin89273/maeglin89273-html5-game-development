@@ -4,7 +4,7 @@
 package com.google.gwt.maeglin89273.game.physicsbattle.client.component;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.maeglin89273.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
 /**
  * @author Maeglin Liao
