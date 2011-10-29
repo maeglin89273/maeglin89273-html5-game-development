@@ -10,16 +10,16 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.maeglin89273.mengine.component.GeneralComponent;
-import com.google.gwt.maeglin89273.mengine.component.Physical;
-import com.google.gwt.maeglin89273.mengine.component.Spacial;
-import com.google.gwt.maeglin89273.mengine.core.AssetManager;
-import com.google.gwt.maeglin89273.mengine.core.MEngine;
-import com.google.gwt.maeglin89273.mengine.physics.PixelAABB;
-import com.google.gwt.maeglin89273.mengine.physics.Point;
-import com.google.gwt.maeglin89273.mengine.sprite.SpriteBlock;
-import com.google.gwt.maeglin89273.mengine.sprite.SpriteSheet;
-import com.google.gwt.maeglin89273.mengine.utility.CoordinateConverter;
+import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
+import com.google.gwt.maeglin89273.game.mengine.component.Physical;
+import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
+import com.google.gwt.maeglin89273.game.mengine.core.AssetManager;
+import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
+import com.google.gwt.maeglin89273.game.mengine.physics.PixelAABB;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteBlock;
+import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteSheet;
+import com.google.gwt.maeglin89273.game.mengine.utility.CoordinateConverter;
 
 /**
  * @author Liao
@@ -37,7 +37,7 @@ public class Star extends GeneralComponent implements Physical {
 	private SpriteBlock spriteBlock=new SpriteBlock(150,138,500,500);
 	private SpriteSheet spriteSheet;
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.component.Physical#getBody()
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.Physical#getBody()
 	 */
 	public Star(PhysicalWorld world,Point p){
 		super(p,2*STAR_RADIUS,2*STAR_RADIUS);
@@ -74,7 +74,7 @@ public class Star extends GeneralComponent implements Physical {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.component.Physical#getSpace()
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.Physical#getSpace()
 	 */
 	@Override
 	public Spacial getSpace() {
@@ -83,7 +83,7 @@ public class Star extends GeneralComponent implements Physical {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.component.Physical#destory()
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.Physical#destory()
 	 */
 	@Override
 	public void destory() {
@@ -93,7 +93,7 @@ public class Star extends GeneralComponent implements Physical {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.component.GeneralComponent#update()
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.GeneralComponent#update()
 	 */
 	@Override
 	public void update() {
@@ -107,7 +107,7 @@ public class Star extends GeneralComponent implements Physical {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.component.GeneralComponent#draw(com.google.gwt.canvas.dom.client.Context2d)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.GeneralComponent#draw(com.google.gwt.canvas.dom.client.Context2d)
 	 */
 	@Override
 	public void draw(Context2d context) {

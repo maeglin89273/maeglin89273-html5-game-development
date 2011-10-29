@@ -9,11 +9,11 @@ import com.google.gwt.canvas.dom.client.Context2d.TextAlign;
 import com.google.gwt.canvas.dom.client.Context2d.TextBaseline;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.button.StartButton;
-import com.google.gwt.maeglin89273.mengine.core.Game;
-import com.google.gwt.maeglin89273.mengine.core.GeneralGame;
-import com.google.gwt.maeglin89273.mengine.core.MEngine;
-import com.google.gwt.maeglin89273.mengine.page.GeneralPage;
-import com.google.gwt.maeglin89273.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.core.Game;
+import com.google.gwt.maeglin89273.game.mengine.core.GeneralGame;
+import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
+import com.google.gwt.maeglin89273.game.mengine.page.GeneralPage;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
 /**
  * @author Maeglin Liao
@@ -25,7 +25,7 @@ public class PhysicsBattleGameBoardPage extends GeneralPage {
 	private static final String shadowColor="rgba(100,100,100,0.6)";
 	StartButton button;
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.page.GeneralPage#onClick(com.google.gwt.maeglin89273.mengine.utility.physics.Point)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GeneralPage#onClick(com.google.gwt.maeglin89273.game.mengine.utility.physics.Point)
 	 */
 	
 	public PhysicsBattleGameBoardPage(GeneralGame game) {
@@ -42,7 +42,7 @@ public class PhysicsBattleGameBoardPage extends GeneralPage {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.page.Page#update()
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.Page#update()
 	 */
 	@Override
 	public void update() {
@@ -51,7 +51,7 @@ public class PhysicsBattleGameBoardPage extends GeneralPage {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.page.Page#draw(com.google.gwt.canvas.dom.client.Context2d)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.Page#draw(com.google.gwt.canvas.dom.client.Context2d)
 	 */
 	@Override
 	public void draw(Context2d context) {

@@ -6,8 +6,8 @@ package com.google.gwt.maeglin89273.game.physicsbattle.client.component.line;
 
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.PhysicalWorld;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.utility.GameColors;
-import com.google.gwt.maeglin89273.mengine.component.Spacial;
-import com.google.gwt.maeglin89273.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
 /**
  * @author Maeglin Liao

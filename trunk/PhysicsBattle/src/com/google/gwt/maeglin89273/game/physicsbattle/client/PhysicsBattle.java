@@ -1,7 +1,7 @@
 package com.google.gwt.maeglin89273.game.physicsbattle.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.maeglin89273.mengine.core.MEngine;
+import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 
 
 

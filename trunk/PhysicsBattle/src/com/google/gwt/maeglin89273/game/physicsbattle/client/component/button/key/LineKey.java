@@ -7,9 +7,9 @@ package com.google.gwt.maeglin89273.game.physicsbattle.client.component.button.k
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.SketchersFactory.LineSketcherType;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.line.Line.LineSketcher;
-import com.google.gwt.maeglin89273.mengine.core.MEngine;
-import com.google.gwt.maeglin89273.mengine.physics.Point;
-import com.google.gwt.maeglin89273.mengine.sprite.SpriteBlock;
+import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteBlock;
 
 /**
  * @author Maeglin Liao
@@ -60,7 +60,7 @@ public class LineKey extends CreativeKey {
 	
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.component.GeneralComponent#update()
+	 * @see com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent#update()
 	 */
 	@Override
 	public void update() {

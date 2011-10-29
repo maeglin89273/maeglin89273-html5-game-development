@@ -5,9 +5,9 @@ package com.google.gwt.maeglin89273.game.physicsbattle.client.page;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
-import com.google.gwt.maeglin89273.mengine.core.GeneralGame;
-import com.google.gwt.maeglin89273.mengine.core.MEngine;
-import com.google.gwt.maeglin89273.mengine.page.LoadingResourcesPage;
+import com.google.gwt.maeglin89273.game.mengine.core.GeneralGame;
+import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
+import com.google.gwt.maeglin89273.game.mengine.page.LoadingResourcesPage;
 
 /**
  * @author Maeglin Liao
@@ -22,7 +22,7 @@ public class PhysicsBattleLoadingResourcesPage extends LoadingResourcesPage {
 	private int barY;
 	
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.LoadingPage#update()
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.LoadingPage#update()
 	 */
 	public PhysicsBattleLoadingResourcesPage(GeneralGame game){
 		super(game);
@@ -39,7 +39,7 @@ public class PhysicsBattleLoadingResourcesPage extends LoadingResourcesPage {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.LoadingPage#draw(com.google.gwt.canvas.dom.client.Context2d)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.LoadingPage#draw(com.google.gwt.canvas.dom.client.Context2d)
 	 */
 	@Override
 	public void draw(Context2d context) {
@@ -52,7 +52,7 @@ public class PhysicsBattleLoadingResourcesPage extends LoadingResourcesPage {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.LoadingPage#isLoaded()
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.LoadingPage#isLoaded()
 	 */
 	@Override
 	public boolean isLoaded() {

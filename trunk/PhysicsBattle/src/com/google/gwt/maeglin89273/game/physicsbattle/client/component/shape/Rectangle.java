@@ -10,9 +10,9 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.PhysicalWorld;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.utility.GameColors;
-import com.google.gwt.maeglin89273.mengine.component.Spacial;
-import com.google.gwt.maeglin89273.mengine.physics.Point;
-import com.google.gwt.maeglin89273.mengine.utility.CoordinateConverter;
+import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.utility.CoordinateConverter;
 import com.google.gwt.user.client.Random;
 
 /**
@@ -47,7 +47,7 @@ public class Rectangle extends PhysicalPolygon{
 	
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.component.GeneralComponent#draw(com.google.gwt.canvas.dom.client.Context2d)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.GeneralComponent#draw(com.google.gwt.canvas.dom.client.Context2d)
 	 */
 	@Override
 	public void draw(Context2d context) {

@@ -25,10 +25,10 @@ import com.google.gwt.maeglin89273.game.physicsbattle.client.component.Sketchers
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.button.key.CreativeKey;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.button.key.LineKey;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.utility.GameColors;
-import com.google.gwt.maeglin89273.mengine.core.GeneralGame;
-import com.google.gwt.maeglin89273.mengine.core.MEngine;
-import com.google.gwt.maeglin89273.mengine.page.GamePage;
-import com.google.gwt.maeglin89273.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.core.GeneralGame;
+import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
+import com.google.gwt.maeglin89273.game.mengine.page.GamePage;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.user.client.Random;
 
 /**
@@ -58,7 +58,7 @@ public class PhysicsBattleGamePage extends GamePage implements MouseDownHandler,
 		gravityClock.addGravityChangeListener(world);
 	}
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.page.GamePage#onMouseDown(com.google.gwt.event.dom.client.MouseDownEvent)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GamePage#onMouseDown(com.google.gwt.event.dom.client.MouseDownEvent)
 	 */
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
@@ -72,7 +72,7 @@ public class PhysicsBattleGamePage extends GamePage implements MouseDownHandler,
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.page.GamePage#onMouseUp(com.google.gwt.event.dom.client.MouseUpEvent)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GamePage#onMouseUp(com.google.gwt.event.dom.client.MouseUpEvent)
 	 */
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
@@ -86,7 +86,7 @@ public class PhysicsBattleGamePage extends GamePage implements MouseDownHandler,
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.page.GamePage#onKeyUp(com.google.gwt.event.dom.client.KeyUpEvent)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GamePage#onKeyUp(com.google.gwt.event.dom.client.KeyUpEvent)
 	 */
 	@Override
 	public void onKeyUp(KeyUpEvent event) {
@@ -95,7 +95,7 @@ public class PhysicsBattleGamePage extends GamePage implements MouseDownHandler,
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.page.GamePage#onKeyDown(com.google.gwt.event.dom.client.KeyDownEvent)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GamePage#onKeyDown(com.google.gwt.event.dom.client.KeyDownEvent)
 	 */
 	@Override
 	public void onKeyDown(KeyDownEvent event) {
@@ -116,14 +116,14 @@ public class PhysicsBattleGamePage extends GamePage implements MouseDownHandler,
 
 	}
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.page.GamePage#onMouseOut(com.google.gwt.event.dom.client.MouseOutEvent)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GamePage#onMouseOut(com.google.gwt.event.dom.client.MouseOutEvent)
 	 */
 	@Override
 	public void onMouseOut(MouseOutEvent event){
 		game.setPage(pausePage);
 	}
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.page.Page#update()
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.Page#update()
 	 */
 	@Override
 	public void update() {
@@ -139,7 +139,7 @@ public class PhysicsBattleGamePage extends GamePage implements MouseDownHandler,
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.page.Page#draw(com.google.gwt.canvas.dom.client.Context2d)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.Page#draw(com.google.gwt.canvas.dom.client.Context2d)
 	 */
 	@Override
 	public void draw(Context2d context) {

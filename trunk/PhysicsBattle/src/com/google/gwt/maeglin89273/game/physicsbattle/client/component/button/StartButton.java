@@ -6,12 +6,12 @@ package com.google.gwt.maeglin89273.game.physicsbattle.client.component.button;
 
 import com.google.gwt.maeglin89273.game.physicsbattle.client.page.PhysicsBattleGamePage;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.page.PhysicsBattleGameBoardPage;
-import com.google.gwt.maeglin89273.mengine.component.CanvasButton;
+import com.google.gwt.maeglin89273.game.mengine.component.CanvasButton;
 
-import com.google.gwt.maeglin89273.mengine.core.MEngine;
-import com.google.gwt.maeglin89273.mengine.page.Page;
-import com.google.gwt.maeglin89273.mengine.physics.Point;
-import com.google.gwt.maeglin89273.mengine.sprite.SpriteBlock;
+import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
+import com.google.gwt.maeglin89273.game.mengine.page.Page;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteBlock;
 
 /**
  * @author Maeglin Liao
@@ -26,7 +26,7 @@ public class StartButton extends CanvasButton {
 		this.gameBoardPage=page;
 	}
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.component.gamecomponent.CanvasButton#doTask()
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.gamecomponent.CanvasButton#doTask()
 	 */
 	@Override
 	public void doTask() {
@@ -35,7 +35,7 @@ public class StartButton extends CanvasButton {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.component.gamecomponent.CanvasButton#contain(com.google.gwt.maeglin89273.mengine.utility.physics.Point)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.gamecomponent.CanvasButton#contain(com.google.gwt.maeglin89273.game.mengine.utility.physics.Point)
 	 */
 	@Override
 	public boolean contain(Point p) {
@@ -45,7 +45,7 @@ public class StartButton extends CanvasButton {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.component.GeneralComponent#update()
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.GeneralComponent#update()
 	 */
 	@Override
 	public void update() {

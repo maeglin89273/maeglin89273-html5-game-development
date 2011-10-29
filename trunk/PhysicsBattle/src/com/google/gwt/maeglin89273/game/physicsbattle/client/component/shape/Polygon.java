@@ -13,10 +13,10 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.PhysicalWorld;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.utility.GameColors;
-import com.google.gwt.maeglin89273.mengine.component.Spacial;
-import com.google.gwt.maeglin89273.mengine.physics.Point;
-import com.google.gwt.maeglin89273.mengine.physics.Vector;
-import com.google.gwt.maeglin89273.mengine.utility.CoordinateConverter;
+import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
+import com.google.gwt.maeglin89273.game.mengine.utility.CoordinateConverter;
 import com.google.gwt.user.client.Random;
 
 /**

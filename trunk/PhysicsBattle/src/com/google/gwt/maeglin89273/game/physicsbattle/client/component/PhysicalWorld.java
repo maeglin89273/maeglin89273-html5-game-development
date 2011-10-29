@@ -19,12 +19,12 @@ import com.google.gwt.maeglin89273.game.physicsbattle.client.component.shape.Rec
 import com.google.gwt.maeglin89273.game.physicsbattle.client.utility.GameColors;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.utility.event.GravityChangedEvent;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.utility.event.GravityChangedListener;
-import com.google.gwt.maeglin89273.mengine.component.GeneralComponent;
-import com.google.gwt.maeglin89273.mengine.component.Physical;
-import com.google.gwt.maeglin89273.mengine.component.Spacial;
-import com.google.gwt.maeglin89273.mengine.physics.PixelAABB;
-import com.google.gwt.maeglin89273.mengine.physics.Point;
-import com.google.gwt.maeglin89273.mengine.utility.CoordinateConverter;
+import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
+import com.google.gwt.maeglin89273.game.mengine.component.Physical;
+import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
+import com.google.gwt.maeglin89273.game.mengine.physics.PixelAABB;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.utility.CoordinateConverter;
 import com.google.gwt.user.client.Random;
 
 

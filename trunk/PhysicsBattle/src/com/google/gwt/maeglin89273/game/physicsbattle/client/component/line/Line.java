@@ -10,12 +10,12 @@ import org.jbox2d.dynamics.BodyDef;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.PhysicalWorld;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.Creation;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.Sketcher;
-import com.google.gwt.maeglin89273.mengine.component.Physical;
-import com.google.gwt.maeglin89273.mengine.component.Spacial;
-import com.google.gwt.maeglin89273.mengine.physics.PixelAABB;
-import com.google.gwt.maeglin89273.mengine.physics.Point;
-import com.google.gwt.maeglin89273.mengine.physics.Vector;
-import com.google.gwt.maeglin89273.mengine.utility.CoordinateConverter;
+import com.google.gwt.maeglin89273.game.mengine.component.Physical;
+import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
+import com.google.gwt.maeglin89273.game.mengine.physics.PixelAABB;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
+import com.google.gwt.maeglin89273.game.mengine.utility.CoordinateConverter;
 
 /**
  * @author Maeglin Liao
@@ -54,7 +54,7 @@ public abstract class Line extends Creation implements Physical {
 		return pointB;
 	}
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.component.Physical#getBody()
+	 * @see com.google.gwt.maeglin89273.game.mengine.component.Physical#getBody()
 	 */
 	@Override
 	public Body getBody() {
@@ -62,7 +62,7 @@ public abstract class Line extends Creation implements Physical {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.component.Physical#getSpace()
+	 * @see com.google.gwt.maeglin89273.game.mengine.component.Physical#getSpace()
 	 */
 	@Override
 	public Spacial getSpace() {
@@ -70,7 +70,7 @@ public abstract class Line extends Creation implements Physical {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.component.Physical#destory()
+	 * @see com.google.gwt.maeglin89273.game.mengine.component.Physical#destory()
 	 */
 	@Override
 	public void destory() {
@@ -81,7 +81,7 @@ public abstract class Line extends Creation implements Physical {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.component.Physical#getAABB()
+	 * @see com.google.gwt.maeglin89273.game.mengine.component.Physical#getAABB()
 	 */
 	@Override
 	public PixelAABB getAABB() {

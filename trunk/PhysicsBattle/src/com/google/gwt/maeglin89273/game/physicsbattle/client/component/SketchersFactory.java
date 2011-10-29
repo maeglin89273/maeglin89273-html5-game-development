@@ -7,7 +7,7 @@ import com.google.gwt.maeglin89273.game.physicsbattle.client.component.line.Blac
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.line.GrayStaticLine;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.line.ShapesLine;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.line.Line;
-import com.google.gwt.maeglin89273.mengine.component.Spacial;
+import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
 
 /**
  * @author Maeglin Liao

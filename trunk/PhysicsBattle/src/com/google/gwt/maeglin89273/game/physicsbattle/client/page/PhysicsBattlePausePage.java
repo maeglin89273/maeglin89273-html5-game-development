@@ -8,9 +8,9 @@ import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.canvas.dom.client.Context2d.TextAlign;
 import com.google.gwt.canvas.dom.client.Context2d.TextBaseline;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.maeglin89273.mengine.core.GeneralGame;
-import com.google.gwt.maeglin89273.mengine.core.MEngine;
-import com.google.gwt.maeglin89273.mengine.page.GeneralPage;
+import com.google.gwt.maeglin89273.game.mengine.core.GeneralGame;
+import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
+import com.google.gwt.maeglin89273.game.mengine.page.GeneralPage;
 
 
 /**
@@ -25,7 +25,7 @@ public class PhysicsBattlePausePage extends GeneralPage {
 	
 	private PhysicsBattleGamePage gamePage;
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.page.GeneralPage#onClick(com.google.gwt.maeglin89273.mengine.utility.physics.Point)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GeneralPage#onClick(com.google.gwt.maeglin89273.game.mengine.utility.physics.Point)
 	 */
 	public PhysicsBattlePausePage(GeneralGame game,PhysicsBattleGamePage gamePage){
 		super(game);
@@ -39,7 +39,7 @@ public class PhysicsBattlePausePage extends GeneralPage {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.page.Page#update()
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.Page#update()
 	 */
 	@Override
 	public void update() {
@@ -48,7 +48,7 @@ public class PhysicsBattlePausePage extends GeneralPage {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.page.Page#draw(com.google.gwt.canvas.dom.client.Context2d)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.Page#draw(com.google.gwt.canvas.dom.client.Context2d)
 	 */
 	@Override
 	public void draw(Context2d context) {

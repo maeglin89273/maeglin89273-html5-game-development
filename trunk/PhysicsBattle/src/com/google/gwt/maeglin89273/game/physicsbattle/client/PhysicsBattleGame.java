@@ -3,8 +3,8 @@ package com.google.gwt.maeglin89273.game.physicsbattle.client;
 
 
 import com.google.gwt.maeglin89273.game.physicsbattle.client.page.PhysicsBattleLoadingResourcesPage;
-import com.google.gwt.maeglin89273.mengine.core.GeneralGame;
-import com.google.gwt.maeglin89273.mengine.sprite.SpriteSheet;
+import com.google.gwt.maeglin89273.game.mengine.core.GeneralGame;
+import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteSheet;
 
 
 /**
