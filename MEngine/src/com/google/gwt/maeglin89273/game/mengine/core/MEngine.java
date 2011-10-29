@@ -1,30 +1,22 @@
 package com.google.gwt.maeglin89273.game.mengine.core;
 
 
-import java.util.HashSet;
 
-import com.google.gwt.animation.client.AnimationScheduler;
-import com.google.gwt.animation.client.AnimationScheduler.AnimationCallback;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.CssColor;
-import com.google.gwt.canvas.dom.client.Context2d.TextAlign;
-import com.google.gwt.canvas.dom.client.Context2d.TextBaseline;
-import com.google.gwt.core.client.Duration;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ContextMenuEvent;
+import com.google.gwt.event.dom.client.ContextMenuHandler;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.maeglin89273.game.mengine.page.LoadingResourcesPage;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.maeglin89273.game.mengine.timer.ControlledTimer;
 import com.google.gwt.maeglin89273.game.mengine.utility.CoordinateConverter;
 
 import com.google.gwt.user.client.ui.Label;
@@ -61,7 +53,16 @@ public class MEngine {
 		eventsDeliverer=new EventsDeliverer(canvas);
 		
 		assetManager.loadSpriteSheets(game.getGameSpriteSheets());
+		canvas.addDomHandler(new ContextMenuHandler(){
+
+			@Override
+			public void onContextMenu(ContextMenuEvent event) {
+				event.preventDefault();
+				event.stopPropagation();
+			}
+		}, ContextMenuEvent.getType());
 		canvas.addMouseMoveHandler(mousePosition);//do not use eventsDeliverer to add MouseMoveEventHandler,because the deliverer may remove it.
+		
 		CoordinateConverter.init(game.getWidth(), game.getHeight());
 		
 		setupCanvas();
