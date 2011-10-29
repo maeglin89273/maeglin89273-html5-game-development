@@ -9,15 +9,15 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.maeglin89273.mengine.component.GeneralComponent;
-import com.google.gwt.maeglin89273.mengine.component.Physical;
-import com.google.gwt.maeglin89273.mengine.component.Spacial;
-import com.google.gwt.maeglin89273.mengine.core.MEngine;
-import com.google.gwt.maeglin89273.mengine.physics.PixelAABB;
-import com.google.gwt.maeglin89273.mengine.physics.Point;
-import com.google.gwt.maeglin89273.mengine.physics.Vector;
-import com.google.gwt.maeglin89273.mengine.sprite.SpriteSheet;
-import com.google.gwt.maeglin89273.mengine.utility.CoordinateConverter;
+import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
+import com.google.gwt.maeglin89273.game.mengine.component.Physical;
+import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
+import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
+import com.google.gwt.maeglin89273.game.mengine.physics.PixelAABB;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
+import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteSheet;
+import com.google.gwt.maeglin89273.game.mengine.utility.CoordinateConverter;
 
 /**
  * @author Maeglin Liao
@@ -30,7 +30,7 @@ public class Volcano extends GeneralComponent implements Physical {
 	private Spacial space;
 	private SpriteSheet image;
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.component.Physical#getBody()
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.Physical#getBody()
 	 */
 	public Volcano(Spacial space,Point p){
 		super(p,500,150);
@@ -57,6 +57,7 @@ public class Volcano extends GeneralComponent implements Physical {
 		
 		aabb=CoordinateConverter.transformAABB(body.createFixture(shape, 0f).getAABB());
 	}
+	
 	@Override
 	public Body getBody() {
 		
@@ -64,7 +65,7 @@ public class Volcano extends GeneralComponent implements Physical {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.component.GeneralComponent#update()
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.GeneralComponent#update()
 	 */
 	@Override
 	public void update() {
@@ -73,7 +74,7 @@ public class Volcano extends GeneralComponent implements Physical {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.mengine.utility.component.GeneralComponent#draw(com.google.gwt.canvas.dom.client.Context2d)
+	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.GeneralComponent#draw(com.google.gwt.canvas.dom.client.Context2d)
 	 */
 	public Point getLeftCraterPoint(){
 		return new Point(position.getX()-CRATER_WIDTH/2,getTopY());

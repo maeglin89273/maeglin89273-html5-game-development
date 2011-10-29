@@ -4,15 +4,20 @@
 package com.google.gwt.maeglin89273.shared.test.volcanogame;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.dom.client.NativeEvent;
+
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 
 
 
-import com.google.gwt.maeglin89273.mengine.core.Game;
-import com.google.gwt.maeglin89273.mengine.core.MEngine;
-import com.google.gwt.maeglin89273.mengine.sprite.SpriteSheet;
+
+import com.google.gwt.maeglin89273.game.mengine.core.Game;
+import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
+import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteSheet;
 import com.google.gwt.maeglin89273.shared.test.volcanogame.component.VolcanoWorld;
 
 /**
@@ -29,6 +34,18 @@ public class ElectronicsVolcanoGame implements Game {
 	public void init() {
 		volcanoWorld=new VolcanoWorld(getWidth(),getHeight());
 		
+		
+		MEngine.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				if(event.getNativeButton()==NativeEvent.BUTTON_RIGHT){
+					volcanoWorld.erupt();
+				}
+				
+			}
+			
+		});
 		MEngine.addKeyDownHandler(new KeyDownHandler(){
 
 			@Override
