@@ -29,7 +29,7 @@ public class GrayStaticLine extends LimitedTimeStaticLine {
 		}
 		@Override
 		public void sketchFinished(){
-			world.addLine(new GrayStaticLine(world,pointA,pointB));
+			new GrayStaticLine(world,pointA,pointB);
 			reset();
 		}
 	}

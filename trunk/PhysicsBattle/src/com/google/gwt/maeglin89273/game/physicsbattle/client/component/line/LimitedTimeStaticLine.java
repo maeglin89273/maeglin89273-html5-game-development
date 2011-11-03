@@ -3,30 +3,21 @@
  */
 package com.google.gwt.maeglin89273.game.physicsbattle.client.component.line;
 
-import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.Fixture;
+
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.PhysicalWorld;
-import com.google.gwt.maeglin89273.game.physicsbattle.client.utility.GameColors;
-import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
-import com.google.gwt.maeglin89273.game.mengine.component.Physical;
-import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
-import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
-import com.google.gwt.maeglin89273.game.mengine.physics.PixelAABB;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.timer.SchedulingTimer;
 import com.google.gwt.maeglin89273.game.mengine.timer.TimerTask;
-import com.google.gwt.maeglin89273.game.mengine.utility.CoordinateConverter;
+
 
 /**
  * @author Maeglin Liao
  *
  */
-public abstract class LimitedTimeStaticLine extends Line {
+public abstract class LimitedTimeStaticLine extends PhysicalLine{
 
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.Physical#getBody()
@@ -35,6 +26,7 @@ public abstract class LimitedTimeStaticLine extends Line {
 	protected CssColor lineColor;
 	protected LimitedTimeStaticLine(PhysicalWorld world,Point p1,Point p2,int time,CssColor color){
 		super(p1, p2, world);
+		
 		this.lineColor=color;
 		final SchedulingTimer countdownTimer=new SchedulingTimer(new TimerTask(){
 
@@ -47,6 +39,7 @@ public abstract class LimitedTimeStaticLine extends Line {
 		},time*1000);
 		countdownTimer.start();
 	}
+	
 	public CssColor getColor(){
 		return lineColor;
 	}

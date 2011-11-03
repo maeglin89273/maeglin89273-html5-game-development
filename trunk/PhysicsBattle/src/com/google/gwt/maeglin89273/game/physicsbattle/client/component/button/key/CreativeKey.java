@@ -3,7 +3,7 @@
  */
 package com.google.gwt.maeglin89273.game.physicsbattle.client.component.button.key;
 
-import com.google.gwt.maeglin89273.game.physicsbattle.client.component.Sketcher;
+import com.google.gwt.maeglin89273.game.physicsbattle.client.component.CreationSketcher;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.SketchersFactory;
 import com.google.gwt.maeglin89273.game.mengine.component.CanvasButton;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
@@ -25,10 +25,8 @@ public abstract class CreativeKey extends CanvasButton {
 		
 	}
 	public void setPressed(boolean p){
-		if(!(this.pressed=p)){
+		if(!(this.pressed=p))
 			resetSketcher();
-		}
-		
 	}
 	public boolean isPressed(){
 		return pressed;
@@ -36,7 +34,7 @@ public abstract class CreativeKey extends CanvasButton {
 	public static void setSketchersFactory(SketchersFactory factory){
 		sketchersFactory=factory;
 	}
-	public abstract Sketcher getSketcher();
+	public abstract CreationSketcher getSketcher();
 	public abstract void next();
 	public abstract void prevoius();
 	public abstract void resetSketcher();

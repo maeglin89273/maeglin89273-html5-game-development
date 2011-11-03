@@ -35,6 +35,7 @@ public class Circle extends PhysicalShape{
 	}
 	public Circle(PhysicalWorld world,Point p,double radius,CssColor color){
 		super(p, radius*2, radius*2, world, 0, color);
+		this.radius=radius;
 		
 		CircleShape shape=new CircleShape();
 		FixtureDef fixtureDef=new FixtureDef();

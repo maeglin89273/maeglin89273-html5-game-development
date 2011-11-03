@@ -2,7 +2,7 @@
 <module rename-to='physicsbattle'>
   <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User'/>
-  <inherits name='com.google.gwt.maeglin89273.mengine.MEngine'/>
+  <inherits name='com.google.gwt.maeglin89273.game.mengine.MEngine'/>
   <!-- Inherit the default GWT style sheet.  You can change       -->
   <!-- the theme of your GWT application by uncommenting          -->
   <!-- any one of the following lines.                            -->

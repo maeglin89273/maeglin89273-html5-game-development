@@ -92,7 +92,7 @@ public class Polygon extends PhysicalPolygon {
 		for(int c=0;c<vertices.length;c++){
 			//angle+=(2*Math.PI-angle)*Random.nextDouble(); the other way to create a vertex
 			angle=theta*Random.nextDouble()+c*theta;
-			verticesP[c]=new Point(angle, circumscribedCircleRadius,true);
+			verticesP[c]=new Point(circumscribedCircleRadius,angle,true);
 			g.translate(verticesP[c].getX(), verticesP[c].getY());
 		}
 		g.setPosition(g.getX()/verticesCount, g.getY()/verticesCount);

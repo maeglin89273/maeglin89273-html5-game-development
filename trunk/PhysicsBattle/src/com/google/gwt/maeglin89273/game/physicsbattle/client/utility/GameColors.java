@@ -17,6 +17,7 @@ public class GameColors {
 	public static final CssColor BLACK_LINE_COLOR=CssColor.make("hsla(0,0%,0%,0.9)");
 	public static final CssColor YELLOW_BORDER_Color=CssColor.make("hsla(55.5,100%,50%,0.8)");
 	public static final CssColor BLUE_BORDER_COLOR=CssColor.make("hsla(210,90%,50%,0.8)");
+	
 	public static final CssColor getRandomShapeBorderColor(){
 		return CssColor.make("hsla("+Random.nextInt(361)+",95%,50%,0.8)");
 	}

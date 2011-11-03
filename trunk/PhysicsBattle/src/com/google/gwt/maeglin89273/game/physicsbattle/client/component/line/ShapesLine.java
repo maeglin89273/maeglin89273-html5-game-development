@@ -7,6 +7,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.PhysicalWorld;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.shape.Circle;
+import com.google.gwt.maeglin89273.game.physicsbattle.client.component.shape.PhysicalShape;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.shape.Polygon;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.shape.Rectangle;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.utility.GameColors;
@@ -20,9 +21,20 @@ import com.google.gwt.user.client.Random;
  */
 public class ShapesLine extends Line {
 
-	protected ShapesLine(Point p1, Point p2, PhysicalWorld world) {
+	protected ShapesLine(Point p1, Point p2, PhysicalWorld world,ShapesLineSketcher.ShapeSketch[] shapeSketches,int count) {
 		super(p1, p2, world);
-		// TODO Auto-generated constructor stub
+		ShapesLineSketcher.ShapeSketch shapeSketch;
+		for(int i=0;i<count;i++){
+			shapeSketch=shapeSketches[i];
+			if(shapeSketch instanceof ShapesLineSketcher.CircleSketch){
+				new Circle(world,shapeSketch.getPosition(),((ShapesLineSketcher.CircleSketch)shapeSketch).getRadius(),shapeSketch.getColor());
+			}else if(shapeSketch instanceof ShapesLineSketcher.RectangleSketch){
+				new Rectangle(world,shapeSketch.getPosition(),((ShapesLineSketcher.RectangleSketch)shapeSketch).getWidth(),((ShapesLineSketcher.RectangleSketch)shapeSketch).getHeight(),shapeSketch.getAngle(),shapeSketch.getColor());
+			}else{
+				new Polygon(world,shapeSketch.getPosition(),((ShapesLineSketcher.PolygonSketch)shapeSketch).getVertices(),shapeSketch.getAngle(),shapeSketch.getColor());
+			}
+		}
+		shapeSketches=null;
 	}
 
 	/* (non-Javadoc)
@@ -41,6 +53,11 @@ public class ShapesLine extends Line {
 	public void draw(Context2d context) {
 		// TODO Auto-generated method stub
 
+	}
+	@Override
+	public void destory() {
+		// TODO Auto-generated method stub
+		
 	}
 	public static class ShapesLineSketcher extends LineSketcher{
 		private int shapesMaxCount;
@@ -63,7 +80,7 @@ public class ShapesLine extends Line {
 				double a=Math.atan2(-v.getVectorY(), v.getVectorX());
 				//update
 				showingShapesCount=(int)Math.floor(v.getMagnitude()/spacing);
-				for(int i=0;i<shapesMaxCount-1;i++){
+				for(int i=0;i<shapesMaxCount;i++){
 					shapes[i].setAngle(a);
 					shapes[i].setPosition(pointA.getX()+(i+1)*spacing*Math.cos(a),pointA.getY()-(i+1)*spacing*Math.sin(a));
 				}
@@ -72,7 +89,7 @@ public class ShapesLine extends Line {
 		@Override
 		public void sketch(Context2d context) {
 			if(pointA!=null&&pointB!=null){
-				for(int i=0;i<showingShapesCount-1;i++){
+				for(int i=0;i<showingShapesCount;i++){
 					shapes[i].sketch(context);
 				}
 			}
@@ -81,7 +98,7 @@ public class ShapesLine extends Line {
 		public void reset(){
 			super.reset();
 			
-			for(int i=0;i<shapesMaxCount-1;i++){
+			for(int i=0;i<shapesMaxCount;i++){
 				//generate some random shape
 				switch(Random.nextInt(3)){
 					case 0:
@@ -98,17 +115,7 @@ public class ShapesLine extends Line {
 		}
 		@Override
 		public void sketchFinished() {
-			ShapeSketch shape;
-			for(int i=0;i<showingShapesCount-1;i++){
-				shape=shapes[i];
-				if(shape instanceof CircleSketch){
-					world.addShape(new Circle(world,shape.getPosition(),((CircleSketch)shape).getRadius(),shape.getColor()));
-				}else if(shape instanceof RectangleSketch){
-					world.addShape(new Rectangle(world,shape.getPosition(),((RectangleSketch)shape).getWidth(),((RectangleSketch)shape).getHeight(),shape.getAngle(),shape.getColor()));
-				}else{
-					world.addShape(new Polygon(world,shape.getPosition(),((PolygonSketch)shape).getVertices(),shape.getAngle(),shape.getColor()));
-				}
-			}
+			new ShapesLine(pointA,pointB,world,shapes,showingShapesCount);
 			reset();
 		}
 		
@@ -209,4 +216,5 @@ public class ShapesLine extends Line {
 			}
 		}
 	}
+	
 }

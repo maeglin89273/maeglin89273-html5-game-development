@@ -16,10 +16,12 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 public abstract class Dot extends Creation {
 	
 	protected CssColor dotColor;
-	private static final int DOT_RADIUS=3;
+	protected static final int DOT_RADIUS=3;
 	
-	protected Dot(Point p,PhysicalWorld world) {
+	protected Dot(Point p,PhysicalWorld world,CssColor color) {
 		super(p, 2*DOT_RADIUS, 2*DOT_RADIUS,world);
+		this.dotColor=color;
+		world.addDot(this);
 	}
 	public CssColor getColor(){
 		return dotColor;
@@ -35,5 +37,9 @@ public abstract class Dot extends Creation {
 		context.closePath();
 		context.fill();
 	}
-
+	@Override
+	public void destory(){
+		this.world.removeDot(this);
+		this.world=null;
+	}
 }

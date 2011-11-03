@@ -4,6 +4,7 @@
 package com.google.gwt.maeglin89273.game.physicsbattle.client.page;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
@@ -11,6 +12,8 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
@@ -18,7 +21,7 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.PhysicalWorld;
-import com.google.gwt.maeglin89273.game.physicsbattle.client.component.Sketcher;
+import com.google.gwt.maeglin89273.game.physicsbattle.client.component.CreationSketcher;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.SketchersFactory;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.VariableGravityClock;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.SketchersFactory.LineSketcherType;
@@ -45,6 +48,7 @@ public class PhysicsBattleGamePage extends GamePage implements MouseDownHandler,
 	private VariableGravityClock gravityClock;
 	
 	private PhysicsBattlePausePage pausePage;
+	
 	public PhysicsBattleGamePage(GeneralGame game){
 		super(game);
 		
@@ -53,75 +57,89 @@ public class PhysicsBattleGamePage extends GamePage implements MouseDownHandler,
 		gravityClock=new VariableGravityClock(new Point(getGameWidth()/2,getGameHeight()/2),400,10);
 		world=new PhysicalWorld(getGameWidth(),getGameHeight(),gravityClock.getGravity());
 		CreativeKey.setSketchersFactory(new SketchersFactory(world));
+		
 		keys[0]=new LineKey(new Point(125,game.getHeight()-160),LineSketcherType.SHAPES_LINE,LineSketcherType.GRAY_STATIC_LINE,LineSketcherType.BLACK_STATIC_LINE);
 		
 		gravityClock.addGravityChangeListener(world);
 	}
-	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GamePage#onMouseDown(com.google.gwt.event.dom.client.MouseDownEvent)
-	 */
+	
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
-		Point mP=MEngine.getMousePosition();
-		for(CreativeKey key:keys){
-			if(key.isPressed()){
-				key.getSketcher().onPenDown(mP);
-			}
+		switch(event.getNativeButton()){
+			case NativeEvent.BUTTON_LEFT://notify the pen is down
+				
+				Point mP=MEngine.getMousePosition();
+				for(CreativeKey key:keys){
+					if(key.isPressed()){
+						key.getSketcher().onPenDown(mP);
+					}
+				}
+				break;
+			
+			case NativeEvent.BUTTON_RIGHT://cancel sketching
+				//more keys...
+				keys[0].setPressed(event.isShiftKeyDown());
+				for(CreativeKey key:keys){
+					if(key.isPressed()){
+						key.resetSketcher();
+					}
+				}
 		}
-
 	}
 
-	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GamePage#onMouseUp(com.google.gwt.event.dom.client.MouseUpEvent)
-	 */
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
-		Point mP=MEngine.getMousePosition();
-		for(CreativeKey key:keys){
-			if(key.isPressed()){
-				key.getSketcher().onPenUp(mP);
+		if(event.getNativeButton()==NativeEvent.BUTTON_LEFT){
+			Point mP=MEngine.getMousePosition();
+			//more keys...
+			keys[0].setPressed(event.isShiftKeyDown());
+			
+			//notify the pen is up 
+			for(CreativeKey key:keys){
+				if(key.isPressed()){
+					key.getSketcher().onPenUp(mP);
+				}
 			}
 		}
-
 	}
 
-	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GamePage#onKeyUp(com.google.gwt.event.dom.client.KeyUpEvent)
-	 */
+	
 	@Override
 	public void onKeyUp(KeyUpEvent event) {
+		//more keys...
 		keys[0].setPressed(event.isShiftKeyDown());
-		
 	}
 
-	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GamePage#onKeyDown(com.google.gwt.event.dom.client.KeyDownEvent)
-	 */
+	
 	@Override
 	public void onKeyDown(KeyDownEvent event) {
+		//more keys...
 		keys[0].setPressed(event.isShiftKeyDown());
-		if(event.getNativeKeyCode()=='Q'){
-			for(CreativeKey key:keys){
-				if(key.isPressed()){
-					key.prevoius();
+		
+		//check whether it is switching or not
+		switch(event.getNativeKeyCode()){
+			case 'Q':
+				for(CreativeKey key:keys){
+					if(key.isPressed()){
+						key.prevoius();
+					}
 				}
-			}
-		}else if(event.getNativeKeyCode()=='E'){
-			for(CreativeKey key:keys){
-				if(key.isPressed()){
-					key.next();
+				break;
+			case 'W':
+				for(CreativeKey key:keys){
+					if(key.isPressed()){
+						key.next();
+					}
 				}
-			}
 		}
-
 	}
-	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GamePage#onMouseOut(com.google.gwt.event.dom.client.MouseOutEvent)
-	 */
+	
 	@Override
 	public void onMouseOut(MouseOutEvent event){
 		game.setPage(pausePage);
 	}
+	
+	
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.Page#update()
 	 */
@@ -161,8 +179,9 @@ public class PhysicsBattleGamePage extends GamePage implements MouseDownHandler,
 		MEngine.addMouseUpHandler(this);
 		MEngine.addKeyDownHandler(this);
 		MEngine.addKeyUpHandler(this);
-		MEngine.addMouseOutHandler(this);
+		//MEngine.addMouseOutHandler(this);
 	}
+	
 	
 
 }
