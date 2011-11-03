@@ -32,7 +32,7 @@ public class BlackStaticLine extends LimitedTimeStaticLine {
 		}
 		@Override
 		public void sketchFinished(){
-			world.add(new BlackStaticLine(world,pointA,pointB));
+			new BlackStaticLine(world,pointA,pointB);
 			reset();
 		}
 	}

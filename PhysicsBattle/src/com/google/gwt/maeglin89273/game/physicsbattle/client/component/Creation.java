@@ -22,5 +22,5 @@ public abstract class Creation extends GeneralComponent {
 		super(p, w, h);
 		this.world=world;
 	}
-
+	public abstract void destory();
 }

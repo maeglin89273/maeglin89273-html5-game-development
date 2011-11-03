@@ -3,6 +3,7 @@ package com.google.gwt.maeglin89273.game.physicsbattle.client;
 
 
 import com.google.gwt.maeglin89273.game.physicsbattle.client.page.PhysicsBattleLoadingResourcesPage;
+import com.google.gwt.maeglin89273.game.physicsbattle.client.page.TestForceGamePage;
 import com.google.gwt.maeglin89273.game.mengine.core.GeneralGame;
 import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteSheet;
 
@@ -14,7 +15,8 @@ public class PhysicsBattleGame extends GeneralGame {
 	
 	@Override
 	public void init() {
-		setPage(new PhysicsBattleLoadingResourcesPage(this));
+		setPage(new TestForceGamePage(this));
+		//setPage(new PhysicsBattleLoadingResourcesPage(this));
 	}
 	
 	

@@ -10,11 +10,12 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
  * @author Maeglin Liao
  *
  */
-public interface Sketcher {
+public interface CreationSketcher {
 	void reset();
 	void sketch(Context2d context);
 	void updatePenPosition(Point p);
 	void onPenUp(Point p);
 	void onPenDown(Point p);
 	void sketchFinished();
+	//int getCreationRequiredPower();
 }

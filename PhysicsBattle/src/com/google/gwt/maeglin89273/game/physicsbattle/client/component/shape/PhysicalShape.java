@@ -3,6 +3,7 @@
  */
 package com.google.gwt.maeglin89273.game.physicsbattle.client.component.shape;
 
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
@@ -26,7 +27,11 @@ import com.google.gwt.user.client.Random;
 public abstract class PhysicalShape extends GeneralComponent implements
 		Physical {
 	
+	private Vec2 force;
+	private Vec2 forcePos;
 	
+	private Vec2 impulse;
+	private Vec2 impulsePos;
 
 	protected Body body;
 	protected  Fixture fixture;
@@ -46,6 +51,7 @@ public abstract class PhysicalShape extends GeneralComponent implements
 		bodyDef.angle=(float)angle;
 		
 		body=world.getWorld().createBody(bodyDef);
+		world.addShape(this);
 	}
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.mengine.component.Physical#getBody()
@@ -53,7 +59,14 @@ public abstract class PhysicalShape extends GeneralComponent implements
 	public CssColor getColor(){
 		return borderColor;
 	}
-	
+	public void applyForce(Vec2 force,Vec2 point){
+		this.force=force;
+		this.forcePos=point;
+	}
+	public void applyImpulse(Vec2 impulse,Vec2 point){
+		this.impulse=impulse;
+		this.impulsePos=point;
+	}
 	@Override
 	public Body getBody() {
 		
@@ -100,13 +113,16 @@ public abstract class PhysicalShape extends GeneralComponent implements
 			destory();
 			return;
 		}
-		//pb.setPosition(CoordinateConverter.coordWorldToPixels(body.getPosition()));
+		if(force!=null){
+			body.applyForce(force, forcePos);
+			force=null;
+			forcePos=null;
+		}
+		if(impulse!=null){
+			body.applyLinearImpulse(impulse, impulsePos);
+			impulse=null;
+			impulsePos=null;
+		}
 		position.setPosition(CoordinateConverter.coordWorldToPixels(body.getPosition()));
-		
-		
-		
 	}
-
-	
-
 }

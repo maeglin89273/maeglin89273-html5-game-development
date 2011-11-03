@@ -3,6 +3,7 @@ package com.google.gwt.maeglin89273.game.physicsbattle.client.component;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
@@ -10,8 +11,10 @@ import org.jbox2d.dynamics.*;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
+import com.google.gwt.maeglin89273.game.physicsbattle.client.component.dot.Dot;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.line.GrayStaticLine;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.line.Line;
+import com.google.gwt.maeglin89273.game.physicsbattle.client.component.line.PhysicalLine;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.shape.Circle;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.shape.PhysicalShape;
 import com.google.gwt.maeglin89273.game.physicsbattle.client.component.shape.Polygon;
@@ -33,8 +36,9 @@ public class PhysicalWorld extends GeneralComponent implements Spacial,GravityCh
 	
 	private final World world;
 	private final float step=1/60f;
-	private final ArrayList<PhysicalShape> shapes=new ArrayList<PhysicalShape>();
-	private final ArrayList<Line> lines=new ArrayList<Line>();
+	private final List<PhysicalShape> shapes=new ArrayList<PhysicalShape>();
+	private final List<PhysicalLine> lines=new ArrayList<PhysicalLine>();
+	private final List<Dot> dots=new ArrayList<Dot>();
 	public PhysicalWorld(int w,int h,Vec2 gravity){
 		super(new Point(0,0),w,h);
 		world=new World(gravity,true);
@@ -45,22 +49,30 @@ public class PhysicalWorld extends GeneralComponent implements Spacial,GravityCh
 	public void add(Physical c) {
 		if(c instanceof PhysicalShape){
 			addShape((PhysicalShape)c);
-		}else if(c instanceof Line){
-			addLine((Line)c);
+		}else if(c instanceof PhysicalLine){
+			addLine((PhysicalLine)c);
 		}
 		
 	}
+	
 	public void addShape(PhysicalShape shape){
 		shapes.add(shape);
 	}
-	public void addLine(Line line){
+	public void addLine(PhysicalLine line){
 		lines.add(line);
+	}
+	public void addDot(Dot dot){
+		dots.add(dot);
 	}
 	@Override
 	public void update() {
 		world.step(step, 8, 3);
 		for(int i=shapes.size()-1;i>=0;i--){
 			shapes.get(i).update();
+			
+		}
+		for(int i=dots.size()-1;i>=0;i--){
+			dots.get(i).update();
 			
 		}
 	}
@@ -74,7 +86,9 @@ public class PhysicalWorld extends GeneralComponent implements Spacial,GravityCh
 		for(Line line:lines){
 			line.draw(context);
 		}
-		
+		for(Dot dot:dots){
+			dot.draw(context);
+		}
 	}
 	@Override
 	public World getWorld() {
@@ -84,8 +98,8 @@ public class PhysicalWorld extends GeneralComponent implements Spacial,GravityCh
 	public void remove(Physical c) {
 		if(c instanceof PhysicalShape){
 			removeShape((PhysicalShape)c);
-		}else if(c instanceof Line){
-			removeLine((Line)c);
+		}else if(c instanceof PhysicalLine){
+			removePhysicalLine((PhysicalLine)c);
 		}
 	}
 	public void removeShape(PhysicalShape shape){
@@ -93,12 +107,14 @@ public class PhysicalWorld extends GeneralComponent implements Spacial,GravityCh
 			world.destroyBody(shape.getBody());
 		}
 	}
-	public void removeLine(Line line){
+	public void removePhysicalLine(PhysicalLine line){
 		if(lines.remove(line)){
 			world.destroyBody(line.getBody());
 		}
 	}
-	
+	public void removeDot(Dot dot){
+		dots.remove(dot);
+	}
 	@Override
 	public boolean isOutOfBounds(PixelAABB aabb) {
 		if(aabb.getTopY()>height||aabb.getRightX()<0||aabb.getLeftX()>width)
