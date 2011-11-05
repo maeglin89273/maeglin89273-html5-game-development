@@ -23,7 +23,7 @@ public class MousePosition implements MouseMoveHandler{
 		position.setY(y);
 	}
 	public Point getPosition(){
-		return new Point(position);
+		return position.clone();
 	}
 	public int getX(){
 		return (int)position.getX();

@@ -11,6 +11,7 @@ import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.core.client.Duration;
+import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.maeglin89273.game.mengine.timer.ControlledTimer;
 
 /**
@@ -20,6 +21,8 @@ import com.google.gwt.maeglin89273.game.mengine.timer.ControlledTimer;
 public class GameExecutor {
 	private final Canvas canvas;
 	private final Context2d context;
+	private final CanvasElement bufferCanvasElement;
+	private final Context2d bufferContext;
 	private final Game game;
 	private static final CssColor redrawColor=CssColor.make("hsla(0,100%,100%,0.6)");
 	
@@ -33,6 +36,13 @@ public class GameExecutor {
 		this.game=game;
 		this.canvas=canvas;
 		this.context=context;
+		
+		Canvas bufferCanvas=Canvas.createIfSupported();
+		bufferCanvas.setCoordinateSpaceWidth(game.getWidth());
+		bufferCanvas.setCoordinateSpaceHeight(game.getHeight());
+		
+		bufferCanvasElement=bufferCanvas.getCanvasElement();
+		bufferContext=bufferCanvas.getContext2d();
 	}
 	public void start(){
 		animationCallback=new AnimationCallback(){
@@ -46,15 +56,16 @@ public class GameExecutor {
 				delta=now-last;
 				last=now;
 				
-				context.setFillStyle(redrawColor);
-				context.fillRect(0, 0, game.getWidth(),game.getHeight());
+				bufferContext.setFillStyle(redrawColor);
+				bufferContext.fillRect(0, 0, game.getWidth(),game.getHeight());
 				
 				synchronized(MEngine.class){
 					do{
 						game.update();
 						delta-=MAXIMUM_INTERVAL;
 					}while(delta>0);
-					game.draw(context);
+					game.draw(bufferContext);
+					context.drawImage(bufferCanvasElement, 0, 0);
 					if(pause){
 						return;
 					}

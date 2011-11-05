@@ -36,7 +36,7 @@ public abstract class GeneralComponent implements CanvasComponent {
 	}
 	@Override
 	public Point getPosition(){
-		return new Point(position);
+		return position.clone();
 	}
 	@Override
 	public Point getPositionAt(PositionType type){
@@ -50,7 +50,7 @@ public abstract class GeneralComponent implements CanvasComponent {
 		case WEST:
 			return new Point(position.getX()-width/2,position.getY());
 		case CENTER:
-			return new Point(position);
+			return position.clone();
 		case EAST:
 			return new Point(position.getX()+width/2,position.getY());
 		case SOUTHWEST:

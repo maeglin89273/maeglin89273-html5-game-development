@@ -59,4 +59,8 @@ public class EventsDeliverer {
 	public void addMouseOutHandler(MouseOutHandler h){
 		registrations.add(canvas.addMouseOutHandler(h));
 	}
+	public void addMouseWheelHandler(MouseWheelHandler h) {
+		registrations.add(canvas.addMouseWheelHandler(h));
+		
+	}
 }

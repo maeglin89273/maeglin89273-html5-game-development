@@ -10,20 +10,20 @@ package com.google.gwt.maeglin89273.game.mengine.physics;
 public class Vector {
 	private double x;
 	private double y;
-	private double magnitude;
+	
 	
 	public Vector(double x,double y){
 		this.x=x;
 		this.y=y;
-		magnitude=Math.sqrt(this.x*this.x+this.y*this.y);
+		
 	}
 	public Vector(Vector v){
 		this(v.getVectorX(), v.getVectorY());
 	}
-	public Vector(double radian,double radius,boolean anticlockwise){
+	public Vector(double radius,double radian,boolean anticlockwise){
 		this(radius*Math.cos(radian),radius*Math.sin((anticlockwise?-1:1)*radian));
 	}
-	public void setInPolarCoordinate(double radian,double r){
+	public void setInPolarCoordinate(double r,double radian){
 		this.setVector(r*Math.cos(radian), r*Math.sin(radian));
 	}
 	/**
@@ -32,7 +32,6 @@ public class Vector {
 	
 	public void setVectorX(double x) {
 		this.x = x;
-		magnitude=Math.sqrt(this.x*this.x+this.y*this.y);
 	}
 	/**
 	 * @return the x
@@ -45,7 +44,6 @@ public class Vector {
 	 */
 	public void setVectorY(double y) {
 		this.y = y;
-		magnitude=Math.sqrt(this.x*this.x+this.y*this.y);
 	}
 	/**
 	 * @return the y
@@ -59,9 +57,9 @@ public class Vector {
 	public void add(double x,double y){
 		this.x+=x;
 		this.y+=y;
-		this.magnitude=Math.sqrt(this.x*this.x+this.y*this.y);
-		
-		
+	}
+	public void addMagnitude(double mag){
+		setMagnitude(getMagnitude()+mag);
 	}
 	public static Vector add(Vector a,Vector b){
 		return new Vector(a.getVectorX()+b.getVectorX(),a.getVectorY()+b.getVectorY());
@@ -69,21 +67,22 @@ public class Vector {
 	public void setVector(Vector v){
 		this.x=v.getVectorX();
 		this.y=v.getVectorY();
-		this.magnitude=v.getMagnitude();
+		
 	}
 	public void setVector(double x,double y){
 		this.x=x;
 		this.y=y;
-		magnitude=Math.sqrt(this.x*this.x+this.y*this.y);
 	}
-	
+	public double getSquare(){
+		return this.x*this.x+this.y*this.y;
+	}
 	public double getMagnitude(){
-		return magnitude;
+		return Math.sqrt(this.x*this.x+this.y*this.y);
 	}
 	public void setMagnitude(double mag){
-		x*=mag/magnitude;
-		y*=mag/magnitude;
-		magnitude=mag;
+		double magLocal=getMagnitude();
+		x*=mag/magLocal;
+		y*=mag/magLocal;
 	}
 	
 	public double dotProduct(Vector v){
@@ -96,7 +95,6 @@ public class Vector {
 	public void mutiply(double m){
 		x*=x;
 		y*=y;
-		magnitude*=m;
 	}
 	public static Vector mutiply(Vector a,double m){
 		return new Vector(a.getVectorX()*m,a.getVectorY()*m);
@@ -108,15 +106,23 @@ public class Vector {
 	public void minus(double x,double y){
 		this.x-=x;
 		this.y-=y;
-		this.magnitude=Math.sqrt(this.x*this.x+this.y*this.y);
+		
+	}
+	public void minusMagnitude(double mag){
+		setMagnitude(getMagnitude()-mag);
 	}
 	public static Vector minus(Vector a,Vector b){
 		return new Vector(a.getVectorX()-b.getVectorX(),a.getVectorY()-b.getVectorY());
 	}
-	public void reverseX(){
+	
+	public void reverseLocal(){
 		x=-x;
-	}
-	public void reverseY(){
 		y=-y;
+	}
+	public Vector reverse(){
+		return new Vector(-x,-y);
+	}
+	public Vector clone(){
+		return new Vector(this);
 	}
 }
