@@ -18,10 +18,10 @@ public class Point {
 	public Point(Point p){
 		this(p.getX(), p.getY());
 	}
-	public Point(double radian,double radius,boolean anticlockwise){
+	public Point(double radius,double radian,boolean anticlockwise){
 		this(radius*Math.cos(radian),radius*Math.sin((anticlockwise?-1:1)*radian));
 	}
-	public void setInPolarCoordinate(double radian,double r){
+	public void setInPolarCoordinate(double r,double radian){
 		this.setPosition(r*Math.cos(radian), r*Math.sin(radian));
 	}
 	/**
@@ -59,8 +59,20 @@ public class Point {
 	public void setPosition(Point p){
 		this.setPosition(p.getX(),p.getY());
 	}
+	public void translate(Vector v){
+		this.translate(v.getVectorX(), v.getVectorY());
+	}
 	public void translate(double dX,double dY){
 		this.x+=dX;
 		this.y+=dY;
+	}
+	public Vector delta(Point p){
+		return new Vector(p.getX()-getX(),p.getY()-getY());
+	}
+	public static Vector delta(Point p1,Point p2){
+		return new Vector(p2.getX()-p1.getX(),p2.getY()-p1.getY());
+	}
+	public Point clone(){
+		return new Point(this);
 	}
 }

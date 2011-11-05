@@ -10,4 +10,5 @@
   <source path="sprite"/>
   <source path="timer"/>
   <source path="utility"/>
+  <source path="layer"/>
 </module>
