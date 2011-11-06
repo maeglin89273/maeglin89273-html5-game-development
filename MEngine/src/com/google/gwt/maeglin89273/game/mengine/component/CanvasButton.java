@@ -13,11 +13,9 @@ import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteSheet;
  *
  */
 public abstract class CanvasButton extends GeneralComponent {
-	protected SpriteSheet buttonImg;
 	protected SpriteBlock spriteBlock;
-	protected CanvasButton(Point p,double w,double h,SpriteSheet img,SpriteBlock block){
+	protected CanvasButton(Point p,double w,double h,SpriteBlock block){
 		super(p, w, h);
-		buttonImg=img;
 		spriteBlock=block;
 		
 	}
@@ -29,7 +27,7 @@ public abstract class CanvasButton extends GeneralComponent {
 	@Override
 	public void draw(Context2d context) {
 		Point nw=getPositionAt(PositionType.NORTHWEST);
-		context.drawImage(buttonImg.getImage(), spriteBlock.getX(), spriteBlock.getY(), spriteBlock.getWidth(), spriteBlock.getHeight(),nw.getX(),nw.getY(), getWidth(), getHeight());
+		context.drawImage(spriteBlock.getSheetImage(), spriteBlock.getX(), spriteBlock.getY(), spriteBlock.getWidth(), spriteBlock.getHeight(),nw.getX(),nw.getY(), getWidth(), getHeight());
 	}
 
 }

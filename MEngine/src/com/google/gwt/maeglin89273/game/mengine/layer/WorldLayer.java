@@ -11,9 +11,9 @@ import com.google.gwt.maeglin89273.game.mengine.layer.Camera.WorldBounds;
  *
  */
 public abstract class WorldLayer implements HasComponentsLayer {
-	private Camera camera;
-	protected WorldLayer(WorldBounds bounds,double cameraWidth,double cameraHeight,float maxScale){
-		this.camera=new Camera(this, bounds, cameraWidth, cameraHeight, maxScale);
+	private final Camera camera;
+	protected WorldLayer(WorldBounds bounds,float maxScale){
+		this.camera=new Camera(this, bounds, maxScale);
 	}
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.mengine.layer.Layer#update()

@@ -69,6 +69,9 @@ public class Point {
 	public Vector delta(Point p){
 		return new Vector(p.getX()-getX(),p.getY()-getY());
 	}
+	public Vector delta(double x,double y){
+		return new Vector(x-getX(),y-getY());
+	}
 	public static Vector delta(Point p1,Point p2){
 		return new Vector(p2.getX()-p1.getX(),p2.getY()-p1.getY());
 	}

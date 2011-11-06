@@ -19,6 +19,7 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
 
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.maeglin89273.game.mengine.layer.Camera;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.utility.CoordinateConverter;
 
@@ -59,13 +60,45 @@ public class MEngine {
 		eventsDeliverer=new EventsDeliverer(canvas);
 		
 		assetManager.loadSpriteSheets(game.getGameSpriteSheets());
-		
-		
+		Camera.setCameraSize(game.getWidth(), game.getHeight());
 		CoordinateConverter.init(game.getWidth(), game.getHeight());
 		
 		setupCanvas();
 		
 		game.init();
+	}
+	private static void setupCanvas(){
+		canvas.setPixelSize(game.getWidth(),game.getHeight());
+		canvas.setCoordinateSpaceWidth(game.getWidth());
+		canvas.setCoordinateSpaceHeight(game.getHeight());
+		canvas.addStyleName("canvas");
+		
+		canvas.addMouseMoveHandler(mousePosition);//do not use eventsDeliverer to add MouseMoveEventHandler,because the deliverer may remove it.
+		canvas.addDomHandler(new ContextMenuHandler(){
+
+			@Override
+			public void onContextMenu(ContextMenuEvent event) {
+				event.preventDefault();
+				event.stopPropagation();
+			}
+		}, ContextMenuEvent.getType());
+		canvas.addMouseWheelHandler(new MouseWheelHandler(){
+
+			@Override
+			public void onMouseWheel(MouseWheelEvent event) {
+				event.preventDefault();
+				event.stopPropagation();
+			}
+		});
+		hideDraggingCursor(canvas.getCanvasElement());
+		
+		VerticalPanel vp=new VerticalPanel();
+		vp.addStyleName("center");
+		vp.add(canvas);
+		RootPanel.get("content").add(vp);
+		Window.scrollTo(canvas.getAbsoluteLeft()+(canvas.getOffsetWidth()-Window.getClientWidth())/2,
+						canvas.getAbsoluteTop()+(canvas.getOffsetHeight()-Window.getClientHeight())/2);
+		
 	}
 	public static void start(){
 		gameExecutor.start();
@@ -118,39 +151,7 @@ public class MEngine {
 	public static Canvas getCanvas(){
 		return canvas;
 	}
-	private static void setupCanvas(){
-		canvas.setPixelSize(game.getWidth(),game.getHeight());
-		canvas.setCoordinateSpaceWidth(game.getWidth());
-		canvas.setCoordinateSpaceHeight(game.getHeight());
-		canvas.addStyleName("canvas");
-		
-		canvas.addMouseMoveHandler(mousePosition);//do not use eventsDeliverer to add MouseMoveEventHandler,because the deliverer may remove it.
-		canvas.addDomHandler(new ContextMenuHandler(){
-
-			@Override
-			public void onContextMenu(ContextMenuEvent event) {
-				event.preventDefault();
-				event.stopPropagation();
-			}
-		}, ContextMenuEvent.getType());
-		canvas.addMouseWheelHandler(new MouseWheelHandler(){
-
-			@Override
-			public void onMouseWheel(MouseWheelEvent event) {
-				event.preventDefault();
-				event.stopPropagation();
-			}
-		});
-		hideDraggingCursor(canvas.getCanvasElement());
-		
-		VerticalPanel vp=new VerticalPanel();
-		vp.addStyleName("center");
-		vp.add(canvas);
-		RootPanel.get("content").add(vp);
-		Window.scrollTo(canvas.getAbsoluteLeft()+(canvas.getOffsetWidth()-Window.getClientWidth())/2,
-						canvas.getAbsoluteTop()+(canvas.getOffsetHeight()-Window.getClientHeight())/2);
-		
-	}
+	
 	private static native void hideDraggingCursor(Element e) /*-{ 
 		e.onselectstart = function() { 
 		return false; 
