@@ -92,10 +92,19 @@ public class Vector {
 		return a.getVectorX()*b.getVectorX()+a.getVectorY()*b.getVectorY();
 		
 	}
-	public void mutiply(double m){
-		x*=x;
-		y*=y;
+	public void divided(double divisor){
+		x/=divisor;
+		y/=divisor;
 	}
+	
+	public static Vector divided(Vector a,double divisor){
+		return new Vector(a.getVectorX()/divisor,a.getVectorY()*divisor);
+	}
+	public void mutiply(double m){
+		x*=m;
+		y*=m;
+	}
+	
 	public static Vector mutiply(Vector a,double m){
 		return new Vector(a.getVectorX()*m,a.getVectorY()*m);
 	}
@@ -115,12 +124,16 @@ public class Vector {
 		return new Vector(a.getVectorX()-b.getVectorX(),a.getVectorY()-b.getVectorY());
 	}
 	
-	public void reverseLocal(){
+	public void reverse(){
 		x=-x;
 		y=-y;
 	}
-	public Vector reverse(){
-		return new Vector(-x,-y);
+	public static Vector reverse(Vector v){
+		return new Vector(-v.getVectorX(),-v.getVectorY());
+	}
+	public void normalized(){
+		x/=getMagnitude();
+		y/=getMagnitude();
 	}
 	public Vector clone(){
 		return new Vector(this);

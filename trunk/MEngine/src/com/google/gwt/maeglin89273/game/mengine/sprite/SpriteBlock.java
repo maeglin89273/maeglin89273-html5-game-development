@@ -1,5 +1,7 @@
 package com.google.gwt.maeglin89273.game.mengine.sprite;
 
+import com.google.gwt.dom.client.ImageElement;
+
 public class SpriteBlock {
 	public static final int SPACITNG=10;
 	
@@ -7,15 +9,17 @@ public class SpriteBlock {
 	private int y;
 	private int width;
 	private int height;
-
-	public SpriteBlock(int x,int y,int width,int height) {
+	
+	private final SpriteSheet sheet;
+	public SpriteBlock(int x,int y,int width,int height,SpriteSheet sheet) {
 		setX(x);
 		setY(y);
 		setHeight(height);
 		setWidth(width);
+		this.sheet=sheet;
 	}
-	public SpriteBlock(int width,int height){
-		this(0, 0, width, height);
+	public SpriteBlock(int width,int height,SpriteSheet sheet){
+		this(0, 0, width, height,sheet);
 	}
 	public int getX() {
 		return x;
@@ -50,5 +54,11 @@ public class SpriteBlock {
 
 	public void setHeight(int height) {
 		this.height = height;
+	}
+	public SpriteSheet getSpriteSheet(){
+		return sheet;
+	}
+	public ImageElement getSheetImage(){
+		return sheet.getImage();
 	}
 }
