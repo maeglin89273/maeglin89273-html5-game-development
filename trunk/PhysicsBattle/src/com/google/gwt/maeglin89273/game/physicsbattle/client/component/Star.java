@@ -34,8 +34,8 @@ public class Star extends GeneralComponent implements Physical {
 	private Body body;
 	private PhysicalWorld world;
 	
-	private SpriteBlock spriteBlock=new SpriteBlock(150,138,500,500);
-	private SpriteSheet spriteSheet;
+	private final SpriteBlock spriteBlock=new SpriteBlock(150,138,500,500,MEngine.getAssetManager().getSpriteSheet("star.png"));
+	
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.Physical#getBody()
 	 */
@@ -44,10 +44,8 @@ public class Star extends GeneralComponent implements Physical {
 		
 		this.world=world;
 		
-		
 		aabb=new PixelAABB(this.position,width,height);
 		
-		this.spriteSheet=MEngine.getAssetManager().getSpriteSheet("star.png");
 		BodyDef bodyDef=new BodyDef();
 		CircleShape shape=new CircleShape();
 		FixtureDef fixtureDef=new FixtureDef();
@@ -116,7 +114,7 @@ public class Star extends GeneralComponent implements Physical {
 		context.save();
 		context.translate(getX(), getY());
 		context.rotate(-rotation);
-		context.drawImage(spriteSheet.getImage(), spriteBlock.getX(), spriteBlock.getY(), spriteBlock.getWidth(), spriteBlock.getHeight(),
+		context.drawImage(spriteBlock.getSheetImage(), spriteBlock.getX(), spriteBlock.getY(), spriteBlock.getWidth(), spriteBlock.getHeight(),
 						-w/2,-h/2,w,h);
 		context.restore();
 	}

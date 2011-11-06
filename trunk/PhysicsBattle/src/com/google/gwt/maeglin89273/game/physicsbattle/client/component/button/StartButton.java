@@ -21,7 +21,7 @@ public class StartButton extends CanvasButton {
 	private Page gameBoardPage;
 	
 	public StartButton(PhysicsBattleGameBoardPage page,Point p){
-		super(p,250,100,MEngine.getAssetManager().getSpriteSheet("buttons.png"),new SpriteBlock(500+SpriteBlock.SPACITNG,0,500,200));
+		super(p,250,100,new SpriteBlock(500+SpriteBlock.SPACITNG,0,500,200,MEngine.getAssetManager().getSpriteSheet("buttons.png")));
 		
 		this.gameBoardPage=page;
 	}
