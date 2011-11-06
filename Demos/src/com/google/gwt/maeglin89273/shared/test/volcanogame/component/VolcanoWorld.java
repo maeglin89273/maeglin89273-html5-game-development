@@ -15,6 +15,7 @@ import com.google.gwt.maeglin89273.game.mengine.component.Physical;
 import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
 import com.google.gwt.maeglin89273.game.mengine.core.AssetManager;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
+import com.google.gwt.maeglin89273.game.mengine.layer.Camera.WorldBounds;
 import com.google.gwt.maeglin89273.game.mengine.physics.PixelAABB;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteSheet;
@@ -108,5 +109,8 @@ public class VolcanoWorld extends GeneralComponent implements Spacial {
 		context.drawImage(clouds.getImage(), 20, 30);
 		context.restore();
 	}
-	
+	@Override
+	public WorldBounds getBounds(){
+		return new WorldBounds(new Point(0,0),getWidth(),getHeight());
+	}
 }
