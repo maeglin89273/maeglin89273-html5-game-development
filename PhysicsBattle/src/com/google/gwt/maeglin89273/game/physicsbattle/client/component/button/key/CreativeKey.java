@@ -9,6 +9,7 @@ import com.google.gwt.maeglin89273.game.mengine.component.CanvasButton;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteBlock;
+import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteSheet;
 
 
 /**
@@ -21,7 +22,7 @@ public abstract class CreativeKey extends CanvasButton {
 	protected boolean pressed;
 	
 	protected CreativeKey(Point p, double w, double h,SpriteBlock block) {
-		super(p, w, h, MEngine.getAssetManager().getSpriteSheet("buttons.png"), block);
+		super(p, w, h, block);
 		
 	}
 	public void setPressed(boolean p){
@@ -55,6 +56,8 @@ public abstract class CreativeKey extends CanvasButton {
 		setPressed(true);
 
 	}
-	
+	protected static SpriteSheet getKeySpriteSheet(){
+		return MEngine.getAssetManager().getSpriteSheet("buttons.png");
+	}
 
 }

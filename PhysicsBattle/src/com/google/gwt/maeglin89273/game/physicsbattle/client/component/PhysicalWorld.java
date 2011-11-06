@@ -25,6 +25,7 @@ import com.google.gwt.maeglin89273.game.physicsbattle.client.utility.event.Gravi
 import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
 import com.google.gwt.maeglin89273.game.mengine.component.Physical;
 import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
+import com.google.gwt.maeglin89273.game.mengine.layer.Camera.WorldBounds;
 import com.google.gwt.maeglin89273.game.mengine.physics.PixelAABB;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.utility.CoordinateConverter;
@@ -33,16 +34,17 @@ import com.google.gwt.user.client.Random;
 
 public class PhysicalWorld extends GeneralComponent implements Spacial,GravityChangedListener {
 	
-	
 	private final World world;
+	private final WorldBounds bounds;
 	private final float step=1/60f;
 	private final List<PhysicalShape> shapes=new ArrayList<PhysicalShape>();
 	private final List<PhysicalLine> lines=new ArrayList<PhysicalLine>();
 	private final List<Dot> dots=new ArrayList<Dot>();
+	
 	public PhysicalWorld(int w,int h,Vec2 gravity){
 		super(new Point(0,0),w,h);
 		world=new World(gravity,true);
-		
+		bounds=new WorldBounds(getPosition(),getWidth(),getHeight());
 	}
 	
 	@Override
@@ -129,6 +131,12 @@ public class PhysicalWorld extends GeneralComponent implements Spacial,GravityCh
 			
 		}
 		world.setGravity(event.getGravity());
+	}
+
+	@Override
+	public WorldBounds getBounds() {
+		
+		return bounds;
 	}
 
 }
