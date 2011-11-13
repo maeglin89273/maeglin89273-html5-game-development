@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <inherits name="com.google.gwt.user.User" />
+  <inherits name='org.jbox2d.GwtBox2D'/>
+  <source path="component"/>
+  <source path="core"/>
+  <source path="game"/>
+  <source path="developmenttools"/>
+  <source path="page"/>
+  <source path="physics"/>
+  <source path="sprite"/>
+  <source path="timer"/>
+  <source path="utility"/>
+  <source path="layer"/>
+</module>
