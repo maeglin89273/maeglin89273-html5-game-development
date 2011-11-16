@@ -14,8 +14,8 @@ import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
  * @author Maeglin Liao
  *
  */
-public abstract class LoadingResourcesPage extends SinglePage implements DataLoadedListener{
-	protected LoadingResourcesPage(GeneralGame game,Page nextPage) {
+public abstract class LoadingDataPage extends SinglePage implements DataLoadedListener{
+	protected LoadingDataPage(GeneralGame game,Page nextPage) {
 		super(game, nextPage);
 		MEngine.getAssetsManager().addDataLoadedListener(this);
 	}
@@ -24,7 +24,7 @@ public abstract class LoadingResourcesPage extends SinglePage implements DataLoa
 		return;
 	}
 	@Override
-	public void initHandlers() {
+	public void regHandlers() {
 		return;
 		
 	}

@@ -30,7 +30,7 @@ public class GameExecutor {
 	private final int gameWidth;
 	private final int gameHeight;
 	
-	private static final CssColor redrawColor=CssColor.make("hsla(0,100%,100%,0.6)");
+	private CssColor redrawColor=CssColor.make("hsla(0,100%,100%,0.6)");
 	
 	private AnimationScheduler animationScheduler=AnimationScheduler.get();
 	private AnimationCallback animationCallback;
@@ -51,6 +51,9 @@ public class GameExecutor {
 		
 		bufferCanvasElement=bufferCanvas.getCanvasElement();
 		bufferContext=bufferCanvas.getContext2d();
+	}
+	void setRedrawAlpha(float alpha){
+		redrawColor=CssColor.make("hsla(0,100%,100%,"+alpha+")");
 	}
 	void start(){
 		animationCallback=new AnimationCallback(){
@@ -84,7 +87,7 @@ public class GameExecutor {
 			}
 			
 		};
-		if(game.getGameInfo().hasLoadingResourcesPage()){
+		if(game.getGameInfo().hasLoadingDataPage()){
 			play();
 		}else{
 			if(MEngine.getAssetsManager().isDataLoaded()){

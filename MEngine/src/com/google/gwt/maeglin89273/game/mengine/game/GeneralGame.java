@@ -39,8 +39,9 @@ public abstract class GeneralGame implements Game {
 	
 	public void setPage(Page page){
 		MEngine.getHandlersManager().clearHandlers();
+		
 		this.page=page;
-		this.page.initHandlers();
+		this.page.regHandlers();
 		this.page.onScreen();
 	}
 	

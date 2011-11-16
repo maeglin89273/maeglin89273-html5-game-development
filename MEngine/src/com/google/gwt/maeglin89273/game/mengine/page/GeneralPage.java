@@ -19,7 +19,7 @@ public abstract class GeneralPage extends Page implements ClickHandler{
 	}
 	
 	@Override
-	public void initHandlers() {
+	public void regHandlers() {
 		MEngine.addClickHandler(this);
 	}
 }

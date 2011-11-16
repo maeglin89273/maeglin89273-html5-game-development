@@ -45,7 +45,7 @@ public class FadingPage extends SinglePage {
 		
 	}
 	@Override
-	public void initHandlers(){
+	public void regHandlers(){
 		return;
 	}
 	

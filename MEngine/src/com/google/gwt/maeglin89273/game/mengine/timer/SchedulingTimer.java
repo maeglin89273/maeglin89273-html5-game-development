@@ -36,7 +36,6 @@ public class SchedulingTimer extends ControlledTimer {
 	 */
 	@Override
 	public void run() {
-		last=Duration.currentTimeMillis();
 		task.doTask();
 		finish();
 	}

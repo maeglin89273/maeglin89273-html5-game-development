@@ -66,6 +66,9 @@ public class MEngine {
 		
 		game.init();
 	}
+	public static void setRedrawAlpha(float alpha){
+		gameExecutor.setRedrawAlpha(alpha);
+	}
 	private static void setupCanvas(){
 		canvas.setPixelSize(gameInfo.getWidth(),gameInfo.getHeight());
 		canvas.setCoordinateSpaceWidth(gameInfo.getWidth());

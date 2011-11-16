@@ -50,7 +50,7 @@ public class GameInfo {
 	/**
 	 * @return the hasLoadingPage
 	 */
-	public boolean hasLoadingResourcesPage() {
+	public boolean hasLoadingDataPage() {
 		return hasLoadingPage;
 	}
 }

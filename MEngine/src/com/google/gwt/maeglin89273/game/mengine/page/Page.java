@@ -9,7 +9,7 @@ public abstract class Page implements HasGameLoop{
 	protected Page(GeneralGame game){
 		this.game=game;
 	}
-	public abstract void initHandlers();
+	public abstract void regHandlers();
 	public abstract void onScreen();
 	public int getGameWidth(){
 		return getGame().getWidth();

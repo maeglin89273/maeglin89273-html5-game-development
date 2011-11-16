@@ -16,7 +16,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
 public class Camera extends GeneralComponent {
 	 
 	private static final float SCALE_FACTOR=1.01f;
-	private static final int MAX_ZOOMING_BUFFER_COUNT=20;
+	private static final int MAX_ZOOMING_BUFFER_COUNT=15;
 	private static final float MOVING_FRICTION=0.2f;
 	private static final float ATTACHED_FRICTION=0.5f;
 	
