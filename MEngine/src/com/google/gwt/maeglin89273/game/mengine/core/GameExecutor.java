@@ -12,6 +12,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.core.client.Duration;
 import com.google.gwt.dom.client.CanvasElement;
+import com.google.gwt.maeglin89273.game.mengine.game.Game;
 import com.google.gwt.maeglin89273.game.mengine.timer.ControlledTimer;
 
 /**
@@ -21,10 +22,15 @@ import com.google.gwt.maeglin89273.game.mengine.timer.ControlledTimer;
 public class GameExecutor {
 	private final Canvas canvas;
 	private final Context2d context;
+	
 	private final CanvasElement bufferCanvasElement;
 	private final Context2d bufferContext;
+	
 	private final Game game;
-	private static final CssColor redrawColor=CssColor.make("hsla(0,100%,100%,0.6)");
+	private final int gameWidth;
+	private final int gameHeight;
+	
+	private CssColor redrawColor=CssColor.make("hsla(0,100%,100%,0.6)");
 	
 	private AnimationScheduler animationScheduler=AnimationScheduler.get();
 	private AnimationCallback animationCallback;
@@ -32,19 +38,24 @@ public class GameExecutor {
 	
 	private boolean pause;
 	private HashSet<ControlledTimer> timers=new HashSet<ControlledTimer>();
-	GameExecutor(Game game,Canvas canvas,Context2d context){
+	GameExecutor(Game game,Canvas canvas){
 		this.game=game;
+		this.gameWidth=game.getGameInfo().getWidth();
+		this.gameHeight=game.getGameInfo().getHeight();
 		this.canvas=canvas;
-		this.context=context;
+		this.context=this.canvas.getContext2d();
 		
 		Canvas bufferCanvas=Canvas.createIfSupported();
-		bufferCanvas.setCoordinateSpaceWidth(game.getWidth());
-		bufferCanvas.setCoordinateSpaceHeight(game.getHeight());
+		bufferCanvas.setCoordinateSpaceWidth(this.gameWidth);
+		bufferCanvas.setCoordinateSpaceHeight(this.gameHeight);
 		
 		bufferCanvasElement=bufferCanvas.getCanvasElement();
 		bufferContext=bufferCanvas.getContext2d();
 	}
-	public void start(){
+	void setRedrawAlpha(float alpha){
+		redrawColor=CssColor.make("hsla(0,100%,100%,"+alpha+")");
+	}
+	void start(){
 		animationCallback=new AnimationCallback(){
 			double now;
 			double last=Duration.currentTimeMillis();
@@ -57,9 +68,9 @@ public class GameExecutor {
 				last=now;
 				
 				bufferContext.setFillStyle(redrawColor);
-				bufferContext.fillRect(0, 0, game.getWidth(),game.getHeight());
+				bufferContext.fillRect(0, 0,GameExecutor.this.gameWidth,GameExecutor.this.gameHeight);
 				
-				synchronized(MEngine.class){
+				synchronized(this){
 					do{
 						game.update();
 						delta-=MAXIMUM_INTERVAL;
@@ -76,15 +87,15 @@ public class GameExecutor {
 			}
 			
 		};
-		if(game.hasLoadingResourcesPage()){
+		if(game.getGameInfo().hasLoadingDataPage()){
 			play();
 		}else{
-			if(MEngine.getAssetManager().isDataLoaded()){
+			if(MEngine.getAssetsManager().isDataLoaded()){
 				play();
 			}else{
-				MEngine.getAssetManager().waitDataLoaded(new AssetManager.Done(){
+				MEngine.getAssetsManager().addDataLoadedListener(new AssetsManager.DataLoadedListener(){
 					@Override
-					public void execute() {
+					public void done() {
 						play();
 					}
 					
@@ -109,8 +120,7 @@ public class GameExecutor {
 		animationScheduler.requestAnimationFrame(animationCallback, canvas.getCanvasElement());
 		pause=false;
 		for(ControlledTimer timer:timers){
-			if(!timer.isLastStateStop())
-				timer.start();
+			timer.start();
 		}
 	}
 }

@@ -1,9 +1,10 @@
 /**
  * 
  */
-package com.google.gwt.maeglin89273.game.mengine.core;
+package com.google.gwt.maeglin89273.game.mengine.game;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.page.*;
 
 
@@ -13,6 +14,11 @@ import com.google.gwt.maeglin89273.game.mengine.page.*;
  */
 public abstract class GeneralGame implements Game {
 	protected Page page;
+	private final GameInfo gameInfo;
+	protected GeneralGame(GameInfo info){
+		this.gameInfo = info;
+		
+	}
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.shared.mengine.utility.Game#update(float)
 	 */
@@ -32,9 +38,24 @@ public abstract class GeneralGame implements Game {
 	}
 	
 	public void setPage(Page page){
-		MEngine.getEventsDeliverer().clearHandlers();
+		MEngine.getHandlersManager().clearHandlers();
+		
 		this.page=page;
-		this.page.initHandlers();
+		this.page.regHandlers();
+		this.page.onScreen();
 	}
-
+	
+	@Override
+	public GameInfo getGameInfo() {
+		return gameInfo;
+	}
+	@Override
+	public int getWidth() {
+		return gameInfo.getWidth();
+	}
+	@Override
+	public int getHeight() {
+		return gameInfo.getHeight();
+	}
+	
 }

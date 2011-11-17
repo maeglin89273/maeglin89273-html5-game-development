@@ -21,19 +21,20 @@ public class RepeatingTimer extends ControlledTimer {
 	 */
 	@Override
 	public void start() {
-		if(delta<=0){
-			isBuffered=false;
-			this.scheduleRepeating(interval);
+		if(stop){
+			if(delta<=0){
+				isBuffered=false;
+				this.scheduleRepeating(interval);
+				
+			}else{
+				isBuffered=true;
+				this.schedule(interval-delta);
+				
+			}
+			this.last=Duration.currentTimeMillis();
 			
-		}else{
-			isBuffered=true;
-			this.schedule(interval-delta);
-			
+			this.stop=false;
 		}
-		this.last=Duration.currentTimeMillis();
-		this.lastState=stop;
-		this.stop=false;
-
 	}
 	/* (non-Javadoc)
 	 * @see com.google.gwt.user.client.Timer#run()

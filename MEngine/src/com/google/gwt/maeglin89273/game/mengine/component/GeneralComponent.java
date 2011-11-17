@@ -1,11 +1,11 @@
 package com.google.gwt.maeglin89273.game.mengine.component;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.maeglin89273.game.mengine.component.CanvasComponent.PositionType;
+import com.google.gwt.maeglin89273.game.mengine.component.GameComponent.PositionType;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
 
-public abstract class GeneralComponent implements CanvasComponent {
+public abstract class GeneralComponent implements GameComponent {
 	
 	protected double width;
 	

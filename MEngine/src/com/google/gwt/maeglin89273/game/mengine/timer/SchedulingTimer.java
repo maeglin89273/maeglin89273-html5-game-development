@@ -20,14 +20,15 @@ public class SchedulingTimer extends ControlledTimer {
 	}
 	@Override
 	public void start() {
-		if(delta<=0){
-			this.schedule(interval);
-		}else{
-			this.schedule(interval-delta);
-		}
-		this.last=Duration.currentTimeMillis();
-		this.lastState=stop;
-		this.stop=false;
+		if(stop){
+			if(delta<=0){
+				this.schedule(interval);
+			}else{
+				this.schedule(interval-delta);
+			}
+			this.last=Duration.currentTimeMillis();
+			this.stop=false;
+		}	
 	}
 
 	/* (non-Javadoc)
@@ -35,7 +36,6 @@ public class SchedulingTimer extends ControlledTimer {
 	 */
 	@Override
 	public void run() {
-		last=Duration.currentTimeMillis();
 		task.doTask();
 		finish();
 	}

@@ -2,6 +2,7 @@ package com.google.gwt.maeglin89273.game.mengine.core;
 
 
 import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
@@ -12,16 +13,11 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
  */
 public class MousePosition implements MouseMoveHandler{
 	private final Point position=new Point(0,0);
-	private final Canvas canvas;
+	private final CanvasElement element;
 	MousePosition(Canvas canvas){
-		this.canvas=canvas;
+		this.element=canvas.getCanvasElement();
 	}
-	public  void setMouseX(int x){
-		position.setX(x);
-	}
-	public void setMouseY(int y){
-		position.setY(y);
-	}
+	
 	public Point getPosition(){
 		return position.clone();
 	}
@@ -33,7 +29,7 @@ public class MousePosition implements MouseMoveHandler{
 	}
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
-		position.setX(event.getRelativeX(canvas.getCanvasElement()));
-		position.setY(event.getRelativeY(canvas.getCanvasElement()));
+		position.setX(event.getRelativeX(element));
+		position.setY(event.getRelativeY(element));
 	}
 }

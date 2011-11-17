@@ -4,6 +4,7 @@
 package com.google.gwt.maeglin89273.game.mengine.layer;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.maeglin89273.game.mengine.component.Component;
 import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
@@ -15,9 +16,9 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
 public class Camera extends GeneralComponent {
 	 
 	private static final float SCALE_FACTOR=1.01f;
-	private static final int MAX_ZOOMING_BUFFER_COUNT=20;
-	private static final float MOVING_FRICTION=0.25f;
-	private static final float ATTACHED_FRICTION=0.45f;
+	private static final int MAX_ZOOMING_BUFFER_COUNT=15;
+	private static final float MOVING_VELOCITY_FACTOR=0.9f;
+	private static final float ATTACHED_VELOCITY_FACTOR=0.25f;
 	
 	//zooming fields
 	private double scale=1;
@@ -27,14 +28,12 @@ public class Camera extends GeneralComponent {
 	
 	//moving fields
 	private final Vector moveDelta=new Vector(0,0);
-	private Vector friction;
 	private boolean stop=true;
 	
-	private final Vector translate=new Vector(0,0);
-	private final Point offset =new Point(0,0); 
+	private final Vector translate=new Vector(0,0);//really change
+	private final Point originPos=new Point(0,0);//really change
+	private final Point scaledBoundsCorner =new Point(0,0); //original unit
 	
-	
-	private final WorldLayer layer;
 	private final WorldBounds bounds;
 	
 	private static int cameraWidth;
@@ -44,18 +43,25 @@ public class Camera extends GeneralComponent {
 	 * @param cameraWidth
 	 * @param cameraHeight
 	 */
-	public Camera(WorldLayer layer,WorldBounds bounds,Point p,float maxScale) {
+	Camera(WorldBounds bounds,Point p,float maxScale) {
 		super(p, cameraWidth, cameraHeight);
 		
 		this.minScale=(float)Math.max(cameraWidth/bounds.getWidth(), cameraHeight/bounds.getHeight());
 		this.maxScale=Math.abs(maxScale);
 		
-		this.layer=layer;
 		this.bounds=bounds;
-		calculateOffset();
+		updateScaledProperties();
+		constrainBounds(null);
 	}
-	public Camera(WorldLayer layer,WorldBounds bounds,float maxScale) {
-		this(layer,bounds,new Point(cameraWidth/2,cameraHeight/2),maxScale);
+	Camera(Component c,float maxScale){
+		this(c, c.getPosition(), maxScale);
+	}
+	Camera(Component c,Point p,float maxScale) {
+		this(new WorldBounds(new Point(c.getLeftX(),c.getTopY()),c.getWidth(),c.getHeight()), p, maxScale);
+		
+	}
+	Camera(WorldBounds bounds,float maxScale) {
+		this(bounds,new Point(bounds.getWidth()/2+ bounds.getX(),bounds.getHeight()+bounds.getY()),maxScale);
 	}
 	public static void setCameraWidth(int w){
 		cameraWidth=w;
@@ -79,7 +85,7 @@ public class Camera extends GeneralComponent {
 			zoomIn=true;
 		}else{
 			scale=maxScale;
-			calculateOffset();
+			updateScaledProperties();
 			zoomIn=false;
 		}
 	}
@@ -89,14 +95,14 @@ public class Camera extends GeneralComponent {
 			zoomOut=true;
 		}else{
 			scale=minScale;
-			calculateOffset();
+			updateScaledProperties();
 			zoomOut=false;
 		}
 	}
 	public Point ConvertToWorldPosition(Point p){
 		Point clone=p.clone();
 		clone.translate(getLeftX(), getTopY());
-		Vector delta=offset.delta(clone);
+		Vector delta=scaledBoundsCorner.delta(clone);
 		delta.divided(scale);
 		clone.setPosition(bounds.getX()+delta.getVectorX(), bounds.getY()+delta.getVectorY());
 		return clone;
@@ -105,11 +111,10 @@ public class Camera extends GeneralComponent {
 	public void move(Vector delta,boolean stably){
 		
 		position.translate(delta);
-		friction=constrainBounds(delta);
+		constrainBounds(delta);
 		
-		if((!stably)&&(friction.getSquare()!=0)&&(delta.getSquare()-friction.getSquare()>=0)){
+		if((!stably)&&(delta.getSquare()>0.0001f)){
 			moveDelta.setVector(delta);
-			moveDelta.add(friction);
 			stop=false;
 		}else{
 			moveDelta.setVector(0, 0);
@@ -117,84 +122,82 @@ public class Camera extends GeneralComponent {
 		}
 	}
 	
-	private Vector constrainBounds(Vector velocity){
+	private void constrainBounds(Vector velocity){
 		boolean attachX=false;
 		boolean attachY=false;
-		if(getLeftX()<offset.getX()){
-			position.setX(getWidth()-bounds.getWidth()*scale/2);
+		if(getLeftX()<scaledBoundsCorner.getX()){
+			position.setX(scaledBoundsCorner.getX()+getWidth()/2);
 			attachX=true;
-		}else if(getRightX()>offset.getX()+bounds.getWidth()*scale){
-			position.setX(bounds.getWidth()*scale/2);
+		}else if(getRightX()>scaledBoundsCorner.getX()+bounds.getWidth()*scale){
+			position.setX(scaledBoundsCorner.getX()+bounds.getWidth()*scale-getWidth()/2);
 			attachX=true;
 		}
 		
-		if(getTopY()<offset.getY()){
-			position.setY(getHeight()-bounds.getHeight()*scale/2);
+		if(getTopY()<scaledBoundsCorner.getY()){
+			position.setY(scaledBoundsCorner.getY()+getHeight()/2);
 			attachY=true;
-		}else if(getBottomY()>offset.getY()+bounds.getHeight()*scale){
-			position.setY(bounds.getHeight()*scale/2);
+		}else if(getBottomY()>scaledBoundsCorner.getY()+bounds.getHeight()*scale){
+			position.setY(scaledBoundsCorner.getY()+bounds.getHeight()*scale-getHeight()/2);
 			attachY=true;
 		}
-		if(velocity==null){
-			return null;
-		}else{
-			Vector clone=velocity.clone();
+		
+		if(velocity!=null){
 			if(attachX||attachY){
-				clone.setMagnitude(ATTACHED_FRICTION);
-				if(attachX)clone.setVectorX(0);
-				if(attachY)clone.setVectorY(0);
+				velocity.mutiply(ATTACHED_VELOCITY_FACTOR);
+				if(attachX)velocity.reverse();
+				if(attachY)velocity.reverse();
 			}else{
-				clone.setMagnitude(MOVING_FRICTION);
+				velocity.mutiply(MOVING_VELOCITY_FACTOR);
 			}
-			clone.reverse();
-			return clone;
 		}
 	}
 	
-	private void calculateOffset(){
-		this.offset.setX((getWidth()-bounds.getWidth()*scale)/2);
-		this.offset.setY((getHeight()-bounds.getHeight()*scale)/2);
+	private void updateScaledProperties(){
+		this.scaledBoundsCorner.setX(bounds.getCenter().getX()-bounds.getWidth()*scale/2);
+		this.scaledBoundsCorner.setY(bounds.getCenter().getY()-bounds.getHeight()*scale/2);
+		this.originPos.setPosition((1-scale)*bounds.getCenter().getX(), (1-scale)*bounds.getCenter().getY());
 	}
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent#update()
 	 */
 	@Override
 	public void update() {
-		if(zoomIn||zoomOut){
-			if(zoomIn){
-				if(scale*SCALE_FACTOR<=maxScale){
-					scale*=SCALE_FACTOR;
-					if(zoomingBufferCount>0){
-						zoomingBufferCount--;
-					}else{
-						zoomIn=false;
-					}
+		
+		if(zoomIn){
+			if(scale*SCALE_FACTOR<=maxScale){
+				scale*=SCALE_FACTOR;
+				if(zoomingBufferCount>0){
+					zoomingBufferCount--;
 				}else{
-					scale=maxScale;
 					zoomIn=false;
 				}
+			}else{
+				scale=maxScale;
+				zoomIn=false;
 			}
-			if(zoomOut){
-				if(scale/SCALE_FACTOR>=minScale){
+			updateScaledProperties();
+		}
+		if(zoomOut){
+			if(scale/SCALE_FACTOR>=minScale){
 					scale/=SCALE_FACTOR;
-					constrainBounds(null);
-					if(zoomingBufferCount>0){
-						zoomingBufferCount--;
-					}else{
-						zoomOut=false;
-					}
+				if(zoomingBufferCount>0){
+					zoomingBufferCount--;
 				}else{
-					scale=minScale;
 					zoomOut=false;
 				}
+			}else{
+				scale=minScale;
+				zoomOut=false;
 			}
-			calculateOffset();
+			updateScaledProperties();
+			constrainBounds(null);
 		}
+			
+		
 		if(!stop){
 			move(moveDelta,false);
 		}
-		translate.setVector(offset.delta(getLeftX(), getTopY()));
-		layer.updateComponents();
+		translate.setVector(this.originPos.delta2(getLeftX(), getTopY()));
 	}
 
 	/* (non-Javadoc)
@@ -202,30 +205,34 @@ public class Camera extends GeneralComponent {
 	 */
 	@Override
 	public void draw(Context2d context) {
-		context.save();
+		this.setContext2d(context);
+	}
+	public void setContext2d(Context2d context){
 		context.translate(translate.getVectorX(),translate.getVectorY());
 		context.scale(scale, scale);
-		layer.drawComponents(context);
-		context.restore();
-
 	}
 	public static class WorldBounds{
-		private final Point location;
+		private final Point corner;
+		private final Point center;
 		private final double width;
 		private final double height;
-		public WorldBounds(Point location,double w,double h){
-			this.location=location;
+		public WorldBounds(Point corner,double w,double h){
+			this.corner=corner;
+			this.center=new Point(corner.getX()+w/2,corner.getY()+h/2);
 			this.width=w;
 			this.height=h;
 		}
 		public double getX(){
-			return location.getX();
+			return corner.getX();
 		}
 		public double getY(){
-			return location.getY();
+			return corner.getY();
 		}
-		public Point getLocation(){
-			return location;
+		public Point getCorner(){
+			return corner;
+		}
+		public Point getCenter(){
+			return center;
 		}
 		public double getWidth(){
 			return width;

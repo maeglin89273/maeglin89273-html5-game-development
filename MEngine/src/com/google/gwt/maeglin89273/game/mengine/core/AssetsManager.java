@@ -10,18 +10,18 @@ import com.google.gwt.user.client.ui.Image;
 
 
 
-public class AssetManager {
+public class AssetsManager {
 	
 	private List<SpriteSheet> spriteSheets=new ArrayList<SpriteSheet>();
-	
 	
 	private boolean loaded=true;
 	private int loadedSuccessfullyCount=0;
 	private int loadedUnsuccessfullyCount=0;
-	private Done done=null;
+	private List<DataLoadedListener> dataLoadedListeners=new ArrayList<DataLoadedListener>();
 	
 	private String prefix;
-	AssetManager(String prefix){
+	
+	AssetsManager(String prefix){
 		this.prefix=prefix;
 	}
 	public String getAssetsPrefix(){
@@ -33,8 +33,11 @@ public class AssetManager {
 	private void checkDoesLoadDone(){
 		if(loadedSuccessfullyCount==spriteSheets.size()){//spriteSheets.length+other assets 
 			loaded=true;
-			if(done!=null)
-				done.execute();
+			for(int i=dataLoadedListeners.size()-1;i>=0;i--){
+				dataLoadedListeners.get(i).done();
+				dataLoadedListeners.remove(i);
+			}
+			dataLoadedListeners=null;
 		}
 	}
 	public int getErrorCount(){
@@ -43,8 +46,8 @@ public class AssetManager {
 	public boolean isDataLoaded(){
 		return loaded;
 	}
-	void waitDataLoaded(Done d){
-		done=d;
+	public void addDataLoadedListener(DataLoadedListener d){
+		dataLoadedListeners.add(d);
 	}
 	
 	
@@ -68,15 +71,16 @@ public class AssetManager {
 		this.loadedUnsuccessfullyCount++;
 	}
 	public SpriteSheet getSpriteSheet(String path){
-		path=prefix+path;
+		String fullPath=prefix+path;
 		for(SpriteSheet sheet:spriteSheets){
-			if(sheet.getPath().equals(path))
+			if(sheet.getPath().equals(fullPath))
 				return sheet;
 		}
-		throw new IllegalArgumentException("The sprite sheet is not founded.");
+		throw new IllegalArgumentException("The sprite sheet \""+path+"\" is not found." +
+				"Please assured that it's under the\""+prefix+"\" directory.");
 	}
-	interface Done{
-		public void execute();
+	public interface DataLoadedListener{
+		public void done();
 	}
 	
 }
