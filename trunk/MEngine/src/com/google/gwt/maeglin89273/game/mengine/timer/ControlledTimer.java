@@ -16,7 +16,7 @@ public abstract class ControlledTimer extends Timer {
 	protected int delta=0;
 	protected double last;
 	protected boolean stop=true;
-	protected boolean lastState=true;
+	
 	protected TimerTask task;
 	
 	protected ControlledTimer(int interval,TimerTask task){
@@ -26,16 +26,12 @@ public abstract class ControlledTimer extends Timer {
 	}
 	public abstract void start();
 	public void stop(){
-		lastState=stop;
 		if(!stop){
 			delta=(int)Math.ceil(Duration.currentTimeMillis()-last);
 			this.cancel();
 			stop=true;
 		}
 		
-	}
-	public boolean isLastStateStop(){
-		return lastState;
 	}
 	
 	public boolean isStop(){

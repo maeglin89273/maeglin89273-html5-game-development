@@ -8,7 +8,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point3D;
 /**
  * @author  Maeglin Liao
  */
-public interface Is3Dimension extends CanvasComponent {
+public interface Is3Dimension extends GameComponent {
 	
 	public abstract double getZ();
 

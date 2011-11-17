@@ -19,9 +19,11 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
 
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.maeglin89273.game.mengine.game.Game;
+import com.google.gwt.maeglin89273.game.mengine.game.GameInfo;
 import com.google.gwt.maeglin89273.game.mengine.layer.Camera;
+import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.maeglin89273.game.mengine.utility.CoordinateConverter;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
@@ -36,44 +38,44 @@ public class MEngine {
 	
 	private static Canvas canvas;
 	
-	private static Context2d context;
-	
-	private static Game game;
+	private static GameInfo gameInfo;
 	
 	private static GameExecutor gameExecutor;
-	private static AssetManager assetManager;
+	private static AssetsManager assetsManager;
 	private static MousePosition mousePosition;
-	private static EventsDeliverer eventsDeliverer;
-	public static void init(Game g,String assetsPrefix){
+	private static HandlersManager handlersManager;
+	public static void init(Game game,String assetsPrefix){
 		if(!Canvas.isSupported()){
 			RootPanel.get().add(new Label("Sorry,your browser doesn't support HTML5.Go get Chrome!"));
 			return;
 		}
 		canvas=Canvas.createIfSupported();
 		
-		context=canvas.getContext2d();
-		game=g;
+		gameInfo=game.getGameInfo();
 		
-		gameExecutor=new GameExecutor(game,canvas,context);
-		assetManager=new AssetManager(assetsPrefix);
+		gameExecutor=new GameExecutor(game,canvas);
+		assetsManager=new AssetsManager(assetsPrefix);
 		mousePosition=new MousePosition(canvas);
-		eventsDeliverer=new EventsDeliverer(canvas);
+		handlersManager=new HandlersManager(canvas);
 		
-		assetManager.loadSpriteSheets(game.getGameSpriteSheets());
-		Camera.setCameraSize(game.getWidth(), game.getHeight());
-		CoordinateConverter.init(game.getWidth(), game.getHeight());
+		assetsManager.loadSpriteSheets(gameInfo.getSpriteSheets());
+		Camera.setCameraSize(gameInfo.getWidth(), gameInfo.getHeight());
+		CoordinateConverter.init(gameInfo.getWidth(), gameInfo.getHeight());
 		
 		setupCanvas();
 		
 		game.init();
 	}
+	public static void setRedrawAlpha(float alpha){
+		gameExecutor.setRedrawAlpha(alpha);
+	}
 	private static void setupCanvas(){
-		canvas.setPixelSize(game.getWidth(),game.getHeight());
-		canvas.setCoordinateSpaceWidth(game.getWidth());
-		canvas.setCoordinateSpaceHeight(game.getHeight());
+		canvas.setPixelSize(gameInfo.getWidth(),gameInfo.getHeight());
+		canvas.setCoordinateSpaceWidth(gameInfo.getWidth());
+		canvas.setCoordinateSpaceHeight(gameInfo.getHeight());
 		canvas.addStyleName("canvas");
 		
-		canvas.addMouseMoveHandler(mousePosition);//do not use eventsDeliverer to add MouseMoveEventHandler,because the deliverer may remove it.
+		canvas.addMouseMoveHandler(mousePosition);//do not use handlersManager to add MouseMoveEventHandler,because the deliverer may remove it.
 		canvas.addDomHandler(new ContextMenuHandler(){
 
 			@Override
@@ -109,44 +111,44 @@ public class MEngine {
 	public static void play(){
 		gameExecutor.play();
 	}
-	public static AssetManager getAssetManager(){
-		return assetManager;
+	public static AssetsManager getAssetsManager(){
+		return assetsManager;
 	}
 	public static GameExecutor getGameExecutor(){
 		return gameExecutor;
 	}
-	public static EventsDeliverer getEventsDeliverer(){
-		return eventsDeliverer;
+	public static HandlersManager getHandlersManager(){
+		return handlersManager;
 	}
 	public static Point getMousePosition(){
 		return mousePosition.getPosition();
 	}
 	public static void addKeyDownHandler(KeyDownHandler h){
-		eventsDeliverer.addKeyDownHandler(h);
+		handlersManager.addKeyDownHandler(h);
 	}
 	public static void addKeyUpHandler(KeyUpHandler h){
-		eventsDeliverer.addKeyUpHandler(h);
+		handlersManager.addKeyUpHandler(h);
 	}
 	public static void addMouseMoveHandler(MouseMoveHandler h){
-		eventsDeliverer.addMouseMoveHandler(h);
+		handlersManager.addMouseMoveHandler(h);
 	}
 	public static void addMouseDownHandler(MouseDownHandler h){
-		eventsDeliverer.addMouseDownHandler(h);
+		handlersManager.addMouseDownHandler(h);
 	}
 	public static void addMouseUpHandler(MouseUpHandler h){
-		eventsDeliverer.addMouseUpHandler(h);
+		handlersManager.addMouseUpHandler(h);
 	}
 	public static void addMouseWheelHandler(MouseWheelHandler h){
-		eventsDeliverer.addMouseWheelHandler(h);
+		handlersManager.addMouseWheelHandler(h);
 	}
 	public static void addKeyPressHandler(KeyPressHandler h){
 		canvas.addKeyPressHandler(h);
 	}
 	public static void addClickHandler(ClickHandler h){
-		eventsDeliverer.addClickHandler(h);
+		handlersManager.addClickHandler(h);
 	}
 	public static void addMouseOutHandler(MouseOutHandler h){
-		eventsDeliverer.addMouseOutHandler(h);
+		handlersManager.addMouseOutHandler(h);
 	}
 	public static Canvas getCanvas(){
 		return canvas;

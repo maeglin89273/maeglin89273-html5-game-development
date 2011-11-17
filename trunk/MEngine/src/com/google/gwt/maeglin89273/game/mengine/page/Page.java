@@ -1,16 +1,16 @@
 package com.google.gwt.maeglin89273.game.mengine.page;
 
-import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.maeglin89273.game.mengine.core.Game;
-import com.google.gwt.maeglin89273.game.mengine.core.GeneralGame;
+import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
+import com.google.gwt.maeglin89273.game.mengine.game.HasGameLoop;
 
-public abstract class Page {
+public abstract class Page implements HasGameLoop{
 	protected GeneralGame game;
 	
 	protected Page(GeneralGame game){
 		this.game=game;
 	}
-	public abstract void initHandlers();
+	public abstract void regHandlers();
+	public abstract void onScreen();
 	public int getGameWidth(){
 		return getGame().getWidth();
 		
@@ -25,7 +25,5 @@ public abstract class Page {
 		return game;
 	}
 
-	public abstract void update();
-
-	public abstract void draw(Context2d context);
+	
 }

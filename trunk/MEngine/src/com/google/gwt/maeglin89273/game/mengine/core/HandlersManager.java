@@ -22,10 +22,10 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @author Maeglin Liao
  *
  */
-public class EventsDeliverer {
+public class HandlersManager {
 	private final Canvas canvas;
 	private final List<HandlerRegistration> registrations=new ArrayList<HandlerRegistration>();
-	EventsDeliverer(Canvas canvas){
+	HandlersManager(Canvas canvas){
 		this.canvas=canvas;
 	}
 	public void clearHandlers(){

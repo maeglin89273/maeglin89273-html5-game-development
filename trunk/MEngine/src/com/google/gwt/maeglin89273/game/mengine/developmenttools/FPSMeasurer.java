@@ -1,4 +1,4 @@
-package com.google.gwt.maeglin89273.game.mengine.utility;
+package com.google.gwt.maeglin89273.game.mengine.developmenttools;
 
 import com.google.gwt.core.client.Duration;
 

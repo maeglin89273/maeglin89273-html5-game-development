@@ -9,14 +9,14 @@ import com.google.gwt.maeglin89273.game.mengine.component.Component;
  * @author Liao
  *
  */
-public class PixelAABB{
+public class PixelAABB implements Component{
 	private final Point position=new Point(0,0);
 	private double width;
 	private double height;
-	public PixelAABB(Point p,double width,double height){
-		this.position.setPosition(p);
-		this.width=width;
-		this.height=height;
+	public PixelAABB(Point lowerVertex,Point upperVertex){
+		this.position.setPosition(new Point((lowerVertex.getX()+upperVertex.getX())/2,(lowerVertex.getY()+upperVertex.getY())/2));
+		this.width=upperVertex.getX()-lowerVertex.getX();
+		this.height=lowerVertex.getY()-upperVertex.getY();
 	}
 	
 	public double getTopY() {
@@ -70,5 +70,16 @@ public class PixelAABB{
 	public void setHeight(double height) {
 		this.height=height;
 	}
-
+	public Point getLowerVertex(){
+		return new Point(getLeftX(),getBottomY());
+	}
+	public Point getUpperVertex(){
+		return new Point(getRightX(),getTopY());
+	}
+	public void set(Point lowerVertex,Point upperVertex){
+		this.position.setPosition(new Point((lowerVertex.getX()+upperVertex.getX())/2,(lowerVertex.getY()+upperVertex.getY())/2));
+		this.width=upperVertex.getX()-lowerVertex.getX();
+		this.height=lowerVertex.getY()-upperVertex.getY();
+	}
+	
 }

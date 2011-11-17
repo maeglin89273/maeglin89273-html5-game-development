@@ -5,7 +5,7 @@ import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
-import com.google.gwt.maeglin89273.game.mengine.core.AssetManager;
+import com.google.gwt.maeglin89273.game.mengine.core.AssetsManager;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -20,7 +20,7 @@ public class SpriteSheet implements LoadHandler,ErrorHandler{
 	
 	
 	public SpriteSheet(String path){
-		this.path=MEngine.getAssetManager().getAssetsPrefix()+path;
+		this.path=MEngine.getAssetsManager().getAssetsPrefix()+path;
 	}
 	public ImageElement getImage(){
 		if(!imageLoaded)
@@ -54,15 +54,16 @@ public class SpriteSheet implements LoadHandler,ErrorHandler{
 	}
 	@Override
 	public void onError(ErrorEvent event) {
-		MEngine.getAssetManager().spriteSheetLoadFailed();
+		MEngine.getAssetsManager().spriteSheetLoadFailed();
 		
 	}
 	@Override
 	public void onLoad(LoadEvent event) {
 		imageE=(ImageElement)img.getElement().cast();
 		RootPanel.get().remove(img);
-		MEngine.getAssetManager().spriteSheetOnLoad();
 		imageLoaded=true;
+		MEngine.getAssetsManager().spriteSheetOnLoad();
+		
 	}
 	@Override
 	public boolean equals(Object o){
