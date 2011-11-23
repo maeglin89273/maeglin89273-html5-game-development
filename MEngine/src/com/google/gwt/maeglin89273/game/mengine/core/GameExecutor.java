@@ -93,7 +93,7 @@ public class GameExecutor {
 			if(MEngine.getAssetsManager().isDataLoaded()){
 				play();
 			}else{
-				MEngine.getAssetsManager().addDataLoadedListener(new AssetsManager.DataLoadedListener(){
+				MEngine.getAssetsManager().addDataLoadedListener(new AssetManager.DataLoadedListener(){
 					@Override
 					public void done() {
 						play();

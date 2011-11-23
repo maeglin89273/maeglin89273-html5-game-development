@@ -4,7 +4,7 @@
 package com.google.gwt.maeglin89273.game.mengine.page;
 
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.maeglin89273.game.mengine.core.AssetsManager.DataLoadedListener;
+import com.google.gwt.maeglin89273.game.mengine.core.AssetManager.DataLoadedListener;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
 

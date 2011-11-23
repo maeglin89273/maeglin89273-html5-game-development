@@ -5,7 +5,7 @@ import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
-import com.google.gwt.maeglin89273.game.mengine.core.AssetsManager;
+import com.google.gwt.maeglin89273.game.mengine.core.AssetManager;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;

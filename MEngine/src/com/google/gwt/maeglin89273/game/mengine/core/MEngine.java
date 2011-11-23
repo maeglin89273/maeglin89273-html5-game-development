@@ -41,7 +41,7 @@ public class MEngine {
 	private static GameInfo gameInfo;
 	
 	private static GameExecutor gameExecutor;
-	private static AssetsManager assetsManager;
+	private static AssetManager assetManager;
 	private static MousePosition mousePosition;
 	private static HandlersManager handlersManager;
 	public static void init(Game game,String assetsPrefix){
@@ -54,11 +54,11 @@ public class MEngine {
 		gameInfo=game.getGameInfo();
 		
 		gameExecutor=new GameExecutor(game,canvas);
-		assetsManager=new AssetsManager(assetsPrefix);
+		assetManager=new AssetManager(assetsPrefix);
 		mousePosition=new MousePosition(canvas);
 		handlersManager=new HandlersManager(canvas);
 		
-		assetsManager.loadSpriteSheets(gameInfo.getSpriteSheets());
+		assetManager.loadSpriteSheets(gameInfo.getSpriteSheets());
 		Camera.setCameraSize(gameInfo.getWidth(), gameInfo.getHeight());
 		CoordinateConverter.init(gameInfo.getWidth(), gameInfo.getHeight());
 		
@@ -111,8 +111,8 @@ public class MEngine {
 	public static void play(){
 		gameExecutor.play();
 	}
-	public static AssetsManager getAssetsManager(){
-		return assetsManager;
+	public static AssetManager getAssetsManager(){
+		return assetManager;
 	}
 	public static GameExecutor getGameExecutor(){
 		return gameExecutor;

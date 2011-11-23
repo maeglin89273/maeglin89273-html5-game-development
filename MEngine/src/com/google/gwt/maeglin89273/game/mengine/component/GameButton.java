@@ -12,10 +12,10 @@ import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteSheet;
  * @author Maeglin Liao
  *
  */
-public abstract class CanvasButton extends GeneralComponent {
+public abstract class GameButton extends GeneralComponent {
 	protected SpriteBlock spriteBlock;
-	protected CanvasButton(Point p,double w,double h,SpriteBlock block){
-		super(p, w, h);
+	protected GameButton(Point p,double w,double h,SpriteBlock block){
+		super(p, 0, w, h);
 		spriteBlock=block;
 		
 	}
