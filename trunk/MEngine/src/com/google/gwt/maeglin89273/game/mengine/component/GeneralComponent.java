@@ -11,9 +11,12 @@ public abstract class GeneralComponent implements GameComponent {
 	
 	protected double height;
 	
+	protected double angle;
+	
 	protected final Point position=new Point(0,0);
-	protected GeneralComponent(Point p,double w,double h){
+	protected GeneralComponent(Point p,double angle,double w,double h){
 		this.position.setPosition(p);
+		this.angle=angle;
 		this.setWidth(w);
 		this.setHeight(h);
 		
@@ -149,7 +152,14 @@ public abstract class GeneralComponent implements GameComponent {
 		this.width=w;
 		this.height=h;
 	}
-	
+	@Override
+	public double getAngle(){
+		return angle;
+	}
+	@Override
+	public void setAngle(double angle){
+		this.angle=angle;
+	}
 	@Override
 	public abstract void update();
 	@Override

@@ -27,6 +27,9 @@ public class CoordinateConverter {
 	public static Vec2 vectorPixelToWorld(Vector v){
 		return new Vec2(scalerPixelsToWorld(v.getVectorX()),scalerPixelsToWorld(-v.getVectorY()));
 	}
+	public static Vector vectorWorldToPixel(Vec2 v){
+		return new Vector(scalerWorldToPixels(v.x),scalerWorldToPixels(-v.y));
+	}
 	public static Point coordWorldToPixels(Vec2 v){
 		return new Point(scalerWorldToPixels(v.x)+(width/2f),height/2f-scalerWorldToPixels(v.y));
 	}

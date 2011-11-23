@@ -81,5 +81,16 @@ public class PixelAABB implements Component{
 		this.width=upperVertex.getX()-lowerVertex.getX();
 		this.height=lowerVertex.getY()-upperVertex.getY();
 	}
+
+	@Override
+	public double getAngle() {
+		
+		return 0;
+	}
+
+	@Override
+	public void setAngle(double angle) {
+		return;
+	}
 	
 }

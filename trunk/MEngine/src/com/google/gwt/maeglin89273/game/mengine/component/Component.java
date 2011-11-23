@@ -15,12 +15,16 @@ public interface Component {
 	public abstract double getWidth();
 	
 	public abstract void setWidth(double width);
-
-	public abstract Point getPosition();
-	
-	public abstract void setPosition(Point p);
 	
 	public abstract double getHeight();
 	
 	public abstract void setHeight(double height);
+	
+	public abstract Point getPosition();
+	
+	public abstract void setPosition(Point p);
+	
+	public abstract double getAngle();
+	
+	public abstract void setAngle(double angle);
 }

@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.Image;
 
 
 
-public class AssetsManager {
+public class AssetManager {
 	
 	private List<SpriteSheet> spriteSheets=new ArrayList<SpriteSheet>();
 	
@@ -21,7 +21,7 @@ public class AssetsManager {
 	
 	private String prefix;
 	
-	AssetsManager(String prefix){
+	AssetManager(String prefix){
 		this.prefix=prefix;
 	}
 	public String getAssetsPrefix(){

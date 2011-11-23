@@ -44,7 +44,7 @@ public class Camera extends GeneralComponent {
 	 * @param cameraHeight
 	 */
 	Camera(WorldBounds bounds,Point p,float maxScale) {
-		super(p, cameraWidth, cameraHeight);
+		super(p, 0, cameraWidth, cameraHeight);
 		
 		this.minScale=(float)Math.max(cameraWidth/bounds.getWidth(), cameraHeight/bounds.getHeight());
 		this.maxScale=Math.abs(maxScale);
