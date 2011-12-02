@@ -21,6 +21,9 @@ public abstract class GeneralComponent implements GameComponent {
 		this.setHeight(h);
 		
 	}
+	protected GeneralComponent(Point p,double w,double h){
+		this(p, 0, w, h);
+	}
 	@Override
 	public double getX(){
 		return position.getX();

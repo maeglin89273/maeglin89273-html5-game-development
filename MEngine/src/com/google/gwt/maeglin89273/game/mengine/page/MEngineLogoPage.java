@@ -20,7 +20,7 @@ public class MEngineLogoPage extends FadingPage {
 	
 	public MEngineLogoPage(GeneralGame game, Page nextPage) {
 		
-			super(game,MEngine.getAssetsManager().getSpriteSheet("MEngine_logo.png"),
+			super(game,MEngine.getAssetManager().getSpriteSheet("MEngine_logo.png"),
 					Math.min(game.getWidth(), game.getHeight()),
 					Math.min(game.getWidth(), game.getHeight()),
 					nextPage);

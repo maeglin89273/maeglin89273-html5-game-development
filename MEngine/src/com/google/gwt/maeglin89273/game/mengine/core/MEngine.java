@@ -111,7 +111,7 @@ public class MEngine {
 	public static void play(){
 		gameExecutor.play();
 	}
-	public static AssetManager getAssetsManager(){
+	public static AssetManager getAssetManager(){
 		return assetManager;
 	}
 	public static GameExecutor getGameExecutor(){

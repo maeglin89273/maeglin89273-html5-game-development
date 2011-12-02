@@ -77,7 +77,8 @@ public class AssetManager {
 				return sheet;
 		}
 		throw new IllegalArgumentException("The sprite sheet \""+path+"\" is not found." +
-				"Please assured that it's under the\""+prefix+"\" directory.");
+				"Please assured that it's under the\""+prefix+"\" directory.Otherwise," +
+						"your GameInfo object didn't refer to this sprite sheet file.");
 	}
 	public interface DataLoadedListener{
 		public void done();
