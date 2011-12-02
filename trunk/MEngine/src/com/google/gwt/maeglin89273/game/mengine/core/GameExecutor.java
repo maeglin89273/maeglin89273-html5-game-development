@@ -90,10 +90,10 @@ public class GameExecutor {
 		if(game.getGameInfo().hasLoadingDataPage()){
 			play();
 		}else{
-			if(MEngine.getAssetsManager().isDataLoaded()){
+			if(MEngine.getAssetManager().isDataLoaded()){
 				play();
 			}else{
-				MEngine.getAssetsManager().addDataLoadedListener(new AssetManager.DataLoadedListener(){
+				MEngine.getAssetManager().addDataLoadedListener(new AssetManager.DataLoadedListener(){
 					@Override
 					public void done() {
 						play();

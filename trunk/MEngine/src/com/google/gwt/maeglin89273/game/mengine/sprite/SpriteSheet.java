@@ -20,7 +20,7 @@ public class SpriteSheet implements LoadHandler,ErrorHandler{
 	
 	
 	public SpriteSheet(String path){
-		this.path=MEngine.getAssetsManager().getAssetsPrefix()+path;
+		this.path=MEngine.getAssetManager().getAssetsPrefix()+path;
 	}
 	public ImageElement getImage(){
 		if(!imageLoaded)
@@ -54,7 +54,7 @@ public class SpriteSheet implements LoadHandler,ErrorHandler{
 	}
 	@Override
 	public void onError(ErrorEvent event) {
-		MEngine.getAssetsManager().spriteSheetLoadFailed();
+		MEngine.getAssetManager().spriteSheetLoadFailed();
 		
 	}
 	@Override
@@ -62,7 +62,7 @@ public class SpriteSheet implements LoadHandler,ErrorHandler{
 		imageE=(ImageElement)img.getElement().cast();
 		RootPanel.get().remove(img);
 		imageLoaded=true;
-		MEngine.getAssetsManager().spriteSheetOnLoad();
+		MEngine.getAssetManager().spriteSheetOnLoad();
 		
 	}
 	@Override

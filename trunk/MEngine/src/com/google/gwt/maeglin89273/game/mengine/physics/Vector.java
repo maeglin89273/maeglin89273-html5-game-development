@@ -136,7 +136,7 @@ public class Vector {
 		y/=getMagnitude();
 	}
 	public double getRadian(){
-		return Math.atan2(y, x);
+		return Math.atan2(-y, x);
 	}
 	public Vector clone(){
 		return new Vector(this);

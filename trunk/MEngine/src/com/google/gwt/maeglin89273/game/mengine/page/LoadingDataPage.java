@@ -17,7 +17,7 @@ import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
 public abstract class LoadingDataPage extends SinglePage implements DataLoadedListener{
 	protected LoadingDataPage(GeneralGame game,Page nextPage) {
 		super(game, nextPage);
-		MEngine.getAssetsManager().addDataLoadedListener(this);
+		MEngine.getAssetManager().addDataLoadedListener(this);
 	}
 	@Override
 	public void onClick(ClickEvent e){

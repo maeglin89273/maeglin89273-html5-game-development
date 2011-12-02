@@ -15,7 +15,7 @@ import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
 public class MaeglinStudiosPage extends FadingPage {
 
 	public MaeglinStudiosPage(GeneralGame game, Page nextPage) {
-		super(game, MEngine.getAssetsManager().getSpriteSheet("MStudios_landscape.png"),
+		super(game, MEngine.getAssetManager().getSpriteSheet("MStudios_landscape.png"),
 				Math.min(game.getWidth(), game.getHeight()),
 				Math.min(game.getWidth(), game.getHeight()), nextPage);
 		// TODO Auto-generated constructor stub
