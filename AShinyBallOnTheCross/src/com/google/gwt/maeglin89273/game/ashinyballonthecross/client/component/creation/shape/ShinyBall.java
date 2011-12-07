@@ -25,7 +25,7 @@ public class ShinyBall extends PhysicalShape implements CreatorPropertiesChanged
 	public static final float CORE_RADIUS=7.5f;
 	
 	
-	private final SpriteBlock spriteBlock=new SpriteBlock(SHEET_OFFSET,138,500,500,MEngine.getAssetManager().getSpriteSheet("star.png"));
+	private final SpriteBlock spriteBlock=new SpriteBlock(SHEET_OFFSET,138,500,500,MEngine.getAssetManager().getSpriteSheet("shinyball.png"));
 	private final float radiance=spriteBlock.getWidth()/5f;
 	private static final int SHEET_OFFSET=150;
 	
