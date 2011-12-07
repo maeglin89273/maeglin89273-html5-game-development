@@ -131,12 +131,18 @@ public class Vector {
 	public static Vector reverse(Vector v){
 		return new Vector(-v.getVectorX(),-v.getVectorY());
 	}
+	public void rotate(double deltaInRadians){
+		double absAngle=getAngle()+deltaInRadians;
+		double r=getMagnitude();
+		setVector(r*Math.cos(absAngle),r*Math.sin(absAngle));
+	}
+	
 	public void normalized(){
 		x/=getMagnitude();
 		y/=getMagnitude();
 	}
-	public double getRadian(){
-		return Math.atan2(-y, x);
+	public double getAngle(){
+		return Math.atan2(y, x);
 	}
 	public Vector clone(){
 		return new Vector(this);

@@ -36,7 +36,7 @@ public class GameExecutor {
 	private AnimationCallback animationCallback;
 	private static final int MAXIMUM_INTERVAL=75;
 	
-	private boolean pause;
+	private boolean pause=true;
 	private HashSet<ControlledTimer> timers=new HashSet<ControlledTimer>();
 	GameExecutor(Game game,Canvas canvas){
 		this.game=game;
@@ -76,6 +76,7 @@ public class GameExecutor {
 						delta-=MAXIMUM_INTERVAL;
 					}while(delta>0);
 					game.draw(bufferContext);
+					
 					context.drawImage(bufferCanvasElement, 0, 0);
 					if(pause){
 						return;
@@ -110,17 +111,25 @@ public class GameExecutor {
 	public void removeControlledTimer(ControlledTimer timer){
 		timers.remove(timer);
 	}
+	
 	public void pause(){
-		pause=true;
-		for(ControlledTimer timer:timers){
-			timer.stop();
+		if(!pause){
+			pause=true;
+			for(ControlledTimer timer:timers){
+				timer.stop();
+			}
 		}
 	}
+	public boolean isPause(){
+		return pause;
+	}
 	public void play(){
-		animationScheduler.requestAnimationFrame(animationCallback, canvas.getCanvasElement());
-		pause=false;
-		for(ControlledTimer timer:timers){
-			timer.start();
+		if(pause){
+			animationScheduler.requestAnimationFrame(animationCallback, canvas.getCanvasElement());
+			pause=false;
+			for(ControlledTimer timer:timers){
+				timer.start();
+			}
 		}
 	}
 }

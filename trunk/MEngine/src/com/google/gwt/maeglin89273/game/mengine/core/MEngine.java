@@ -67,7 +67,11 @@ public class MEngine {
 		game.init();
 	}
 	public static void setRedrawAlpha(float alpha){
-		gameExecutor.setRedrawAlpha(alpha);
+		try{
+			gameExecutor.setRedrawAlpha(alpha);
+		}catch(NullPointerException e){
+			throwsUninitException();
+		}
 	}
 	private static void setupCanvas(){
 		canvas.setPixelSize(gameInfo.getWidth(),gameInfo.getHeight());
@@ -103,13 +107,33 @@ public class MEngine {
 		
 	}
 	public static void start(){
-		gameExecutor.start();
+		try{
+			gameExecutor.start();
+		}catch(NullPointerException e){
+			throwsUninitException();
+		}
+	}
+	public static boolean isPause(){
+		try{
+			return gameExecutor.isPause();
+		}catch(NullPointerException e){
+			throwsUninitException();
+			return true;
+		}
 	}
 	public static void pause(){
-		gameExecutor.pause();
+		try{
+			gameExecutor.pause();
+		}catch(NullPointerException e){
+			throwsUninitException();
+		}
 	}
 	public static void play(){
-		gameExecutor.play();
+		try{
+			gameExecutor.play();
+		}catch(NullPointerException e){
+			throwsUninitException();
+		}
 	}
 	public static AssetManager getAssetManager(){
 		return assetManager;
@@ -121,39 +145,82 @@ public class MEngine {
 		return handlersManager;
 	}
 	public static Point getMousePosition(){
-		return mousePosition.getPosition();
+		try{
+			return mousePosition.getPosition();
+		}catch(NullPointerException e){
+			throwsUninitException();
+			return null;
+		}
 	}
 	public static void addKeyDownHandler(KeyDownHandler h){
-		handlersManager.addKeyDownHandler(h);
+		try{
+			handlersManager.addKeyDownHandler(h);
+		}catch(NullPointerException e){
+			throwsUninitException();
+		}
 	}
 	public static void addKeyUpHandler(KeyUpHandler h){
-		handlersManager.addKeyUpHandler(h);
+		try{
+			handlersManager.addKeyUpHandler(h);
+		}catch(NullPointerException e){
+			throwsUninitException();
+		}
 	}
 	public static void addMouseMoveHandler(MouseMoveHandler h){
-		handlersManager.addMouseMoveHandler(h);
+		try{
+			handlersManager.addMouseMoveHandler(h);
+		}catch(NullPointerException e){
+			throwsUninitException();
+		}
 	}
 	public static void addMouseDownHandler(MouseDownHandler h){
-		handlersManager.addMouseDownHandler(h);
+		try{
+			handlersManager.addMouseDownHandler(h);
+		}catch(NullPointerException e){
+			throwsUninitException();
+		}
 	}
 	public static void addMouseUpHandler(MouseUpHandler h){
-		handlersManager.addMouseUpHandler(h);
+		try{
+			handlersManager.addMouseUpHandler(h);
+		}catch(NullPointerException e){
+			throwsUninitException();
+		}
 	}
 	public static void addMouseWheelHandler(MouseWheelHandler h){
-		handlersManager.addMouseWheelHandler(h);
+		try{
+			handlersManager.addMouseWheelHandler(h);
+		}catch(NullPointerException e){
+			throwsUninitException();
+		}
 	}
 	public static void addKeyPressHandler(KeyPressHandler h){
-		canvas.addKeyPressHandler(h);
+		try{
+			handlersManager.addKeyPressHandler(h);
+		}catch(NullPointerException e){
+			throwsUninitException();
+		}
 	}
 	public static void addClickHandler(ClickHandler h){
-		handlersManager.addClickHandler(h);
+		try{
+			handlersManager.addClickHandler(h);
+		}catch(NullPointerException e){
+			throwsUninitException();
+		}
 	}
 	public static void addMouseOutHandler(MouseOutHandler h){
-		handlersManager.addMouseOutHandler(h);
+		try{
+			handlersManager.addMouseOutHandler(h);
+		}catch(NullPointerException e){
+			throwsUninitException();
+		}
 	}
 	public static Canvas getCanvas(){
 		return canvas;
 	}
-	
+	private static void throwsUninitException(){
+		throw new IllegalStateException("The MEngine hasn't been initialized.Please call the init method to initialize it.");
+	}
 	private static native void hideDraggingCursor(Element e) /*-{ 
 		e.onselectstart = function() { 
 		return false; 
