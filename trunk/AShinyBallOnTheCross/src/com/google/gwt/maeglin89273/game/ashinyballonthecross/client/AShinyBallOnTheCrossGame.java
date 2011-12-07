@@ -18,7 +18,7 @@ import com.google.gwt.maeglin89273.game.mengine.page.MaeglinStudiosPage;
  */
 public class AShinyBallOnTheCrossGame extends GeneralGame {
 	public AShinyBallOnTheCrossGame(){
-		super(new GameInfo(720,540,true,"creations.png","gravity_clock.png","star.png","definers_icons.png","buttons.png","MEngine_logo.png","MStudios_landscape.png"));
+		super(new GameInfo(720,540,true,"creations.png","gravity_indicator.png","shinyball.png","definers_icons.png","buttons.png","MEngine_logo.png","MStudios_landscape.png"));
 	}
 	
 	@Override

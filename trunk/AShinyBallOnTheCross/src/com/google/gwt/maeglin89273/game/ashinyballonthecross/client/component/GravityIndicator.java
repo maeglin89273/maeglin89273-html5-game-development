@@ -48,7 +48,7 @@ public class GravityIndicator extends GeneralComponent {
 		this.gravityAngle=this.nextGravityAngle=-angleInDegrees;
 		gravity=getGravityByDegrees(angleInDegrees);
 		
-		img=MEngine.getAssetManager().getSpriteSheet("gravity_clock.png");
+		img=MEngine.getAssetManager().getSpriteSheet("gravity_indicator.png");
 		textFont=GameColors.getGameFont((int)(diameter*0.55));
 		
 	}
