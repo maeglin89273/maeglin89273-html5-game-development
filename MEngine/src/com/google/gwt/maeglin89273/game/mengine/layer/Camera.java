@@ -4,8 +4,8 @@
 package com.google.gwt.maeglin89273.game.mengine.layer;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.maeglin89273.game.mengine.component.Component;
 import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
+import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
 
@@ -53,11 +53,11 @@ public class Camera extends GeneralComponent {
 		updateScaledProperties();
 		constrainBounds(null);
 	}
-	Camera(Component c,float maxScale){
-		this(c, c.getPosition(), maxScale);
+	Camera(Spacial s,float maxScale){
+		this(s, s.getPosition(), maxScale);
 	}
-	Camera(Component c,Point p,float maxScale) {
-		this(new WorldBounds(new Point(c.getLeftX(),c.getTopY()),c.getWidth(),c.getHeight()), p, maxScale);
+	Camera(Spacial s,Point p,float maxScale) {
+		this(new WorldBounds(new Point(s.getLeftX(),s.getTopY()),s.getWidth(),s.getHeight()), p, maxScale);
 		
 	}
 	Camera(WorldBounds bounds,float maxScale) {

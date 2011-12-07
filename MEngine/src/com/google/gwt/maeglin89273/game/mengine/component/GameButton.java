@@ -26,8 +26,7 @@ public abstract class GameButton extends GeneralComponent {
 	 */
 	@Override
 	public void draw(Context2d context) {
-		Point nw=getPositionAt(PositionType.NORTHWEST);
-		context.drawImage(spriteBlock.getSheetImage(), spriteBlock.getX(), spriteBlock.getY(), spriteBlock.getWidth(), spriteBlock.getHeight(),nw.getX(),nw.getY(), getWidth(), getHeight());
+		context.drawImage(spriteBlock.getSheetImage(), spriteBlock.getX(), spriteBlock.getY(), spriteBlock.getWidth(), spriteBlock.getHeight(),getLeftX(),getTopY(), getWidth(), getHeight());
 	}
 
 }

@@ -3,7 +3,7 @@ package com.google.gwt.maeglin89273.game.mengine.sprite;
 import com.google.gwt.dom.client.ImageElement;
 
 public class SpriteBlock {
-	public static final int SPACITNG=10;
+	public static final int SPACING=10;
 	
 	private int x;
 	private int y;

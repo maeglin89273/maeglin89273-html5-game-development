@@ -81,8 +81,18 @@ public class Point {
 	public static Vector delta(Point p1,Point p2){
 		return new Vector(p2.getX()-p1.getX(),p2.getY()-p1.getY());
 	}
-	
+	public static Point[] getRotatedPoint(Point center,double angle,Point...points){
+		Vector relP;
+		Point[] toReturn =new Point[points.length];
+		for(int i=0;i<points.length;i++){
+			relP=center.delta(points[i]);
+			relP.rotate(angle);
+			toReturn[i]=new Point(center.getX()+relP.getVectorX(),center.getY()+relP.getVectorY());
+		}
+		return toReturn;
+	}
 	public Point clone(){
 		return new Point(this);
 	}
+	
 }
