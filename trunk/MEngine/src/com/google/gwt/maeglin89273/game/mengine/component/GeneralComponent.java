@@ -167,5 +167,4 @@ public abstract class GeneralComponent implements GameComponent {
 	public abstract void update();
 	@Override
 	public abstract void draw(Context2d context);	
-	
 }

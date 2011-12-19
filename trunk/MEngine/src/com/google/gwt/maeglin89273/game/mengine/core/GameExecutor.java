@@ -37,6 +37,10 @@ public class GameExecutor {
 	private static final int MAXIMUM_INTERVAL=75;
 	
 	private boolean pause=true;
+	
+	private double now;
+	private double last=Duration.currentTimeMillis();
+	private double delta;
 	private HashSet<ControlledTimer> timers=new HashSet<ControlledTimer>();
 	GameExecutor(Game game,Canvas canvas){
 		this.game=game;
@@ -57,9 +61,7 @@ public class GameExecutor {
 	}
 	void start(){
 		animationCallback=new AnimationCallback(){
-			double now;
-			double last=Duration.currentTimeMillis();
-			double delta;
+			
 			@Override
 			public void execute(double timestamp) {
 				
@@ -130,6 +132,7 @@ public class GameExecutor {
 			for(ControlledTimer timer:timers){
 				timer.start();
 			}
+			this.last=Duration.currentTimeMillis();
 		}
 	}
 }

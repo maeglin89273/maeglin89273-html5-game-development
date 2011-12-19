@@ -18,7 +18,6 @@ import com.google.gwt.core.ext.linker.ConfigurationProperty;
 import com.google.gwt.core.ext.linker.EmittedArtifact;
 import com.google.gwt.core.ext.linker.LinkerOrder;
 import com.google.gwt.core.ext.linker.Shardable;
-import com.google.gwt.core.linker.CrossSiteIframeLinker;
 
 
 

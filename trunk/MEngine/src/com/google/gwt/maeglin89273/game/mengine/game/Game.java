@@ -13,5 +13,4 @@ public interface Game extends HasGameLoop{
 	public abstract GameInfo getGameInfo();
 	public abstract int getWidth();
 	public abstract int getHeight();
-	
 }

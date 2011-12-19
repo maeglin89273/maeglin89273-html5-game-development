@@ -22,12 +22,12 @@ public class WorldLayer extends GroupLayer {
 	public WorldLayer(WorldBounds bounds,float maxScale){
 		this.camera=new Camera(bounds, maxScale);
 	}
-	public WorldLayer(Spacial s,Point cameraPosition,float maxScale){
-		this.camera=new Camera(s, cameraPosition, maxScale);
+	public WorldLayer(Spacial s,Point cameraPosition,float maxScale,float minScale){
+		this.camera=new Camera(s, cameraPosition, maxScale,minScale);
 		this.addLayer(new ComponentLayer(s));
 	}
-	public WorldLayer(WorldBounds bounds,Point cameraPosition,float maxScale){
-		this.camera=new Camera(bounds, cameraPosition, maxScale);
+	public WorldLayer(WorldBounds bounds,Point cameraPosition,float maxScale,float minScale){
+		this.camera=new Camera(bounds, cameraPosition, maxScale,minScale);
 	}
 	
 	public Camera getCamera(){

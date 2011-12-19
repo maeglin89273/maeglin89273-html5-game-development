@@ -20,9 +20,4 @@ public class MaeglinStudiosPage extends FadingPage {
 				Math.min(game.getWidth(), game.getHeight()), nextPage);
 		// TODO Auto-generated constructor stub
 	}
-
-	
-
-	
-
 }

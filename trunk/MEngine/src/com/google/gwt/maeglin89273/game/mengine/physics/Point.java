@@ -91,8 +91,20 @@ public class Point {
 		}
 		return toReturn;
 	}
+	public static Point getCenter(Point a,Point b){
+		return new Point((a.getX()+b.getX())/2,(a.getY()+b.getY())/2);
+	}
+	public static double getDistance(Point a,Point b){
+		Vector v=a.delta(b);
+		return v.getMagnitude();
+	}
 	public Point clone(){
 		return new Point(this);
 	}
-	
+	@Override
+    public boolean equals(Object o){
+		if((o instanceof Point)&&((Point)o).getX()==getX()&&((Point)o).getY()==getY())
+			return true;
+	return false;
+ }
 }
