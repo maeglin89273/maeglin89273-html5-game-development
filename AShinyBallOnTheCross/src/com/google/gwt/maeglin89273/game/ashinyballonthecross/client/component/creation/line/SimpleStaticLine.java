@@ -7,7 +7,7 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.c
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Creation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.GameColors;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteBlock;
 
@@ -38,7 +38,7 @@ public class SimpleStaticLine extends StaticLine {
 	 * @param creator
 	 */
 	private SimpleStaticLine(Creator creator, int contentPower,boolean beControlled, Point p1, Point p2) {
-		super(creator, contentPower,beControlled, p1, p2, GameColors.BLACK);
+		super(creator, contentPower,beControlled, p1, p2, ASBOTCConfigurations.Color.BLACK);
 		
 	}
 	@Override
@@ -49,7 +49,7 @@ public class SimpleStaticLine extends StaticLine {
 	public static class BlackStaticLineDefiner extends StaticLineDefiner{
 
 		public BlackStaticLineDefiner(Creator creator){
-			super(creator,175,new Point(0,ICON_BOUNDS_PLUS_SPACING),GameColors.BLACK);
+			super(creator,ASBOTCConfigurations.CreationPowerComsumption.SIMPLE_STATIC_LINE,new Point(0,ICON_BOUNDS_PLUS_SPACING),ASBOTCConfigurations.Color.BLACK);
 			
 		}
 		@Override

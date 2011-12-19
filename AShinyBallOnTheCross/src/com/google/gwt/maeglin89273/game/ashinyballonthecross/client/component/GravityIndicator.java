@@ -11,7 +11,7 @@ import org.jbox2d.common.Vec2;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.Context2d.TextAlign;
 import com.google.gwt.canvas.dom.client.Context2d.TextBaseline;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.GameColors;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GravityChangedEvent;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GravityChangedListener;
 import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
@@ -49,7 +49,7 @@ public class GravityIndicator extends GeneralComponent {
 		gravity=getGravityByDegrees(angleInDegrees);
 		
 		img=MEngine.getAssetManager().getSpriteSheet("gravity_indicator.png");
-		textFont=GameColors.getGameFont((int)(diameter*0.55));
+		textFont=ASBOTCConfigurations.getGameFont((int)(diameter*0.55));
 		
 	}
 	public static Vec2 getGravityByDegrees(int angleInDegree){
@@ -118,7 +118,7 @@ public class GravityIndicator extends GeneralComponent {
 		context.setTextAlign(TextAlign.CENTER);
 		context.setTextBaseline(TextBaseline.MIDDLE);
 		context.setFont(textFont);
-		context.setFillStyle(GameColors.TEXT_COLOR);
+		context.setFillStyle(ASBOTCConfigurations.Color.TEXT);
 		context.fillText("G",getX(),getY(),width);
 		context.translate(getX(), getY());
 		context.rotate(getAngle());
@@ -126,7 +126,4 @@ public class GravityIndicator extends GeneralComponent {
 		context.restore();
 		
 	}
-	
-	
-	
 }

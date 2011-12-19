@@ -1,14 +1,15 @@
 /**
  * 
  */
-package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.button;
+package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.button;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.Context2d.TextAlign;
 import com.google.gwt.canvas.dom.client.Context2d.TextBaseline;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.*;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.page.ASBOTCGamePage;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.pseudo.*;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.GameColors;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.page.ASBOTCLoadingLevelPage;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
 import com.google.gwt.maeglin89273.game.mengine.component.GameButton;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
@@ -21,16 +22,18 @@ import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteBlock;
  */
 public class LevelSelectButton extends GameButton {
 	private final int levelIdx;
+	private final String font;
+	 
 	/**
 	 * @param p
 	 * @param w
 	 * @param h
 	 * @param block
 	 */
-	public LevelSelectButton(GeneralGame game,Point p,int level) {
-		super(game,p,200,200,new SpriteBlock(0,200+SpriteBlock.SPACING,200,200,MEngine.getAssetManager().getSpriteSheet("buttons.png")));
+	public LevelSelectButton(GeneralGame game,Point p,double bounds,int level) {
+		super(game,p,bounds,bounds,new SpriteBlock(0,200+SpriteBlock.SPACING,200,200,MEngine.getAssetManager().getSpriteSheet("buttons.png")));
 		this.levelIdx = level;
-		
+		this.font=ASBOTCConfigurations.getGameFont((int)(35*bounds/200));
 	}
 
 	/* (non-Javadoc)
@@ -50,10 +53,14 @@ public class LevelSelectButton extends GameButton {
 			case 3:
 				level=new Level3(sp);
 				break;
+			case 4:
+				level=new Level4(sp);
+				break;
+			case 5:
+				level=new Level5(sp);
+				break;
 		}
-		game.setPage(new ASBOTCGamePage(game,level));
-		this.game=null;
-
+		game.setPage(new ASBOTCLoadingLevelPage(game,level));
 	}
 
 	/* (non-Javadoc)
@@ -76,15 +83,16 @@ public class LevelSelectButton extends GameButton {
 		context.save();
 		context.setTextAlign(TextAlign.CENTER);
 		context.setTextBaseline(TextBaseline.MIDDLE);
-		context.setFillStyle(GameColors.GRAY);
-		context.setFont(GameColors.getGameFont(35));
+		context.setFillStyle(ASBOTCConfigurations.Color.GRAY);
+		context.setFont(font);
 		context.fillText("Level "+levelIdx,getX(),getY());
 		context.restore();
 	}
+
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-
+		
 	}
-
+	
 }

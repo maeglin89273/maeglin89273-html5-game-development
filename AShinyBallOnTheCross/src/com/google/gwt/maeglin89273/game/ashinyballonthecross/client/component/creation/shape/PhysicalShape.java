@@ -4,7 +4,6 @@
 package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape;
 
 import org.jbox2d.collision.AABB;
-import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
@@ -13,7 +12,7 @@ import org.jbox2d.dynamics.Fixture;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Creation;
-import com.google.gwt.maeglin89273.game.mengine.component.Physical;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
 import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
@@ -23,15 +22,15 @@ import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
  * @author Maeglin Liao
  *
  */
-public abstract class PhysicalShape extends Creation implements
-		Physical {
-	
+public abstract class PhysicalShape extends Creation implements Dynamic{
+		
 	protected Body body;
 	protected  Fixture fixture;
 	protected  AABB aabb;
 	
 	protected CssColor borderColor;
 	
+	private boolean destroyed=false;
 	/**
 	 * 
 	 * @param creator
@@ -92,8 +91,12 @@ public abstract class PhysicalShape extends Creation implements
 		
 		body=null;
 		aabb=null;
+		destroyed=true;
 	}
-
+	@Override
+	public boolean isDestroyed(){
+		return destroyed;
+	}
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.mengine.component.Physical#getAABB()
 	 */

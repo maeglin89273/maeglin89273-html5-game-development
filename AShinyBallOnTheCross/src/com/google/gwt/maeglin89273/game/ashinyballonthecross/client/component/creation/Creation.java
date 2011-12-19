@@ -47,7 +47,7 @@ public abstract class Creation extends GeneralComponent {
 	 * @return true if it has been verified
 	 */
 	public boolean isVerified(){
-		return verified;
+		return verified&&creator!=null;
 	}
 	public int getContentPower(){
 		return contentPower;

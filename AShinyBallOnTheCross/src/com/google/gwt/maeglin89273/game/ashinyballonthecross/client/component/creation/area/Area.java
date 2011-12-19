@@ -4,7 +4,6 @@
 package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.area;
 
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Creation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.CreationDefiner;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
@@ -68,11 +67,11 @@ public abstract class Area extends MainCreation {
 		}
 		@Override 
 		public void onPenUp(Point p){
+			updatePenPosition(p);
 			if(center!=null){
-				updatePenPosition(p);
 				this.defineFinished();
-				reset();
 			}
+			reset();
 		}
 		@Override
 		public void reset(){

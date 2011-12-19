@@ -10,7 +10,7 @@ import org.jbox2d.dynamics.FixtureDef;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.GameColors;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.CreatorPropertiesChangedEvent;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.CreatorPropertiesChangedListener;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
@@ -35,11 +35,12 @@ public class ShinyBall extends PhysicalShape implements CreatorPropertiesChanged
 	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.Physical#getBody()
 	 */
 	public ShinyBall(Creator creator,Point p){
-		super(creator,0,p,2*CORE_RADIUS,2*CORE_RADIUS,0, GameColors.STAR_BOUND_COLOR);
+		super(creator,0,p,2*CORE_RADIUS,2*CORE_RADIUS,0,null);
 		
 		if(this.isVerified()){
 			initPos.setPosition(p);
 			portion=creator.getMaxPower()/4;
+			updatePower(creator.getPower());
 			creator.addPropertiesChangeListener(this);
 			
 			CircleShape shape=new CircleShape();
@@ -58,7 +59,11 @@ public class ShinyBall extends PhysicalShape implements CreatorPropertiesChanged
 		}
 	}
 	
-	
+	private void updatePower(int power){
+		int r=power/portion;
+		if(r>3)r=3;
+		spriteBlock.setX(SHEET_OFFSET+r*(spriteBlock.getWidth()+SpriteBlock.SPACING));
+	}
 	@Override
 	public void draw(Context2d context) {
 		
@@ -72,20 +77,18 @@ public class ShinyBall extends PhysicalShape implements CreatorPropertiesChanged
 	}
 	@Override
 	public void destroy(){
+		creator.removePropertiesChangeListener(this);
 		new ShinyBall(creator,initPos);
 		super.destroy();
 	}
 
 	@Override
 	public void powerChanged(CreatorPropertiesChangedEvent event) {
-		int r=event.getPower()/portion;
-		if(r>3)r=3;
-		spriteBlock.setX(SHEET_OFFSET+r*(spriteBlock.getWidth()+SpriteBlock.SPACING));
+		this.updatePower(event.getPower());
 	}
-
+	
 	@Override
 	public void scoreChanged(CreatorPropertiesChangedEvent event) {
 		
 	}
-
 }

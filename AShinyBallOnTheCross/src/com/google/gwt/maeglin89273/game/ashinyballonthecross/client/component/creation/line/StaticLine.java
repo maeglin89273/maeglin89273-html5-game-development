@@ -37,10 +37,6 @@ public abstract class StaticLine extends PhysicalLine{
 			lineP.setAsEdge(CoordinateConverter.vectorPixelToWorld(rpA), CoordinateConverter.vectorPixelToWorld(rpB));
 			fixture=body.createFixture(lineP, 0f);
 			aabb=fixture.getAABB();
-			PixelAABB pAABB=CoordinateConverter.worldAABBToPixelAABB(aabb);
-			setWidth(pAABB.getWidth());
-			setHeight(pAABB.getHeight());
-			
 			
 		}
 	}

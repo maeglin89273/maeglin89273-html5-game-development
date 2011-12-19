@@ -12,7 +12,7 @@ import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.cr
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Circle;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Polygon;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Rectangle;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.GameColors;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
 import com.google.gwt.user.client.Random;
@@ -62,13 +62,13 @@ public class ShapesLine extends Line {
 	public static class ShapesLineDefiner extends LineDefiner{
 		private final int shapesMaxCount;
 		private int showingShapesCount;
-		private float spacing;
+		private static final float SPACING=23;
 		private ShapeDefiner[] shapes;
 		
-		public ShapesLineDefiner(Creator creator,float spacing){
+		public ShapesLineDefiner(Creator creator){
 			super(creator,75,null);
-			this.spacing=spacing;
-			this.shapesMaxCount=(int)Math.floor(Line.MAX_LENGTH/spacing);//200 is the max length of line
+			
+			this.shapesMaxCount=(int)Math.floor(Line.MAX_LENGTH/SPACING);//200 is the max length of line
 			shapes=new ShapeDefiner[shapesMaxCount];
 			reset();
 		}
@@ -79,12 +79,20 @@ public class ShapesLine extends Line {
 				Vector v=pointA.delta(pointB);
 				double a=v.getAngle();
 				//update
-				showingShapesCount=(int)Math.floor(v.getMagnitude()/spacing);
+				showingShapesCount=(int)Math.floor(v.getMagnitude()/SPACING);
 				for(int i=0;i<shapesMaxCount;i++){
 					shapes[i].setAngle(a);
-					shapes[i].setPosition(pointA.getX()+(i+1)*spacing*Math.cos(a),pointA.getY()+(i+1)*spacing*Math.sin(a));
+					shapes[i].setPosition(pointA.getX()+(i+1)*SPACING*Math.cos(a),pointA.getY()+(i+1)*SPACING*Math.sin(a));
 				}
 			}
+		}
+		@Override 
+		public void onPenUp(Point p){
+			updatePenPosition(p);
+			if(pointA!=null&&pointB!=null&&showingShapesCount!=0){
+				defineFinished();
+			}
+			reset();
 		}
 		@Override
 		public void sketch(Context2d context) {
@@ -97,7 +105,7 @@ public class ShapesLine extends Line {
 		@Override
 		public void reset(){
 			super.reset();
-			
+			showingShapesCount=0;
 			for(int i=0;i<shapesMaxCount;i++){
 				//generate some random shape
 				switch(Random.nextInt(3)){
@@ -115,7 +123,11 @@ public class ShapesLine extends Line {
 		}
 		@Override 
 		public int getCreationRequiredPower(){
-			return 0;
+			int result=0;
+			for(int i=0;i<showingShapesCount;i++){
+				result+=shapes[i].getPreviewPower();
+			}
+			return result;
 		}
 		@Override
 		protected MainCreation create(int requiredPower) {
@@ -125,9 +137,14 @@ public class ShapesLine extends Line {
 		
 		//shape definers
 		private abstract class ShapeDefiner{
-			protected final Point position=new Point(0,0); 
+			protected final Point position=new Point(0,0);
+			protected final int previewPower;
 			protected double angle;
-			protected CssColor color=GameColors.getRandomShapeBorderColor();
+			protected CssColor color=ASBOTCConfigurations.Color.getRandomShapeBorderColor();
+			ShapeDefiner(int previewPower){
+				this.previewPower = previewPower;
+				
+			}
 			void setPosition(double x,double y){
 				this.position.setPosition(x,y);
 			}
@@ -143,12 +160,16 @@ public class ShapesLine extends Line {
 			CssColor getColor(){
 				return color;
 			}
+			int getPreviewPower(){
+				return previewPower;
+			}
 			abstract void sketch(Context2d context);
 			
 		}
 		private class CircleDefiner extends ShapeDefiner{
 			private int radius;
 			CircleDefiner(int radius){
+				super((int)(radius/2f));
 				this.radius=radius;
 			}
 			int getRadius(){
@@ -170,6 +191,7 @@ public class ShapesLine extends Line {
 			private double width;
 			private double height;
 			RectangleDefiner(double w,double h){
+				super((int)Math.floor(((w+h)/2)));
 				this.width=w;
 				this.height=h;
 			}
@@ -198,6 +220,7 @@ public class ShapesLine extends Line {
 		private class PolygonDefiner extends ShapeDefiner{
 			private Vector[] vertices;
 			PolygonDefiner(Vector[] v){
+				super(Math.round(v.length*2.5f));
 				this.vertices=v;
 			}
 			Vector[] getVertices(){

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.pseudo;
+package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level;
 
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Cross;
@@ -25,13 +25,12 @@ public class Level1 extends LevelContext {
 	 * @param screenCenter
 	 */
 	public Level1(Point screenCenter) {
-		super(screenCenter);
-		this.width=screenCenter.getX()*2;
-		this.height=screenCenter.getY()*2;
+		super(screenCenter,screenCenter,screenCenter.getX()*2,screenCenter.getY()*2,200);
+		
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.game.ashinyballonthecross.client.pseudo.LevelContext#buildLevel(com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator)
+	 * @see com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.LevelContext#buildLevel(com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator)
 	 */
 	@Override
 	public void buildLevel(Creator creator,GameOverCallback callback) {
@@ -51,7 +50,7 @@ public class Level1 extends LevelContext {
 		new SimpleStaticLine(creator, pA, tangetPoint);
 		new SimpleStaticLine(creator, new Point(0,450), new Point(getGameWidth(),450));*/
 		new SimpleStaticLine(creator, new Point(150,150), new Point(400,250));
-		new Cross(creator, new Point(getScreenCenter().getX(),400), Math.toRadians(getGravityInDegrees()-90), callback);
+		new Cross(creator, new Point(getScreenCenter().getX(),400),getGravityAngleInDegrees(), callback);
 	}
 
 	@Override
@@ -73,7 +72,7 @@ public class Level1 extends LevelContext {
 	}
 
 	@Override
-	public int getGravityInDegrees() {
+	public int getGravityAngleInDegrees() {
 		
 		return 90;
 	}

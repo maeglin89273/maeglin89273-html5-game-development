@@ -6,22 +6,23 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.GameColors;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
 
-class FragmentalLine extends PhysicalLine{
+
+class FragmentalLine extends PhysicalLine implements Dynamic{
 	/**
 	 * 
 	 */
-	private final Vector rpA;
-	private final Vector rpB;
 	
+	private final double hL;
+	private boolean destroyed=false;
 	
-	public FragmentalLine(Creator creator,int contentPower,boolean beControlled,Point p1, Point p2) {
-		super(creator,contentPower,beControlled, p1,p2, GameColors.GRAY);
+	public FragmentalLine(Creator creator,int contentPower,boolean beControlled,Point p1, Point p2, CssColor color) {
+		super(creator,contentPower,beControlled, p1,p2,color);
 		
 		if(isVerified()){	
 			body.setType(BodyType.DYNAMIC);
@@ -29,21 +30,21 @@ class FragmentalLine extends PhysicalLine{
 			FixtureDef fixD=new FixtureDef();
 				
 			PolygonShape lineP=new PolygonShape();
-			Vector delta=Point.delta(pointA, pointB);
-			rpA=position.delta(pointA);
-			rpB=position.delta(pointB);
+			
+			this.hL=getWidth()/2;
 				
-			lineP.setAsBox(CoordinateConverter.scalerPixelsToWorld(delta.getMagnitude())/2
-					,CoordinateConverter.scalerPixelsToWorld(1),new Vec2(),(float)-delta.getAngle());
+			lineP.setAsBox(CoordinateConverter.scalerPixelsToWorld(getWidth())/2
+					,CoordinateConverter.scalerPixelsToWorld(1),new Vec2(),0);
 						
-			fixD.density=0.5f;
+			fixD.density=1.2f;
 			fixD.shape=lineP;
 			fixD.restitution=0.75f;
-			fixD.friction=0.7f;
+			fixD.friction=0.4f;
+			fixD.userData=this;
 			aabb=body.createFixture(fixD).getAABB();
+			body.setTransform(body.getPosition(), (float) -getAngle());
 		}else{
-			rpA=null;
-			rpB=null;
+			this.hL=0;
 		}
 	}
 
@@ -55,6 +56,7 @@ class FragmentalLine extends PhysicalLine{
 		}
 		position.setPosition(CoordinateConverter.coordWorldToPixels(body.getPosition()));
 		setAngle(-body.getAngle());
+		
 	}
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.GeneralComponent#draw(com.google.gwt.canvas.dom.client.Context2d)
@@ -67,11 +69,19 @@ class FragmentalLine extends PhysicalLine{
 		context.setLineWidth(2);
 		context.setStrokeStyle(lineColor);
 		context.beginPath();
-		context.moveTo(rpA.getVectorX(),rpA.getVectorY());
-		context.lineTo(rpB.getVectorX(), rpB.getVectorY());
+		context.moveTo(hL,0);
+		context.lineTo(-hL,0);
 		context.stroke();
 		context.restore();
 	}
-	
-	
+	@Override
+	public void destroy(){
+		body.getFixtureList().setUserData(null);
+		super.destroy();
+		destroyed=true;
+	}
+	@Override
+	public boolean isDestroyed(){
+		return destroyed;
+	}
 }

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.button;
+package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.button;
 
 
 
@@ -51,5 +51,4 @@ public class StartButton extends GameButton {
 		// TODO Auto-generated method stub
 
 	}
-
 }

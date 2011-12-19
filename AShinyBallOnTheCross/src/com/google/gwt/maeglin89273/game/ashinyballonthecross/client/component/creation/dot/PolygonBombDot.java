@@ -9,7 +9,7 @@ import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.cr
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.PhysicalShape;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Polygon;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.GameColors;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.user.client.Random;
 
@@ -28,7 +28,7 @@ public class PolygonBombDot extends BombDot {
 	 * @param spoutDistance
 	 */
 	public PolygonBombDot(Creator creator,Point p ) {
-		super(creator,p, GameColors.RED, 8f, 36);
+		super(creator,p, ASBOTCConfigurations.Color.RED, 8f, 36);
 		
 	}
 
@@ -42,7 +42,7 @@ public class PolygonBombDot extends BombDot {
 	public static class PolygonBombDotDefiner extends BombDotDefiner{
 
 		public PolygonBombDotDefiner(Creator creator) {
-			super(creator,null, GameColors.RED);
+			super(creator,null, ASBOTCConfigurations.Color.RED);
 			
 		}
 

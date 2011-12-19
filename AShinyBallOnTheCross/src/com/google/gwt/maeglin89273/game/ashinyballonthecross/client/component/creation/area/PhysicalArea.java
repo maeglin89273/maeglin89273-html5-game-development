@@ -75,8 +75,8 @@ public abstract class PhysicalArea extends Area implements Physical {
 		if(fixtures!=null){
 			for(int i=0;i<fixtures.length;i++){
 				fixtures[i].setUserData(null);
-				fixtures[i]=null;
 			}
+			fixtures=null;
 		}
 		
 		body=null;

@@ -7,31 +7,27 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.jbox2d.callbacks.ContactImpulse;
-import org.jbox2d.callbacks.ContactListener;
+
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.Contact;
 
-import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Creation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.PhysicalShape;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.GameColors;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteBlock;
-import com.google.gwt.user.client.Window;
 
 /**
  * @author Maeglin Liao
  *
  */
-public class ElasticLine extends StaticLine implements ContactListener {
-	private static final int FULL_POWER=75;
+public class ElasticLine extends ContactStaticLine {
+	
 	private static final float  IMPULSE_MAGNITUDE=0.3f;
-	private Set<PhysicalShape> contactShapes=new HashSet<PhysicalShape>();
+	private Set<Dynamic> contactShapes=new HashSet<Dynamic>();
 	
 	/**
 	 * 
@@ -53,10 +49,8 @@ public class ElasticLine extends StaticLine implements ContactListener {
 	 * @param color
 	 */
 	private ElasticLine(Creator creator, int cotentPower,boolean beControlled, Point p1, Point p2) {
-		super(creator, cotentPower,beControlled, p1, p2, GameColors.LIGHT_BLUE);
-		if(isVerified()){
-			this.creator.getWorld().addContactListener(this);
-		}
+		super(creator, cotentPower,beControlled, p1, p2, ASBOTCConfigurations.Color.LIGHT_BLUE);
+		
 	}
 	
 	@Override
@@ -65,7 +59,7 @@ public class ElasticLine extends StaticLine implements ContactListener {
 		if(!contactShapes.isEmpty()){
 			Body body;
 			Vec2 imp;
-			for(PhysicalShape ps:contactShapes){
+			for(Dynamic ps:contactShapes){
 				body=ps.getBody();
 				imp=body.getLinearVelocity().clone();
 				
@@ -76,11 +70,7 @@ public class ElasticLine extends StaticLine implements ContactListener {
 			
 		}
 	}
-	@Override 
-	public void destroy(){
-		creator.getWorld().removeContactListener(this);
-		super.destroy();
-	}
+	
 	/* (non-Javadoc)
 	 * @see org.jbox2d.callbacks.ContactListener#beginContact(org.jbox2d.dynamics.contacts.Contact)
 	 */
@@ -97,10 +87,10 @@ public class ElasticLine extends StaticLine implements ContactListener {
 	public void endContact(Contact contact) {
 		Fixture fixA=contact.getFixtureA();
 		Fixture fixB=contact.getFixtureB();
-		if(fixA.equals(fixture)&&(fixB.getUserData() instanceof PhysicalShape)){
-			contactShapes.add((PhysicalShape)fixB.getUserData());
-		}else if(fixB.equals(fixture)&&(fixA.getUserData() instanceof PhysicalShape)){
-			contactShapes.add((PhysicalShape)fixA.getUserData());
+		if(fixA.equals(fixture)&&(fixB.getUserData() instanceof Dynamic)){
+			contactShapes.add((Dynamic)fixB.getUserData());
+		}else if(fixB.equals(fixture)&&(fixA.getUserData() instanceof Dynamic)){
+			contactShapes.add((Dynamic)fixA.getUserData());
 		}
 	}
 
@@ -124,7 +114,7 @@ public class ElasticLine extends StaticLine implements ContactListener {
 	public static class ElasticLineDefiner extends StaticLineDefiner{
 
 		public ElasticLineDefiner(Creator creator) {
-			super(creator,FULL_POWER,new Point(2*ICON_BOUNDS_PLUS_SPACING,ICON_BOUNDS_PLUS_SPACING),GameColors.LIGHT_BLUE);
+			super(creator,ASBOTCConfigurations.CreationPowerComsumption.ELASTIC_LINE,new Point(2*ICON_BOUNDS_PLUS_SPACING,ICON_BOUNDS_PLUS_SPACING),ASBOTCConfigurations.Color.LIGHT_BLUE);
 		}
 
 		@Override

@@ -11,7 +11,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.PhysicalWorld;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.GameColors;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
@@ -31,7 +31,7 @@ public class Polygon extends PhysicalShape {
 	 */
 	public Polygon(Creator creator,Point p){
 		this(creator,0, p,0, generateRandomInscribedPolygonVertices(3+Random.nextInt(6),12+Random.nextInt(4))
-				,GameColors.getRandomShapeBorderColor());
+				,ASBOTCConfigurations.Color.getRandomShapeBorderColor());
 	}
 	/**
 	 * 

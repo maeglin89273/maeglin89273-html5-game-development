@@ -84,7 +84,4 @@ public abstract class PhysicalLine extends Line implements Physical {
 	public AABB getAABB() {
 		return aabb;
 	}
-
-	
-
 }
