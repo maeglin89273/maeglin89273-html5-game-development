@@ -24,6 +24,4 @@ public abstract class Page implements HasGameLoop{
 	public GeneralGame getGame(){
 		return game;
 	}
-
-	
 }

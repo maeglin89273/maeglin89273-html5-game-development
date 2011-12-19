@@ -30,8 +30,4 @@ public class ComponentLayer extends Layer {
 		component.draw(context);
 		
 	}
-	
-	
-	
-	
 }

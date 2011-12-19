@@ -49,5 +49,4 @@ public abstract class ControlledTimer extends Timer {
 	public int hashCode(){
 		return interval;
 	}
-	
 }

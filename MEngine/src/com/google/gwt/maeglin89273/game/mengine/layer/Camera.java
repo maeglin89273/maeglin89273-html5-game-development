@@ -43,10 +43,10 @@ public class Camera extends GeneralComponent {
 	 * @param cameraWidth
 	 * @param cameraHeight
 	 */
-	Camera(WorldBounds bounds,Point p,float maxScale) {
+	Camera(WorldBounds bounds,Point p,float maxScale,float minScale) {
 		super(p, 0, cameraWidth, cameraHeight);
 		
-		this.minScale=(float)Math.max(cameraWidth/bounds.getWidth(), cameraHeight/bounds.getHeight());
+		this.minScale=Math.max(minScale%1,(float)Math.max(cameraWidth/bounds.getWidth(), cameraHeight/bounds.getHeight()));
 		this.maxScale=Math.abs(maxScale);
 		
 		this.bounds=bounds;
@@ -54,14 +54,14 @@ public class Camera extends GeneralComponent {
 		constrainBounds(null);
 	}
 	Camera(Spacial s,float maxScale){
-		this(s, s.getPosition(), maxScale);
+		this(s, s.getPosition(), maxScale,0);
 	}
-	Camera(Spacial s,Point p,float maxScale) {
-		this(new WorldBounds(new Point(s.getLeftX(),s.getTopY()),s.getWidth(),s.getHeight()), p, maxScale);
+	Camera(Spacial s,Point p,float maxScale,float minScale) {
+		this(new WorldBounds(new Point(s.getLeftX(),s.getTopY()),s.getWidth(),s.getHeight()), p, maxScale,minScale);
 		
 	}
 	Camera(WorldBounds bounds,float maxScale) {
-		this(bounds,new Point(bounds.getWidth()/2+ bounds.getX(),bounds.getHeight()+bounds.getY()),maxScale);
+		this(bounds,new Point(bounds.getWidth()/2+ bounds.getX(),bounds.getHeight()+bounds.getY()),maxScale,0);
 	}
 	public static void setCameraWidth(int w){
 		cameraWidth=w;
@@ -78,6 +78,11 @@ public class Camera extends GeneralComponent {
 	public static void setCameraSize(int w,int h){
 		setCameraWidth(w);
 		setCameraHeight(h);
+	}
+	@Override
+	public void setPosition(Point p){
+		super.setPosition(p);
+		this.constrainBounds(null);
 	}
 	public void zoomIn(){
 		if(scale*SCALE_FACTOR<=maxScale){

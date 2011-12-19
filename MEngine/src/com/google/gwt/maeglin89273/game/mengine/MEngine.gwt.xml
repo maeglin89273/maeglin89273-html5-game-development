@@ -2,11 +2,11 @@
 <module>
   <inherits name="com.google.gwt.user.User" />
   <inherits name="org.jbox2d.GwtBox2D"/>
- 
+  <inherits name="com.googlecode.gwt.crypto.Crypto"/>
   
   <source path="component"/>
   <source path="core"/>
-   <source path="game"/>
+  <source path="game"/>
   <source path="developmenttools"/>
   <source path="page"/>
   <source path="physics"/>

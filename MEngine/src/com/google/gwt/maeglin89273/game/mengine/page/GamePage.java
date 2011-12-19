@@ -17,6 +17,4 @@ public abstract class GamePage extends Page {
 		super(game);
 		// TODO Auto-generated constructor stub
 	}
-	
-	
 }

@@ -25,7 +25,9 @@ import com.google.gwt.maeglin89273.game.mengine.layer.Camera;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -37,6 +39,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class MEngine {
 	
 	private static Canvas canvas;
+	private static Storage storage;
 	
 	private static GameInfo gameInfo;
 	
@@ -44,12 +47,17 @@ public class MEngine {
 	private static AssetManager assetManager;
 	private static MousePosition mousePosition;
 	private static HandlersManager handlersManager;
+	private static Cipher cipher;
+	
 	public static void init(Game game,String assetsPrefix){
-		if(!Canvas.isSupported()){
-			RootPanel.get().add(new Label("Sorry,your browser doesn't support HTML5.Go get Chrome!"));
+		
+		if(!(Canvas.isSupported()&&Storage.isLocalStorageSupported())){
+			RootPanel.get().add(new Anchor("Sorry,your browser doesn't support HTML5.Go get Chrome!",
+					"http://chrome.google.com"));
 			return;
 		}
 		canvas=Canvas.createIfSupported();
+		storage=Storage.getLocalStorageIfSupported();
 		
 		gameInfo=game.getGameInfo();
 		
@@ -57,6 +65,7 @@ public class MEngine {
 		assetManager=new AssetManager(assetsPrefix);
 		mousePosition=new MousePosition(canvas);
 		handlersManager=new HandlersManager(canvas);
+		cipher=new Cipher();
 		
 		assetManager.loadSpriteSheets(gameInfo.getSpriteSheets());
 		Camera.setCameraSize(gameInfo.getWidth(), gameInfo.getHeight());
@@ -152,6 +161,13 @@ public class MEngine {
 			return null;
 		}
 	}
+	public static Storage getLocalStorage(){
+		return storage;
+	}
+	public static Cipher getCipher(){
+		return cipher;
+	}
+	
 	public static void addKeyDownHandler(KeyDownHandler h){
 		try{
 			handlersManager.addKeyDownHandler(h);
