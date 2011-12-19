@@ -4,38 +4,48 @@
 package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.page;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.CssColor;
-import com.google.gwt.canvas.dom.client.Context2d.TextAlign;
-import com.google.gwt.canvas.dom.client.Context2d.TextBaseline;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.button.StartButton;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Circle;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Polygon;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Rectangle;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.button.StartButton;
 import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
+import com.google.gwt.maeglin89273.game.mengine.layer.ComponentLayer;
+import com.google.gwt.maeglin89273.game.mengine.layer.GroupLayer;
 import com.google.gwt.maeglin89273.game.mengine.page.GeneralPage;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
+import com.google.gwt.user.client.Random;
 
 /**
  * @author Maeglin Liao
  *
  */
-public class ASBOTCWelcomePage extends GeneralPage {
-	private static final String textFont="40pt Century Gothic";
-	private static final CssColor textColor=CssColor.make(0,0,0);
-	private static final String shadowColor="rgba(100,100,100,0.6)";
-	StartButton button;
+public class ASBOTCWelcomePage extends GeneralPage implements MouseDownHandler,MouseUpHandler{
+	
+	private boolean mousePressed=false;
+	
+	private Creator creator;
+	private GroupLayer layers;
+	StartButton startButton;
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GeneralPage#onClick(com.google.gwt.maeglin89273.game.mengine.utility.physics.Point)
 	 */
 	
 	public ASBOTCWelcomePage(GeneralGame game) {
 		super(game);
-		button=new StartButton(game,new Point(getGameWidth()/2.0,getGameHeight()/2.0));
+		
 	}
 	
 	@Override
 	public void onClick(ClickEvent e) {
-		if(button.contain(MEngine.getMousePosition())){
-			button.doTask();
+		if(startButton.contain(MEngine.getMousePosition())){
+			startButton.doTask();
 		}
 
 	}
@@ -45,8 +55,20 @@ public class ASBOTCWelcomePage extends GeneralPage {
 	 */
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-
+		if(mousePressed){
+			switch(Random.nextInt(3)){
+				case 0:
+					new Circle(creator,MEngine.getMousePosition());
+					break;
+				case 1:
+					new Rectangle(creator,MEngine.getMousePosition());
+					break;
+				case 2:
+					new Polygon(creator,MEngine.getMousePosition());
+					
+			}
+		}
+		layers.update();
 	}
 
 	/* (non-Javadoc)
@@ -54,26 +76,34 @@ public class ASBOTCWelcomePage extends GeneralPage {
 	 */
 	@Override
 	public void draw(Context2d context) {
-		context.save();
-		context.setTextAlign(TextAlign.CENTER);
-		context.setTextBaseline(TextBaseline.MIDDLE);
-		context.setFillStyle(textColor);
-		context.setShadowColor(shadowColor);
-		context.setShadowBlur(2);
-		context.setShadowOffsetX(2);
-		context.setShadowOffsetY(2);
-		context.setFont(textFont);
-		context.fillText("A Shiny Ball On The Cross",getGameWidth()/2,125);
+		layers.draw(context);
 		
-		button.draw(context);
-		context.restore();
+	}
+	@Override
+	public void regHandlers(){
+		super.regHandlers();
+		MEngine.addMouseDownHandler(this);
+		MEngine.addMouseUpHandler(this);
+	}
+	@Override
+	public void onScreen() {
+		this.startButton=new StartButton(game,new Point(getGameWidth()/2.0,getGameHeight()/2.0));
+		this.creator=new Creator(getGameWidth(),getGameHeight());
+		layers=new GroupLayer();
+		layers.addLayer(new ComponentLayer(startButton));
+		layers.addLayer(new ComponentLayer(creator.getWorld()));
 	}
 
 	@Override
-	public void onScreen() {
-		// TODO Auto-generated method stub
+	public void onMouseUp(MouseUpEvent event) {
+		this.mousePressed=false;
+		
+	}
+
+	@Override
+	public void onMouseDown(MouseDownEvent event) {
+		this.mousePressed=true;
 		
 	}
 	
-
 }

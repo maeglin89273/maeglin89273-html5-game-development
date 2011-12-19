@@ -4,8 +4,12 @@
 package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.page;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.canvas.dom.client.Context2d.TextAlign;
+import com.google.gwt.canvas.dom.client.Context2d.TextBaseline;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.button.LevelSelectButton;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.button.LevelSelectButton;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
+import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
 import com.google.gwt.maeglin89273.game.mengine.layer.ComponentLayer;
@@ -18,7 +22,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
  *
  */
 public class ASBOTCLevelSelectPage extends GeneralPage {
-	private LevelSelectButton[] buttons=new LevelSelectButton[3];
+	private ButtonBoard board;
 	private GroupLayer layers=new GroupLayer();
 	/**
 	 * @param game
@@ -33,12 +37,10 @@ public class ASBOTCLevelSelectPage extends GeneralPage {
 	 */
 	@Override
 	public void onClick(ClickEvent event) {
-		Point p=MEngine.getMousePosition();
-		int i=(int)(p.getX()*buttons.length/getGameWidth());
-		if(buttons[i].contain(p))
-			buttons[i].doTask();
+		board.select(MEngine.getMousePosition());
+		
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.mengine.game.HasGameLoop#update()
 	 */
@@ -62,11 +64,80 @@ public class ASBOTCLevelSelectPage extends GeneralPage {
 	 */
 	@Override
 	public void onScreen() {
-		for(int i=0;i<3;i++){
-			buttons[i]=new LevelSelectButton(game,new Point(130+230*i,getGameHeight()/2),i+1);
-			layers.addLayer(new ComponentLayer(buttons[i]));
+		layers.addLayer(new ComponentLayer(new GameLabel(new Point(getGameWidth()/2,60),"You Are Playing The Experimental Version",25)));
+		board=new ButtonBoard(410,getGameWidth()/2-200,120);
+		
+		
+		
+		
+	}
+	private class ButtonBoard{
+		private LevelSelectButton[][] buttons=new LevelSelectButton[3][3];
+		
+		private static final int SPACING=20;
+		private double bounds;
+		
+		private int cornerX;
+		private int cornerY;
+		ButtonBoard(double bounds,int cornerX,int cornerY){
+			this.cornerX=cornerX;
+			this.cornerY=cornerY;
+			this.bounds=bounds;
+			
+			bounds-=2*SPACING;
+			bounds/=3;
+			int counter=0;
+			outerLoop:
+			for(int i=0;i<buttons.length;i++){
+				for(int j=0;j<buttons[i].length;j++){
+				buttons[i][j]=new LevelSelectButton(game,new Point(cornerX+bounds/2+j*(bounds+SPACING),cornerY+bounds/2+i*(bounds+SPACING)),bounds,++counter);
+				layers.addLayer(new ComponentLayer(buttons[i][j]));
+				
+				//remove it after finishing designing 9 levels
+				if(counter==5)
+					break outerLoop;
+				}
+				
+			}
+		}
+		 void select(Point p){
+			if(p.getX()>cornerX&&p.getX()<cornerX+bounds&&p.getY()>cornerY&&p.getY()<cornerY+bounds){
+				Point cl=p.clone();
+				cl.translate(-cornerX,-cornerY);
+				
+				int i=(int)(cl.getY()*buttons.length/bounds);
+				int j=(int)(cl.getX()*buttons.length/bounds);
+				if(buttons[i][j]!=null&&buttons[i][j].contain(p))
+					buttons[i][j].doTask();
+			}
+		}
+	}
+	public class GameLabel extends GeneralComponent{
+		private String string;
+		private String textFont; 
+		protected GameLabel(Point p,String string,int textSize) {
+			super(p, 0,0);
+			this.string=string;
+			this.textFont=ASBOTCConfigurations.getGameFont(textSize);
+		}
+
+		@Override
+		public void update() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void draw(Context2d context) {
+			context.save();
+			context.setTextAlign(TextAlign.CENTER);
+			context.setTextBaseline(TextBaseline.MIDDLE);
+			context.setFillStyle(ASBOTCConfigurations.Color.GRAY);
+			context.setFont(textFont);
+			context.fillText(string,getX(),getY());
+			context.restore();
+			
 		}
 		
 	}
-
 }

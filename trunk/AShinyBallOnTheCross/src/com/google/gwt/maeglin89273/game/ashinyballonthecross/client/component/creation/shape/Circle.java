@@ -9,7 +9,7 @@ import org.jbox2d.dynamics.FixtureDef;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.GameColors;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 import com.google.gwt.user.client.Random;
@@ -27,7 +27,7 @@ public class Circle extends PhysicalShape{
 	 * @param p
 	 */
 	public Circle(Creator craetor,Point p){
-		this(craetor,0,p,4+Random.nextInt(7),GameColors.getRandomShapeBorderColor());
+		this(craetor,0,p,4+Random.nextInt(7),ASBOTCConfigurations.Color.getRandomShapeBorderColor());
 	}
 	/**
 	 * 
@@ -37,7 +37,7 @@ public class Circle extends PhysicalShape{
 	 * @param color
 	 */
 	public Circle(Creator creator,Point p,double radius,CssColor color){
-		this(creator, (int)radius, p, radius, color);
+		this(creator, (int)radius/2, p, radius, color);
 	}
 	/**
 	 * 
@@ -81,6 +81,4 @@ public class Circle extends PhysicalShape{
 		context.stroke();
 		
 	}
-	
-
 }

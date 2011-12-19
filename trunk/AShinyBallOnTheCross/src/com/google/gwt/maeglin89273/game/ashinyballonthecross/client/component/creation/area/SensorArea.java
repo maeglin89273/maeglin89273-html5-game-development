@@ -3,18 +3,20 @@
  */
 package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.area;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
 
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.Contact;
 
 
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.PhysicalShape;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
 
@@ -23,7 +25,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
  *
  */
 public abstract class SensorArea extends PhysicalArea implements ContactListener{
-	protected Set<PhysicalShape> contentShapes=new HashSet<PhysicalShape>();
+	protected List<Dynamic> contentCreations=new ArrayList<Dynamic>();
 	
 	/**
 	 * @param creator
@@ -43,9 +45,9 @@ public abstract class SensorArea extends PhysicalArea implements ContactListener
 	@Override
 	public void destroy(){
 		creator.getWorld().removeContactListener(this);
-		contentShapes.clear();
-		contentShapes=null;
 		super.destroy();
+		contentCreations.clear();
+		contentCreations=null;
 	}
 	
 	/* (non-Javadoc)
@@ -57,11 +59,13 @@ public abstract class SensorArea extends PhysicalArea implements ContactListener
 		Fixture fixB=contact.getFixtureB();
 		
 		for(Fixture fix:fixtures){
-			if(fixA.equals(fix)&&(fixB.getUserData() instanceof PhysicalShape)){
-				contentShapes.add((PhysicalShape)fixB.getUserData());
+			if(fixA.equals(fix)&&(fixB.getUserData() instanceof Dynamic)
+					&&!contentCreations.contains(fixB.getUserData())){
+				contentCreations.add((Dynamic)fixB.getUserData());
 				return;
-			}else if(fixB.equals(fix)&&(fixA.getUserData() instanceof PhysicalShape)){
-				contentShapes.add((PhysicalShape)fixA.getUserData());
+			}else if(fixB.equals(fix)&&(fixA.getUserData() instanceof Dynamic)
+					&&!contentCreations.contains(fixA.getUserData())){
+				contentCreations.add((Dynamic)fixA.getUserData());
 				return;
 			}
 		}
@@ -69,23 +73,6 @@ public abstract class SensorArea extends PhysicalArea implements ContactListener
 
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jbox2d.callbacks.ContactListener#endContact(org.jbox2d.dynamics.contacts.Contact)
-	 */
-	@Override
-	public void endContact(Contact contact) {
-		Fixture fixA=contact.getFixtureA();
-		Fixture fixB=contact.getFixtureB();
-		for(Fixture fix:fixtures){
-			if(fixA.equals(fix)&&(fixB.getUserData() instanceof PhysicalShape)){
-				contentShapes.remove((PhysicalShape)fixB.getUserData());
-				return;
-			}else if(fixB.equals(fix)&&(fixA.getUserData() instanceof PhysicalShape)){
-				contentShapes.remove((PhysicalShape)fixA.getUserData());
-				return;
-			}
-		}
-	}
 	
 	/* (non-Javadoc)
 	 * @see org.jbox2d.callbacks.ContactListener#preSolve(org.jbox2d.dynamics.contacts.Contact, org.jbox2d.collision.Manifold)
@@ -104,6 +91,19 @@ public abstract class SensorArea extends PhysicalArea implements ContactListener
 		// TODO Auto-generated method stub
 
 	}
-	
-	
+	//for solving the overlap problems, we should build a checker to solve it.
+	public static class Checker{
+		private Fixture[] fixtures;
+		public Checker(Fixture... fixtures){
+			this.fixtures=fixtures;
+		}
+		public boolean checkPointIsOut(Vec2 p){
+			for(Fixture fix:fixtures){
+				if(fix.testPoint(p)){
+					return false;
+				}
+			}
+			return true;
+		}
+	}
 }

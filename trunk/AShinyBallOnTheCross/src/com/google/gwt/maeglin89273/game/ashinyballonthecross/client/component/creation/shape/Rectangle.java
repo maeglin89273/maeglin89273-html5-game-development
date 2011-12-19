@@ -10,7 +10,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.PhysicalWorld;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.GameColors;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 import com.google.gwt.user.client.Random;
@@ -26,7 +26,7 @@ public class Rectangle extends PhysicalShape{
 	 * @param p
 	 */
 	public Rectangle(Creator creator,Point p){
-		this(creator, p,Random.nextDouble()*Math.PI, 5+Random.nextInt(21), 5+Random.nextInt(21),GameColors.getRandomShapeBorderColor());
+		this(creator,0, p,Random.nextDouble()*Math.PI, 5+Random.nextInt(21), 5+Random.nextInt(21),ASBOTCConfigurations.Color.getRandomShapeBorderColor());
 	}
 	/**
 	 * 
@@ -60,7 +60,7 @@ public class Rectangle extends PhysicalShape{
 			shape.setAsBox(CoordinateConverter.scalerPixelsToWorld(width/2), CoordinateConverter.scalerPixelsToWorld(height/2));
 			
 			fixtureDef.shape=shape;
-			fixtureDef.friction=0.45f;
+			fixtureDef.friction=0.6f;
 			fixtureDef.density=1.2f;
 			fixtureDef.restitution=0.6f;
 			fixtureDef.userData=this;

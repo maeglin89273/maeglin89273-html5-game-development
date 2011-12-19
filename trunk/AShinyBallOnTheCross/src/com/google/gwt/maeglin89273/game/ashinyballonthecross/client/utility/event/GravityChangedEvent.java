@@ -24,5 +24,4 @@ public class GravityChangedEvent extends EventObject {
 	public Vec2 getGravity(){
 		return gravity;
 	}
-
 }

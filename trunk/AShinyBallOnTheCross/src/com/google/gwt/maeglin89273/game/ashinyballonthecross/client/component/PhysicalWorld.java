@@ -168,14 +168,15 @@ public class PhysicalWorld extends GeneralComponent implements Spacial,GravityCh
 			dots.get(i).update();
 			
 		}
-		for(i=shapes.size()-1;i>=0;i--){
-			shapes.get(i).update();
-			
-		}
 		for(i=otherCreations.size()-1;i>=0;i--){
 			otherCreations.get(i).update();
 			
 		}
+		for(i=shapes.size()-1;i>=0;i--){
+			shapes.get(i).update();
+			
+		}
+		
 	}
 	
 	@Override
@@ -190,12 +191,13 @@ public class PhysicalWorld extends GeneralComponent implements Spacial,GravityCh
 		for(Dot dot:dots){
 			dot.draw(context);
 		}
-		for(Physical shape:shapes){
-			shape.draw(context);
-		}
 		for(Creation creation:otherCreations){
 			creation.draw(context);
 		}
+		for(Physical shape:shapes){
+			shape.draw(context);
+		}
+		
 	}
 	@Override
 	public World getWorld() {

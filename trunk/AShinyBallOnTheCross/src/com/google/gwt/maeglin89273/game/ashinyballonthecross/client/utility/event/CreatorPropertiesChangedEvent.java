@@ -31,7 +31,5 @@ public class CreatorPropertiesChangedEvent extends EventObject {
 	public int getScore(){
 		return ((Creator)this.source).getScore();
 	}
-	public int getMaxPower(){
-		return ((Creator)this.source).getMaxPower();
-	}
+	
 }

@@ -11,6 +11,7 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.c
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.CreationDefiner;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
 
@@ -21,15 +22,18 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
  */
 public abstract class Line extends MainCreation{
 	
-	public static final int MAX_LENGTH=200;
+	public static final int MAX_LENGTH=250;
+	public static final int MIN_LENGTH_SQUARE = 13*13;
 	protected final Point pointA=new Point(0,0);
 	protected final Point pointB=new Point(0,0);
 	
 	protected Line(Creator creator,int contentPower,boolean beControlled,Point p1, Point p2) {
-		super(creator,contentPower, beControlled, new Point((p1.getX()+p2.getX())/2,(p1.getY()+p2.getY())/2), 0,0, 0);
+		super(creator,contentPower, beControlled, Point.getCenter(p1, p2), Point.getDistance(p1, p2),0,p1.delta(p2).getAngle());
 		if(this.isVerified()){
-			pointA.setPosition(p1);
-			pointB.setPosition(p2);
+			if(!p1.equals(p2)){
+				pointA.setPosition(p1);
+				pointB.setPosition(p2);
+			}
 		}
 	}
 	public Point getPointA(){
@@ -54,7 +58,7 @@ public abstract class Line extends MainCreation{
 		}
 		@Override
 		public void updatePenPosition(Point p){
-			if(pointA!=null){
+			if(pointA!=null&&!pointA.equals(p)){
 				Vector v=pointA.delta(p);
 				if(v.getMagnitude()<Line.MAX_LENGTH){
 					pointB=p;
@@ -71,20 +75,24 @@ public abstract class Line extends MainCreation{
 		}
 		@Override
 		public void onPenUp(Point p){
-			if(pointA!=null){
-				updatePenPosition(p);
-				defineFinished();
-				reset();
+			
+			updatePenPosition(p);
+			if(pointA!=null&&pointB!=null){
+				if(pointA.delta(pointB).getSquare()<MIN_LENGTH_SQUARE){
+					new FragmentalLine(creator, getCreationRequiredPower(), true, pointA, pointB, ASBOTCConfigurations.Color.DARK_GRAY);
+				}else{
+					defineFinished();
+				}
 			}
+			reset();
+			
 		}
 		@Override 
 		public int getCreationRequiredPower(){
 			if(pointA!=null&&pointB!=null){
-				return Math.round((float)(requiredFullPower*pointA.delta(pointB).getMagnitude()/Line.MAX_LENGTH));
+				return Math.max(1,Math.round((float)(requiredFullPower*pointA.delta(pointB).getMagnitude()/Line.MAX_LENGTH)));
 			}
 			return 0;
 		}
 	}
-	
-	
 }

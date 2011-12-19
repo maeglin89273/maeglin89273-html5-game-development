@@ -6,14 +6,15 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.c
 
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.area.ArrowArea;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.area.MagneticArea;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.area.GravitationalArea;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.area.Area.AreaDefiner;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.dot.CircleBombDot;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.dot.PolygonBombDot;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.dot.RectangleBombDot;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.dot.Dot.DotDefiner;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.line.BreakableLine;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.line.CementLine;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.line.ElasticLine;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.line.MagneticLine;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.line.ShapesLine;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.line.SimpleStaticLine;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.line.Line.LineDefiner;
@@ -25,9 +26,9 @@ import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.cr
  *
  */
 public class DefinersFactory {
-	public enum LineDefinerType{BREALABLE_LINE,SIMPLE_STATIC_LINE,ELASTIC_LINE,SHAPES_LINE,NONE};
+	public enum LineDefinerType{CEMENT_LINE,SIMPLE_STATIC_LINE,ELASTIC_LINE,SHAPES_LINE,MAGNETIC_LINE,NONE};
 	public enum DotDefinerType{POLYGON_BOMB_DOT,CIRCLE_BOMB_DOT,RECTANGLE_BOMB_DOT,NONE};
-	public enum AreaDefinerType{MAGNETIC_AREA,ARROW_AREA,NONE};
+	public enum AreaDefinerType{GRAVITATIONAL_AREA,ARROW_AREA,NONE};
 	
 	private Creator creator;
 	public DefinersFactory(Creator creator){
@@ -42,8 +43,8 @@ public class DefinersFactory {
 	}
 	public CreationDefiner getAreaDefiner(AreaDefinerType type){
 		switch(type){
-			case MAGNETIC_AREA:
-				return new MagneticArea.MagneticAreaDefiner(creator);
+			case GRAVITATIONAL_AREA:
+				return new GravitationalArea.GravitationalAreaDefiner(creator);
 			case ARROW_AREA:
 				return new ArrowArea.ArrowAreaDefiner(creator);
 			case NONE:
@@ -60,14 +61,16 @@ public class DefinersFactory {
 	}
 	public CreationDefiner getLineDefiner(LineDefinerType type){
 		switch(type){
-			case BREALABLE_LINE:
-				return new BreakableLine.BreakableLineDefiner(creator);
+			case CEMENT_LINE:
+				return new CementLine.CementLineDefiner(creator);
 			case SIMPLE_STATIC_LINE:
 				return new SimpleStaticLine.BlackStaticLineDefiner(creator);
 			case ELASTIC_LINE:
 				return new ElasticLine.ElasticLineDefiner(creator);
 			case SHAPES_LINE:
-				return new ShapesLine.ShapesLineDefiner(creator, 23);
+				return new ShapesLine.ShapesLineDefiner(creator);
+			case MAGNETIC_LINE:
+				return new MagneticLine.MagneticLineDefiner(creator);
 			case NONE:
 				return new CreationDefiner.NoneDefiner();
 		}

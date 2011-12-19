@@ -6,7 +6,8 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component;
 
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Creation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.pseudo.LevelContext;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.DefaultLevel;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.LevelContext;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.CreatorPropertiesChangedEvent;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.CreatorPropertiesChangedListener;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GameOverCallback;
@@ -33,20 +34,28 @@ public class Creator {
 	
 	private final List<MainCreation> creations=new ArrayList<MainCreation>();
 	private final List<CreatorPropertiesChangedListener> listeners=new ArrayList<CreatorPropertiesChangedListener>();
+	
 	private final PhysicalWorld world;
-	private final int gravityD;
 	private final LevelContext level;
+	
 	private boolean built=false;
+	public Creator(int w,int h){
+		this(new DefaultLevel(w,h));
+	}
 	public Creator(LevelContext level){
 		
 		/*use LevelContext as the argument for initializing this creator
 		 * the properties below depends on LevelContext
 		*/
 		this.level = level;
-		this.gravityD=level.getGravityInDegrees();
-		maxPower=power=score=600;
 		
-		this.world=new PhysicalWorld(level.getScreenCenter(),level.getLevelWidth(),level.getLevelHeight(),GravityIndicator.getGravityByDegrees(this.gravityD));
+		maxPower=power=score=level.getFullPower();
+		
+		this.world=new PhysicalWorld(level.getScreenCenter(),level.getLevelWidth(),level.getLevelHeight()
+				,GravityIndicator.getGravityByDegrees(level.getGravityAngleInDegrees()));
+	}
+	public LevelContext getLevel(){
+		return level;
 	}
 	public void build(GameOverCallback callback){
 		if(!built)
@@ -56,9 +65,7 @@ public class Creator {
 	public PhysicalWorld getWorld(){
 		return world;
 	}
-	public int getGravityAngleInDegrees(){
-		return gravityD;
-	}
+	
 	public int getScore(){
 		return score;
 	}
@@ -73,7 +80,9 @@ public class Creator {
 		listeners.add(l);
 	}
 	public void removePropertiesChangeListener(CreatorPropertiesChangedListener l){
-		listeners.remove(l);
+		int i=listeners.lastIndexOf(l);
+		if(i>=0)
+			listeners.remove(i);
 	}
 	private void fireScoreChangedEvents(CreatorPropertiesChangedEvent event){
 		
@@ -98,9 +107,11 @@ public class Creator {
 		if(power<c.getContentPower()){
 			return false;
 		}
-		power-=c.getContentPower();
-		firePowerChangedEvents(new CreatorPropertiesChangedEvent(this));
-		updateScore();
+		if(c.getContentPower()!=0){
+			power-=c.getContentPower();
+			firePowerChangedEvents(new CreatorPropertiesChangedEvent(this));
+			updateScore();
+		}
 		return true;
 	}
 	/**
@@ -119,7 +130,7 @@ public class Creator {
 	}
 	
 	public void restore(){
-		if(power<600&&bufferRestorePower>0){
+		if(power<maxPower&&bufferRestorePower>0){
 			bufferRestorePower--;
 			power++;
 			firePowerChangedEvents(new CreatorPropertiesChangedEvent(this));
@@ -157,6 +168,4 @@ public class Creator {
 			this.creations.get(creations.size()-1).destroy();
 		}
 	}
-	
-	
 }

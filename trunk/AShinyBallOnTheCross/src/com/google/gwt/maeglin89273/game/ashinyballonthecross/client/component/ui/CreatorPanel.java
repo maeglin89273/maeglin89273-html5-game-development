@@ -1,14 +1,18 @@
 /**
  * 
  */
-package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component;
+package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.CreationDefiner;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.DefinersFactory.*;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.key.*;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.pseudo.LevelContext;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.key.*;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.DefiningEvent;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.DefiningListener;
 import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
+import com.google.gwt.user.client.Window;
 
 /**
  * @author Maeglin Liao
@@ -21,20 +25,31 @@ public class CreatorPanel extends GeneralComponent {
 	
 	private final CreativeKey[] keys=new CreativeKey[3];
 	private boolean anyKeyPressed=false;
+	
+	private DefiningListener dListener;
+	private Creator creator;
 	/**
 	 * @param p
 	 * @param w
 	 * @param h
 	 */
-	public CreatorPanel(LevelContext level,double screenWidth,double screenHeight) {
+	public CreatorPanel(Creator creator,double screenWidth,double screenHeight) {
 		super(new Point(screenWidth*3/16,screenHeight-screenWidth*1/16), screenWidth*3/8, screenWidth*1/8);
 		double halfH=getHeight()/2;
 		double oneThirdW=getWidth()/3;
-		keys[AREA_KEY_INDEX]=new AreaKey(new Point(getX()-oneThirdW,getTopY()+halfH),oneThirdW,getHeight(),level.getAreaDefinerTypes());
-		keys[LINE_KEY_INDEX]=new LineKey(new Point(getX(),getTopY()+halfH),oneThirdW,getHeight(),level.getLineDefinerTypes());
-		keys[DOT_KEY_INDEX]=new DotKey(new Point(getX()+oneThirdW,getTopY()+halfH),oneThirdW,getHeight(),level.getDotDefinerTypes());
-		
+		this.creator=creator;
+		this.keys[AREA_KEY_INDEX]=new AreaKey(new Point(getX()-oneThirdW,getTopY()+halfH),oneThirdW,getHeight(),creator.getLevel().getAreaDefinerTypes());
+		this.keys[LINE_KEY_INDEX]=new LineKey(new Point(getX(),getTopY()+halfH),oneThirdW,getHeight(),creator.getLevel().getLineDefinerTypes());
+		this.keys[DOT_KEY_INDEX]=new DotKey(new Point(getX()+oneThirdW,getTopY()+halfH),oneThirdW,getHeight(),creator.getLevel().getDotDefinerTypes());
+	
 	}
+	public void setDefiningListener(DefiningListener listener){
+		this.dListener=listener;
+	}
+	public void removeDefiningListener(){
+		this.dListener=null;
+	}
+	
 	public CreativeKey[] getKeys(){
 		return keys;
 	}
@@ -53,9 +68,17 @@ public class CreatorPanel extends GeneralComponent {
 		}
 	}
 	public void updatePenPosition(Point p){
-		for(CreativeKey k:keys){
-			if(k.isPressed()){
-				k.getDefiner().updatePenPosition(p);
+		if(isAnyKeyPressed()){
+			int totalExRePower=0;
+			for(CreativeKey k:keys){
+				if(k.isPressed()){
+					k.getDefiner().updatePenPosition(p);
+					totalExRePower+=k.getDefiner().getCreationRequiredPower();
+				}
+			}
+			if(this.dListener!=null){
+				totalExRePower=Math.max(0, creator.getPower()-totalExRePower);
+				this.dListener.defining(new DefiningEvent(this,totalExRePower));
 			}
 		}
 	}
@@ -90,7 +113,7 @@ public class CreatorPanel extends GeneralComponent {
 		anyKeyPressed=p;
 	}
 	
-	public void resetSketchers(){
+	public void resetDefiners(){
 		for(CreativeKey key:keys){
 			if(key.isPressed()){
 				key.resetDefiner();

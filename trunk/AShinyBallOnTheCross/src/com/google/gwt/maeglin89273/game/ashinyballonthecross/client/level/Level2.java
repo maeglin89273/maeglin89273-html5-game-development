@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.pseudo;
+package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level;
 
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Cross;
@@ -23,22 +23,20 @@ public class Level2 extends LevelContext {
 	 * @param screenCenter
 	 */
 	public Level2(Point screenCenter) {
-		super(screenCenter);
-		this.width=screenCenter.getX()*2;
-		this.height=screenCenter.getY()*2.25;
+		super(screenCenter,screenCenter,screenCenter.getX()*2,screenCenter.getY()*2.25,300);
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.game.ashinyballonthecross.client.pseudo.LevelContext#getAreaDefinerTypes()
+	 * @see com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.LevelContext#getAreaDefinerTypes()
 	 */
 	@Override
 	public AreaDefinerType[] getAreaDefinerTypes() {
 		
-		return new AreaDefinerType[]{AreaDefinerType.ARROW_AREA,AreaDefinerType.MAGNETIC_AREA};
+		return new AreaDefinerType[]{AreaDefinerType.ARROW_AREA,AreaDefinerType.GRAVITATIONAL_AREA};
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.game.ashinyballonthecross.client.pseudo.LevelContext#getLineDefinerTypes()
+	 * @see com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.LevelContext#getLineDefinerTypes()
 	 */
 	@Override
 	public LineDefinerType[] getLineDefinerTypes() {
@@ -47,7 +45,7 @@ public class Level2 extends LevelContext {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.game.ashinyballonthecross.client.pseudo.LevelContext#getDotDefinerTypes()
+	 * @see com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.LevelContext#getDotDefinerTypes()
 	 */
 	@Override
 	public DotDefinerType[] getDotDefinerTypes() {
@@ -56,17 +54,17 @@ public class Level2 extends LevelContext {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.game.ashinyballonthecross.client.pseudo.LevelContext#buildLevel(com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator, com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GameOverCallback)
+	 * @see com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.LevelContext#buildLevel(com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator, com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GameOverCallback)
 	 */
 	@Override
 	public void buildLevel(Creator creator, GameOverCallback callback) {
 		new ShinyBall(creator,new Point(500,150));
 		new SimpleStaticLine(creator,new Point(160,270),new Point(560,270));
-		new Cross(creator, new Point(getScreenCenter().getX(),385),Math.toRadians(getGravityInDegrees()-90), callback);
+		new Cross(creator, new Point(getScreenCenter().getX(),385),getGravityAngleInDegrees(), callback);
 	}
 
 	@Override
-	public int getGravityInDegrees() {
+	public int getGravityAngleInDegrees() {
 		
 		return 180;
 	}

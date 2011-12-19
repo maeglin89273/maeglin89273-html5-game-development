@@ -5,7 +5,6 @@ import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 
 
 
-
 /**
  * Entry position classes define <code>onModuleLoad()</code>.
  */

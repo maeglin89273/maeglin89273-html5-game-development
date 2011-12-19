@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.pseudo;
+package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level;
 
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.DefinersFactory.AreaDefinerType;
@@ -16,15 +16,27 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
  */
 public abstract class LevelContext {
 	protected final Point screenCenter;
-	protected double width;
-	protected double height;
+	private final Point viewPoint;
+	private final int  fullPower;
+	protected final double width;
+	protected final double height;
 	
 	/**
 	 * 
 	 */
-	public LevelContext(Point screenCenter) {
+	public LevelContext(Point screenCenter,Point cameraViewPoint,double width,double height,int fullPower) {
 		this.screenCenter = screenCenter;
+		this.viewPoint = cameraViewPoint;
+		this.width = width;
+		this.height = height;
+		this.fullPower = fullPower;
 		
+	}
+	/**
+	 * @return the viewPoint
+	 */
+	public Point getCameraViewPoint() {
+		return viewPoint.clone();
 	}
 	public Point getScreenCenter(){
 		return screenCenter.clone();
@@ -35,10 +47,12 @@ public abstract class LevelContext {
 	public double getLevelHeight(){
 		return height;
 	}
-	public abstract int getGravityInDegrees();
+	public int getFullPower(){
+		return fullPower;
+	}
+	public abstract int getGravityAngleInDegrees();
 	public abstract AreaDefinerType[] getAreaDefinerTypes();
 	public abstract LineDefinerType[] getLineDefinerTypes();
 	public abstract DotDefinerType[] getDotDefinerTypes();
 	public abstract void buildLevel(Creator creator,GameOverCallback callback);
-	
 }
