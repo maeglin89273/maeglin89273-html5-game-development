@@ -19,7 +19,6 @@ import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.even
 import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteBlock;
 import com.google.gwt.maeglin89273.game.mengine.component.button.BoxButton;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
-import com.google.gwt.maeglin89273.game.mengine.layer.ComponentLayer;
 import com.google.gwt.maeglin89273.game.mengine.layer.GroupLayer;
 import com.google.gwt.maeglin89273.game.mengine.layer.ImageLayer;
 import com.google.gwt.maeglin89273.game.mengine.page.GeneralPage;

@@ -11,10 +11,8 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
-import com.google.gwt.maeglin89273.game.mengine.physics.PixelAABB;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
-import com.google.gwt.user.client.Window;
 
 
 

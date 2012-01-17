@@ -9,13 +9,11 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.Fixture;
 
-import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.mengine.component.Physical;
 import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
-import com.google.gwt.maeglin89273.game.mengine.physics.PixelAABB;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
 

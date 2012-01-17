@@ -10,7 +10,6 @@ import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.cr
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.PhysicalShape;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.user.client.Random;
 
 /**
  * @author Maeglin Liao

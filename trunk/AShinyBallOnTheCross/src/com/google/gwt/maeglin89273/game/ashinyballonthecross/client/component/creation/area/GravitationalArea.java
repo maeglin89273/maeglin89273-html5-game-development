@@ -4,8 +4,6 @@
 package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.area;
 
 
-
-
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Settings;
 import org.jbox2d.common.Vec2;
@@ -22,7 +20,6 @@ import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.cr
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.user.client.Window;
 
 /**
  * @author Maeglin Liao

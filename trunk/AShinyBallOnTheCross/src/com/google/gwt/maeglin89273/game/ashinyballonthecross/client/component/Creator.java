@@ -4,19 +4,15 @@
 package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Creation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.Level;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.CreatorPropertiesChangedEvent;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.CreatorPropertiesChangedListener;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GameOverCallback;
-import com.google.gwt.maeglin89273.game.mengine.asset.JsonFile;
-import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
-import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 

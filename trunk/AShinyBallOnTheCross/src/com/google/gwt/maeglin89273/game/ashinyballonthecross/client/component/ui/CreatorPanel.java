@@ -5,14 +5,14 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.u
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.CreationDefiner;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.DefinersFactory.*;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.key.*;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.key.AreaKey;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.key.CreativeKey;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.key.DotKey;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.key.LineKey;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.DefiningEvent;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.DefiningListener;
 import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.user.client.Window;
 
 /**
  * @author Maeglin Liao
