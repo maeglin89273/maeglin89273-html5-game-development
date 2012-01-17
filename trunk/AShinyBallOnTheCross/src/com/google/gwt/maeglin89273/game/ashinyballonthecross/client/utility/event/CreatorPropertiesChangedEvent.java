@@ -17,19 +17,18 @@ public class CreatorPropertiesChangedEvent extends EventObject {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	/**
 	 * @param source
 	 */
 	public CreatorPropertiesChangedEvent(Object source) {
 		super(source);
-		
 	}
 	public int getPower(){
 		return ((Creator)this.source).getPower();
 	}
+	
 	public int getScore(){
 		return ((Creator)this.source).getScore();
 	}
-	
 }

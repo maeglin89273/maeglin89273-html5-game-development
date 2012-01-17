@@ -10,8 +10,7 @@ import org.jbox2d.dynamics.FixtureDef;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.PhysicalWorld;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
@@ -31,7 +30,7 @@ public class Polygon extends PhysicalShape {
 	 */
 	public Polygon(Creator creator,Point p){
 		this(creator,0, p,0, generateRandomInscribedPolygonVertices(3+Random.nextInt(6),12+Random.nextInt(4))
-				,ASBOTCConfigurations.Color.getRandomShapeBorderColor());
+				,ASBOTXConfigs.Color.getRandomShapeBorderColor());
 	}
 	/**
 	 * 
@@ -73,9 +72,8 @@ public class Polygon extends PhysicalShape {
 			fixtureDef.friction=0.7f;
 			fixtureDef.density=1.5f;
 			fixtureDef.restitution=0.5f;
-			fixtureDef.userData=this;
-			fixture=body.createFixture(fixtureDef);
-			aabb=fixture.getAABB();
+			
+			aabb=body.createFixture(fixtureDef).getAABB();
 		}
 	}
 	

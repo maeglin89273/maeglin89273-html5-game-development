@@ -17,7 +17,7 @@ import org.jbox2d.dynamics.contacts.Contact;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
 /**
@@ -28,6 +28,7 @@ public class ElasticLine extends ContactStaticLine {
 	
 	private static final float  IMPULSE_MAGNITUDE=0.3f;
 	private Set<Dynamic> contactShapes=new HashSet<Dynamic>();
+	
 	
 	/**
 	 * 
@@ -49,8 +50,7 @@ public class ElasticLine extends ContactStaticLine {
 	 * @param color
 	 */
 	private ElasticLine(Creator creator, int cotentPower,boolean beControlled, Point p1, Point p2) {
-		super(creator, cotentPower,beControlled, p1, p2, ASBOTCConfigurations.Color.LIGHT_BLUE);
-		
+		super(creator, cotentPower,beControlled, p1, p2, ASBOTXConfigs.Color.LIGHT_BLUE);
 	}
 	
 	@Override
@@ -70,51 +70,33 @@ public class ElasticLine extends ContactStaticLine {
 			
 		}
 	}
+	@Override
+	public void beginContact(Contact contact, Fixture thisFixture, Fixture thatFixture) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void endContact(Contact contact, Fixture thisFixture, Fixture thatFixture) {
+		if(thatFixture.getBody().getUserData() instanceof Dynamic)
+		contactShapes.add((Dynamic)thatFixture.getBody().getUserData());
+		
+	}
+	@Override
+	public void preSolve(Contact contact, Manifold oldManifold, Fixture thisFixture, Fixture thatFixture) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void postSolve(Contact contact, ContactImpulse impulse, Fixture thisFixture, Fixture thatFixture) {
+		// TODO Auto-generated method stub
+		
+	}
 	
-	/* (non-Javadoc)
-	 * @see org.jbox2d.callbacks.ContactListener#beginContact(org.jbox2d.dynamics.contacts.Contact)
-	 */
-	@Override
-	public void beginContact(Contact contact) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.jbox2d.callbacks.ContactListener#endContact(org.jbox2d.dynamics.contacts.Contact)
-	 */
-	@Override
-	public void endContact(Contact contact) {
-		Fixture fixA=contact.getFixtureA();
-		Fixture fixB=contact.getFixtureB();
-		if(fixA.equals(fixture)&&(fixB.getUserData() instanceof Dynamic)){
-			contactShapes.add((Dynamic)fixB.getUserData());
-		}else if(fixB.equals(fixture)&&(fixA.getUserData() instanceof Dynamic)){
-			contactShapes.add((Dynamic)fixA.getUserData());
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.jbox2d.callbacks.ContactListener#preSolve(org.jbox2d.dynamics.contacts.Contact, org.jbox2d.collision.Manifold)
-	 */
-	@Override
-	public void preSolve(Contact contact, Manifold oldManifold) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.jbox2d.callbacks.ContactListener#postSolve(org.jbox2d.dynamics.contacts.Contact, org.jbox2d.callbacks.ContactImpulse)
-	 */
-	@Override
-	public void postSolve(Contact contact, ContactImpulse impulse) {
-		// TODO Auto-generated method stub
-
-	}
+	
 	public static class ElasticLineDefiner extends StaticLineDefiner{
 
 		public ElasticLineDefiner(Creator creator) {
-			super(creator,ASBOTCConfigurations.CreationPowerComsumption.ELASTIC_LINE,new Point(2*ICON_BOUNDS_PLUS_SPACING,ICON_BOUNDS_PLUS_SPACING),ASBOTCConfigurations.Color.LIGHT_BLUE);
+			super(creator,ASBOTXConfigs.CreationPowerComsumption.ELASTIC_LINE,new Point(2*ICON_BOUNDS_PLUS_SPACING,ICON_BOUNDS_PLUS_SPACING),ASBOTXConfigs.Color.LIGHT_BLUE);
 		}
 
 		@Override
@@ -123,4 +105,5 @@ public class ElasticLine extends ContactStaticLine {
 		}
 		
 	}
+	
 }

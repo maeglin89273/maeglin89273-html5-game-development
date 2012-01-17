@@ -7,7 +7,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteBlock;
+import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteBlock;
 
 /**
  * @author Maeglin Liao
@@ -24,10 +24,10 @@ public abstract class CreationDefiner {
 		this.creator = creator;
 		this.requiredFullPower = requiredFullPower;
 		if(iconCorner==null){
-			this.icon=new SpriteBlock(420, 420, ICON_BOUNDS, ICON_BOUNDS, MEngine.getAssetManager().getSpriteSheet("definers_icons.png"));
+			this.icon=new SpriteBlock(420, 420, ICON_BOUNDS, ICON_BOUNDS, MEngine.getAssetManager().getSpriteSheet("images/definers_icons.png"));
 		}else{
 			this.icon=new SpriteBlock((int)iconCorner.getX(), (int)iconCorner.getY(), ICON_BOUNDS, ICON_BOUNDS,
-					MEngine.getAssetManager().getSpriteSheet("definers_icons.png"));
+					MEngine.getAssetManager().getSpriteSheet("images/definers_icons.png"));
 		}
 	}
 	public MainCreation defineFinished(){

@@ -19,9 +19,10 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
+import com.google.gwt.user.client.Window;
 
 /**
  * @author Maeglin Liao
@@ -29,6 +30,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
  */
 public class GravitationalArea extends SensorArea {
 	private final double radius;
+	private static float K=1.3f;
 	private Vec2 center;
 	
 	/**
@@ -65,8 +67,8 @@ public class GravitationalArea extends SensorArea {
 			fixtureDef.isSensor=true;
 			fixtureDef.shape=shape;
 			
-			fixtures=new Fixture[]{body.createFixture(fixtureDef)};
-			aabb=fixtures[0].getAABB();
+			Fixture fixture=body.createFixture(fixtureDef);
+			aabb=fixture.getAABB();
 			
 		}else{
 			this.radius=0;
@@ -96,7 +98,7 @@ public class GravitationalArea extends SensorArea {
 				float lengthS=v.lengthSquared();
 				if(lengthS>Settings.EPSILON*Settings.EPSILON){
 					v.normalize();
-					v.mulLocal((float)radius*dc.getBody().getMass());
+					v.mulLocal((float)radius*K*dc.getBody().getMass());
 					dc.getBody().applyForce(v, dc.getBody().getWorldCenter());
 				}
 			}
@@ -108,8 +110,8 @@ public class GravitationalArea extends SensorArea {
 	 */
 	@Override
 	public void draw(Context2d context) {
-		context.setFillStyle(ASBOTCConfigurations.Color.TRANSLUCENT_DARK_GRAY);
-		context.setStrokeStyle(ASBOTCConfigurations.Color.DARK_GRAY);
+		context.setFillStyle(ASBOTXConfigs.Color.TRANSLUCENT_DARK_GRAY);
+		context.setStrokeStyle(ASBOTXConfigs.Color.DARK_GRAY);
 		context.setLineWidth(2);
 		context.beginPath();
 		context.arc(getX(), getY(), radius, 2*Math.PI, 0);
@@ -122,30 +124,22 @@ public class GravitationalArea extends SensorArea {
 	 * @see org.jbox2d.callbacks.ContactListener#endContact(org.jbox2d.dynamics.contacts.Contact)
 	 */
 	@Override
-	public void endContact(Contact contact) {
-		Fixture fixA=contact.getFixtureA();
-		Fixture fixB=contact.getFixtureB();
-		for(Fixture fix:fixtures){
-			if(fixA.equals(fix)&&(fixB.getUserData() instanceof Dynamic)){
-				contentCreations.remove((Dynamic)fixB.getUserData());
-				return;
-			}else if(fixB.equals(fix)&&(fixA.getUserData() instanceof Dynamic)){
-				contentCreations.remove((Dynamic)fixA.getUserData());
-				return;
-			}
+	public void endContact(Contact contact, Fixture thisFixture, Fixture thatFixture) {
+		if(thatFixture.getBody().getUserData() instanceof Dynamic){
+			contentCreations.remove((Dynamic)thatFixture.getBody().getUserData());
 		}
 	}
 	public static class GravitationalAreaDefiner extends CircleKindAreaDefiner{
 
 		public GravitationalAreaDefiner(Creator creator) {
-			super(creator,ASBOTCConfigurations.CreationPowerComsumption.GRAVITATIONAL_AREA,new Point(ICON_BOUNDS_PLUS_SPACING,0),85,20);
+			super(creator,ASBOTXConfigs.CreationPowerComsumption.GRAVITATIONAL_AREA,new Point(ICON_BOUNDS_PLUS_SPACING,0),85,20);
 		}
 
 		@Override
 		public void sketch(Context2d context) {
 			if(center!=null){
-				context.setFillStyle(ASBOTCConfigurations.Color.TRANSLUCENT_DARK_GRAY);
-				context.setStrokeStyle(ASBOTCConfigurations.Color.DARK_GRAY);
+				context.setFillStyle(ASBOTXConfigs.Color.TRANSLUCENT_DARK_GRAY);
+				context.setStrokeStyle(ASBOTXConfigs.Color.DARK_GRAY);
 				context.setLineWidth(2);
 				context.beginPath();
 				context.arc(center.getX(),center.getY(), radius, 2*Math.PI, 0);

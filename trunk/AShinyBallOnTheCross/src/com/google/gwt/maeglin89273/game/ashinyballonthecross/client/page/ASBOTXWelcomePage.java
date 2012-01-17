@@ -13,11 +13,15 @@ import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Cr
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Circle;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Polygon;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Rectangle;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.button.StartButton;
-import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.Level;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GameOverCallback;
+import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteBlock;
+import com.google.gwt.maeglin89273.game.mengine.component.button.BoxButton;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.layer.ComponentLayer;
 import com.google.gwt.maeglin89273.game.mengine.layer.GroupLayer;
+import com.google.gwt.maeglin89273.game.mengine.layer.ImageLayer;
 import com.google.gwt.maeglin89273.game.mengine.page.GeneralPage;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.user.client.Random;
@@ -26,28 +30,18 @@ import com.google.gwt.user.client.Random;
  * @author Maeglin Liao
  *
  */
-public class ASBOTCWelcomePage extends GeneralPage implements MouseDownHandler,MouseUpHandler{
+public class ASBOTXWelcomePage extends GeneralPage implements MouseDownHandler,MouseUpHandler{
 	
 	private boolean mousePressed=false;
 	
 	private Creator creator;
 	private GroupLayer layers;
 	StartButton startButton;
-	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GeneralPage#onClick(com.google.gwt.maeglin89273.game.mengine.utility.physics.Point)
-	 */
-	
-	public ASBOTCWelcomePage(GeneralGame game) {
-		super(game);
-		
-	}
 	
 	@Override
 	public void onClick(ClickEvent e) {
-		if(startButton.contain(MEngine.getMousePosition())){
-			startButton.doTask();
-		}
-
+		startButton.onClick(MEngine.getMousePosition());
+		
 	}
 
 	/* (non-Javadoc)
@@ -87,11 +81,22 @@ public class ASBOTCWelcomePage extends GeneralPage implements MouseDownHandler,M
 	}
 	@Override
 	public void onScreen() {
-		this.startButton=new StartButton(game,new Point(getGameWidth()/2.0,getGameHeight()/2.0));
-		this.creator=new Creator(getGameWidth(),getGameHeight());
+		this.startButton=new StartButton(new Point(getGameWidth()/2.0,getGameHeight()/2.0));
+		
+		this.creator=new Creator(new Level(new Point(getGameWidth()/2,getGameHeight()/2),MEngine.getAssetManager().getJson("levels/welcome_level.json")));
+		creator.build(new GameOverCallback(){
+
+			@Override
+			public void showScore(int score) {
+				ASBOTXWelcomePage.this.startButton.doTask();				
+			}
+			
+		});
 		layers=new GroupLayer();
-		layers.addLayer(new ComponentLayer(startButton));
-		layers.addLayer(new ComponentLayer(creator.getWorld()));
+		layers.addComponentOnLayer(startButton);
+		layers.addComponentOnLayer(creator.getWorld());
+		layers.addLayer(new ImageLayer(MEngine.getAssetManager().getSpriteSheet("images/welcome_bg.png"), new Point(0,0), getGameWidth(), getGameHeight()));
+		
 	}
 
 	@Override
@@ -102,8 +107,33 @@ public class ASBOTCWelcomePage extends GeneralPage implements MouseDownHandler,M
 
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
-		this.mousePressed=true;
+		if(!startButton.contains(MEngine.getMousePosition()));
+			this.mousePressed=true;
 		
 	}
-	
+	private class StartButton extends BoxButton{
+		
+		public StartButton(Point p){
+			super(p,250,100,new SpriteBlock(0,400+2*SpriteBlock.SPACING,500,200,ASBOTXConfigs.getButtonSpriteSheet()));
+			
+		}
+		/* (non-Javadoc)
+		 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.gamecomponent.CanvasButton#doTask()
+		 */
+		@Override
+		public void doTask() {
+			MEngine.getGeneralGame().setPage(new ASBOTXLevelSelectPage());
+		}
+
+		
+
+		/* (non-Javadoc)
+		 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.GeneralComponent#update()
+		 */
+		@Override
+		public void update() {
+			// TODO Auto-generated method stub
+
+		}
+	}
 }

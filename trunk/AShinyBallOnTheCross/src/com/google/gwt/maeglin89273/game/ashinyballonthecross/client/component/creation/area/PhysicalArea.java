@@ -6,8 +6,6 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.c
 import org.jbox2d.collision.AABB;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.Fixture;
 
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.mengine.component.Physical;
@@ -22,7 +20,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 public abstract class PhysicalArea extends Area implements Physical {
 	protected Body body;
 	protected AABB aabb;
-	protected  Fixture fixtures[];
+	
 	/**
 	 * @param creator
 	 * @param contentPower TODO
@@ -72,12 +70,6 @@ public abstract class PhysicalArea extends Area implements Physical {
 	@Override
 	public void destroy() {
 		super.destroy();
-		if(fixtures!=null){
-			for(int i=0;i<fixtures.length;i++){
-				fixtures[i].setUserData(null);
-			}
-			fixtures=null;
-		}
 		
 		body=null;
 		aabb=null;
