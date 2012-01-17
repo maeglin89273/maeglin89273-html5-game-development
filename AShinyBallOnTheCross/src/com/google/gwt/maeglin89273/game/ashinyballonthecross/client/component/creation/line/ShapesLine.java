@@ -6,8 +6,6 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.c
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.PhysicalWorld;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Creation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Circle;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Polygon;

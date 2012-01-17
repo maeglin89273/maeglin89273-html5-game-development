@@ -5,7 +5,6 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.c
 
 
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Creation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.PhysicalShape;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Polygon;

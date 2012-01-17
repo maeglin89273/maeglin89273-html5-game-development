@@ -5,16 +5,13 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.l
 
 import org.jbox2d.common.Vec2;
 
-import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Creation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Circle;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.PhysicalShape;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Polygon;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Rectangle;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.timer.RepeatingTimer;
-import com.google.gwt.maeglin89273.game.mengine.timer.SchedulingTimer;
 import com.google.gwt.maeglin89273.game.mengine.timer.TimerTask;
 import com.google.gwt.user.client.Random;
 

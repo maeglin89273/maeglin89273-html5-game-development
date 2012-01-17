@@ -5,7 +5,6 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component;
 
 import java.util.ArrayList;
 
-
 import org.jbox2d.common.Vec2;
 
 import com.google.gwt.canvas.dom.client.Context2d;
@@ -14,13 +13,10 @@ import com.google.gwt.canvas.dom.client.Context2d.TextBaseline;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GravityChangedEvent;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GravityChangedListener;
+import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteSheet;
 import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteSheet;
-import com.google.gwt.maeglin89273.game.mengine.timer.RepeatingTimer;
-import com.google.gwt.maeglin89273.game.mengine.timer.TimerTask;
-import com.google.gwt.user.client.Random;
 
 
 /**
