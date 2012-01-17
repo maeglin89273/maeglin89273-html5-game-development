@@ -3,11 +3,9 @@
  */
 package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.line;
 
-
-import org.jbox2d.callbacks.ContactListener;
-
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.WorldContactListener;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
 /**
@@ -15,8 +13,8 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
  *
  */
 public abstract class ContactStaticLine extends StaticLine implements
-		ContactListener {
-
+		WorldContactListener {
+	
 	/**
 	 * @param creator
 	 * @param contentPower
@@ -29,7 +27,7 @@ public abstract class ContactStaticLine extends StaticLine implements
 			boolean beControlled, Point p1, Point p2, CssColor color) {
 		super(creator, contentPower, beControlled, p1, p2, color);
 		if(isVerified()){
-			this.creator.getWorld().addContactListener(this);
+			creator.getWorld().addContactListener(this);
 		}
 	}
 
@@ -38,4 +36,5 @@ public abstract class ContactStaticLine extends StaticLine implements
 		creator.getWorld().removeContactListener(this);
 		super.destroy();
 	}
+	
 }

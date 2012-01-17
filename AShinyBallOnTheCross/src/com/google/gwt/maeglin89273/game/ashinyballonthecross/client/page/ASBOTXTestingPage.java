@@ -11,24 +11,17 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Cross;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.line.*;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Circle;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.ShinyBall;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.DefaultLevel;
 import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.layer.WorldLayer;
 import com.google.gwt.maeglin89273.game.mengine.page.GamePage;
-import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.maeglin89273.game.mengine.timer.SchedulingTimer;
-import com.google.gwt.maeglin89273.game.mengine.timer.TimerTask;
-import com.google.gwt.user.client.Window;
+
 
 /**
  * @author Maeglin Liao
  *
  */
-public class ASBOTCTestingPage extends GamePage implements MouseDownHandler,MouseWheelHandler {
+public class ASBOTXTestingPage extends GamePage implements MouseDownHandler,MouseWheelHandler {
 	private Creator creator;
 	private Cross cross;
 	private WorldLayer worldLayer;
@@ -36,8 +29,8 @@ public class ASBOTCTestingPage extends GamePage implements MouseDownHandler,Mous
 	/**
 	 * @param game
 	 */
-	public ASBOTCTestingPage(GeneralGame game) {
-		super(game);
+	public ASBOTXTestingPage() {
+		
 		
 		/*creator=new Creator(new DefaultLevel(game.getWidth(),game.getHeight()));
 		worldLayer=new WorldLayer(creator.getWorld(), 2.5f);*/

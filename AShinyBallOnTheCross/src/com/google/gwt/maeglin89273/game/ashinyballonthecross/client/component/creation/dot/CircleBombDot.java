@@ -8,7 +8,7 @@ import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Cr
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Circle;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.PhysicalShape;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.user.client.Random;
 
@@ -26,7 +26,7 @@ public class CircleBombDot extends BombDot {
 	 * @param impulseMag
 	 */
 	public CircleBombDot(Creator creator, Point p) {
-		super(creator,p, ASBOTCConfigurations.Color.BLUE,5f, 20f);
+		super(creator,p, ASBOTXConfigs.Color.BLUE,5f, 20f);
 		
 	}
 
@@ -40,7 +40,7 @@ public class CircleBombDot extends BombDot {
 	public static class CircleBombDotDefiner extends BombDotDefiner{
 
 		public CircleBombDotDefiner(Creator creator) {
-			super(creator,null,ASBOTCConfigurations.Color.BLUE);
+			super(creator,null,ASBOTXConfigs.Color.BLUE);
 			
 		}
 

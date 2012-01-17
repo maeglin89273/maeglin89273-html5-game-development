@@ -12,7 +12,7 @@ import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.cr
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Circle;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Polygon;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Rectangle;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
 import com.google.gwt.user.client.Random;
@@ -140,7 +140,7 @@ public class ShapesLine extends Line {
 			protected final Point position=new Point(0,0);
 			protected final int previewPower;
 			protected double angle;
-			protected CssColor color=ASBOTCConfigurations.Color.getRandomShapeBorderColor();
+			protected CssColor color=ASBOTXConfigs.Color.getRandomShapeBorderColor();
 			ShapeDefiner(int previewPower){
 				this.previewPower = previewPower;
 				

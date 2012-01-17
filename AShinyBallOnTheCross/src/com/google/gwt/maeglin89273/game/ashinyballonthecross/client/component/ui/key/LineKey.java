@@ -8,7 +8,7 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.u
 
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.DefinersFactory.LineDefinerType;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteBlock;
+import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteBlock;
 
 /**
  * @author Maeglin Liao

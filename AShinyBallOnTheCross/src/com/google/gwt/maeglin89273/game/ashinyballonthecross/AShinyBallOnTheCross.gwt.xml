@@ -20,19 +20,19 @@
   <source path='client'/>
   <source path='shared'/>
   
+ 
   <add-linker name="appcache"/>
   
   <define-configuration-property name="appcache.manifest" is-multi-valued="true" />
   
   <extend-configuration-property name="appcache.manifest" value="/AShinyBallOnTheCross.html" />
   <extend-configuration-property name="appcache.manifest" value="/AShinyBallOnTheCross.css"/>
-  <extend-configuration-property name="appcache.manifest"  value="/images/MEngine_logo.png" />
-  <extend-configuration-property name="appcache.manifest"  value="/images/MStudios_landscape.png" />
-  <extend-configuration-property name="appcache.manifest"  value="/images/shinyball.png" />
-  <extend-configuration-property name="appcache.manifest"  value="/images/gravity_indicator.png" />
-  <extend-configuration-property name="appcache.manifest"  value="/images/definers_icons.png" />
-  <extend-configuration-property name="appcache.manifest"  value="/images/areas.png" />
-  <extend-configuration-property name="appcache.manifest"  value="/images/buttons.png" />
   
+  <extend-configuration-property name="appcache.manifest"  value="/images/web_bg_sb.png" />
+  <extend-configuration-property name="appcache.manifest"  value="/images/web_bg_ml.png" />
+  <extend-configuration-property name="appcache.manifest"  value="/images/web_bg_ga.png" />
+  <extend-configuration-property name="appcache.manifest"  value="/images/web_bg_c.png" />
+  <extend-configuration-property name="appcache.manifest"  value="/images/chromewebstore.png" />
   <set-property name="user.agent" value="safari"/>
+  
 </module>

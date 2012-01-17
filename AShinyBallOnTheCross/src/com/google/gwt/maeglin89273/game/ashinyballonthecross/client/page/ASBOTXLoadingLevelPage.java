@@ -7,27 +7,30 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.Context2d.TextAlign;
 import com.google.gwt.canvas.dom.client.Context2d.TextBaseline;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.LevelContext;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
-import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.Glass;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.Level;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
+import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.page.GeneralPage;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
 /**
  * @author Maeglin Liao
  *
  */
-public class ASBOTCLoadingLevelPage extends GeneralPage {
-	private static final String loadingTextFont=ASBOTCConfigurations.getGameFont(26);
+public class ASBOTXLoadingLevelPage extends GeneralPage {
+	private static final String loadingTextFont=ASBOTXConfigs.getGameFont(26);
 	
 	private boolean firstUpdate=true;
-	private LevelContext level;
+	private String path;
 	
+	private Glass glass;
 	/**
 	 * @param game
 	 */
-	public ASBOTCLoadingLevelPage(GeneralGame game,LevelContext level) {
-		super(game);
-		this.level=level;
+	public ASBOTXLoadingLevelPage(String levelPath) {
+		this.path=levelPath;
+		this.glass=new Glass(getGameWidth(),getGameHeight());
 	}
 
 	/* (non-Javadoc)
@@ -47,8 +50,10 @@ public class ASBOTCLoadingLevelPage extends GeneralPage {
 		if(firstUpdate){
 			firstUpdate=false;
 		}else{
-			this.game.setPage(new ASBOTCGamePage(this.game,this.level));
-			this.level=null;
+			getGame().setPage(new ASBOTXGamePage(
+					new Level(new Point(getGameWidth()/2.0,getGameHeight()/2.0),
+							  MEngine.getAssetManager().getJson(path))));
+			
 		}
 
 	}
@@ -61,10 +66,9 @@ public class ASBOTCLoadingLevelPage extends GeneralPage {
 		context.setTextAlign(TextAlign.CENTER);
 		context.setTextBaseline(TextBaseline.MIDDLE);
 		
-		context.setFillStyle(ASBOTCConfigurations.Color.GLASS);
-		context.fillRect(0, 0,getGameWidth(),getGameHeight());
+		glass.draw(context);
 		
-		context.setFillStyle(ASBOTCConfigurations.Color.WHITE);
+		context.setFillStyle(ASBOTXConfigs.Color.WHITE);
 		context.setFont(loadingTextFont);
 		context.fillText("Loading...",getGameWidth()/2,getGameHeight()/2);
 		

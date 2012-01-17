@@ -6,11 +6,8 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.page;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.NativeEvent;
 
-import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -22,87 +19,43 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.ASBOTXGame;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.*;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.DefinersFactory;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.line.SimpleStaticLine;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.ShinyBall;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.CreatorPanel;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.CreatorPropertiesBar;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.key.CreativeKey;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.LevelContext;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.Level;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GameOverCallback;
-import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.page.GamePage;
-import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
 import com.google.gwt.maeglin89273.game.mengine.layer.*;
-import com.google.gwt.user.client.Window;
+
 
 /**
  * @author Maeglin Liao
  *
  */
-public class ASBOTCGamePage extends GamePage implements MouseDownHandler,MouseUpHandler,KeyDownHandler,KeyUpHandler,MouseOutHandler,MouseWheelHandler{
+public class ASBOTXGamePage extends GamePage implements MouseDownHandler,MouseUpHandler,KeyDownHandler,KeyUpHandler,MouseOutHandler,MouseWheelHandler{
 	
 	private final Creator creator;
-	private final LevelContext level;
+	private final Level level;
 	
-	private final GravityIndicator gravityIndicator;
-	private final CreatorPanel creatorPanel;
+	private GravityIndicator gravityIndicator;
+	private CreatorPanel creatorPanel;
 	
 	private GroupLayer rootLayer;
 	private WorldLayer worldLayer;
 	private Camera camera;
 	
-	private final ASBOTCPausePage pausePage;
-	
 	private Point grabPos=null;
-	public ASBOTCGamePage(GeneralGame game,LevelContext level){
-		super(game);
+	public ASBOTXGamePage(Level level){
 		
-		this.pausePage=new ASBOTCPausePage(this.game,this);
 		this.level=level;
 		this.creator=new Creator(level);
 		
-		//initialize UIs
-		gravityIndicator=new GravityIndicator(creator.getWorld().getPosition(),250,30,level.getGravityAngleInDegrees());
-		
-		CreativeKey.setSketchersFactory(new DefinersFactory(creator));
-		CreatorPropertiesBar creatorPropertiesBar=new CreatorPropertiesBar(getGameWidth(),getGameHeight(),creator.getMaxPower());
-				
-		creatorPanel=new CreatorPanel(creator,getGameWidth(), getGameHeight());
-		
-		//add listeners
-		gravityIndicator.addGravityChangeListener(creator.getWorld());
-		creator.addPropertiesChangeListener(creatorPropertiesBar);
-		creatorPanel.setDefiningListener(creatorPropertiesBar);
-		//initialize layers
-		worldLayer=new WorldLayer(creator.getWorld(),level.getCameraViewPoint(),2,0.45f);
-		camera=worldLayer.getCamera();
-		worldLayer.addLayer(0,new Layer(){
-
-			@Override
-			public void update() {
-				creatorPanel.updatePenPosition(camera.ConvertToWorldPosition(MEngine.getMousePosition()));
-			}
-
-			@Override
-			public void draw(Context2d context) {
-				creatorPanel.sketch(context);
-				
-			}
-			
-		});
-		worldLayer.addLayer(new ComponentLayer(gravityIndicator));	
-		
-		
-		rootLayer=new GroupLayer();
-		rootLayer.addLayer(new ComponentLayer(creatorPanel));
-		rootLayer.addLayer(new ComponentLayer(creatorPropertiesBar));
-		rootLayer.addLayer(worldLayer);
 	}
 	
 	@Override
@@ -140,13 +93,13 @@ public class ASBOTCGamePage extends GamePage implements MouseDownHandler,MouseUp
 	@Override
 	public void onKeyUp(KeyUpEvent event) {
 		switch(event.getNativeKeyCode()){
-			case ASBOTCConfigurations.KeysConfiguration.AREA:
+			case ASBOTXConfigs.KeysConfiguration.AREA:
 				creatorPanel.onKeyChange(CreatorPanel.AREA_KEY_INDEX,false);
 				break;
-			case ASBOTCConfigurations.KeysConfiguration.LINE:
+			case ASBOTXConfigs.KeysConfiguration.LINE:
 				creatorPanel.onKeyChange(CreatorPanel.LINE_KEY_INDEX,false);
 				break;
-			case ASBOTCConfigurations.KeysConfiguration.DOT:
+			case ASBOTXConfigs.KeysConfiguration.DOT:
 				creatorPanel.onKeyChange(CreatorPanel.DOT_KEY_INDEX,false);
 				break;
 		}
@@ -157,16 +110,16 @@ public class ASBOTCGamePage extends GamePage implements MouseDownHandler,MouseUp
 	@Override
 	public void onKeyDown(KeyDownEvent event) {
 		switch(event.getNativeKeyCode()){
-		case ASBOTCConfigurations.KeysConfiguration.AREA:
+		case ASBOTXConfigs.KeysConfiguration.AREA:
 			creatorPanel.onKeyChange(CreatorPanel.AREA_KEY_INDEX,true);
 			break;
-		case ASBOTCConfigurations.KeysConfiguration.LINE:
+		case ASBOTXConfigs.KeysConfiguration.LINE:
 			creatorPanel.onKeyChange(CreatorPanel.LINE_KEY_INDEX,true);
 			break;
-		case ASBOTCConfigurations.KeysConfiguration.DOT:
+		case ASBOTXConfigs.KeysConfiguration.DOT:
 			creatorPanel.onKeyChange(CreatorPanel.DOT_KEY_INDEX,true);
 			break;
-		case ASBOTCConfigurations.KeysConfiguration.REMOVE_CREATION:
+		case ASBOTXConfigs.KeysConfiguration.REMOVE_CREATION:
 			if(event.isControlKeyDown()){
 				creator.removeLastCreation();
 			}
@@ -174,11 +127,11 @@ public class ASBOTCGamePage extends GamePage implements MouseDownHandler,MouseUp
 				creator.removeFirstCreation();
 			}
 			break;
-		case ASBOTCConfigurations.KeysConfiguration.RESET_LEVEL:
-			game.setPage(new ASBOTCGamePage(game,level));
+		case ASBOTXConfigs.KeysConfiguration.RESET_LEVEL:
+			getGame().setPage(new ASBOTXGamePage(level));
 			break;
-		case ASBOTCConfigurations.KeysConfiguration.RETURN:
-			game.setPage(new ASBOTCLevelSelectPage(game));
+		case ASBOTXConfigs.KeysConfiguration.RETURN:
+			getGame().setPage(new ASBOTXLevelSelectPage());
 			
 		}
 	}
@@ -199,7 +152,7 @@ public class ASBOTCGamePage extends GamePage implements MouseDownHandler,MouseUp
 	}
 	@Override
 	public void onMouseOut(MouseOutEvent event){
-		game.setPage(pausePage);
+		getGame().setPage(new ASBOTXPausePage(this));
 	}
 	
 	
@@ -240,11 +193,51 @@ public class ASBOTCGamePage extends GamePage implements MouseDownHandler,MouseUp
 		creator.build(new GameOverCallback(){
 
 			@Override
-			public void showScore(Creator c) {
-				Window.alert("Score="+c.getScore());
-				game.setPage(new ASBOTCLevelSelectPage(game));
+			public void showScore(int score) {
+				getGame().setPage(new ASBOTXScoreShowingPage(rootLayer,level,score));
 			}
 			
 		});
+		//initialize UIs
+		gravityIndicator=new GravityIndicator(creator.getWorld().getPosition(),250,30,level.getGravityAngleInDegrees());
+				
+		CreativeKey.setSketchersFactory(new DefinersFactory(creator));
+		CreatorPropertiesBar creatorPropertiesBar=new CreatorPropertiesBar(getGameWidth(),
+																			getGameHeight(),
+																			creator.getMaxPower(),
+																			((ASBOTXGame)getGame()).getPlayer().getScoreAt(level));
+																			
+						
+		creatorPanel=new CreatorPanel(creator,getGameWidth(), getGameHeight());
+				
+		//add listeners
+		gravityIndicator.addGravityChangeListener(creator.getWorld());
+		creator.addPropertiesChangeListener(creatorPropertiesBar);
+		creatorPanel.setDefiningListener(creatorPropertiesBar);
+		//initialize layers
+		worldLayer=new WorldLayer(creator.getWorld(),level.getCameraViewPoint(),2,0.45f);
+		camera=worldLayer.getCamera();
+		worldLayer.insertLayer(0,new Layer(){
+
+			@Override
+			public void update() {
+				creatorPanel.updatePenPosition(camera.ConvertToWorldPosition(MEngine.getMousePosition()));
+			}
+
+			@Override
+			public void draw(Context2d context) {
+				creatorPanel.sketch(context);
+						
+			}
+					
+		});
+		worldLayer.addComponentOnLayer(gravityIndicator);	
+				
+				
+		rootLayer=new GroupLayer();
+		rootLayer.addComponentOnLayer(creatorPanel);
+		rootLayer.addComponentOnLayer(creatorPropertiesBar);
+		rootLayer.addLayer(worldLayer);
+		
 	}
 }

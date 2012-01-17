@@ -3,12 +3,16 @@
  */
 package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.line;
 
+import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
+import org.jbox2d.collision.WorldManifold;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.Contact;
 
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
@@ -21,6 +25,7 @@ public abstract class BreakableStaticLine extends ContactStaticLine {
 	protected Point breakPoint=null;
 	
 	private LineFragment[] lineFragments=new LineFragment[2];
+	
 	/**
 	 * @param creator
 	 * @param contentPower
@@ -32,7 +37,6 @@ public abstract class BreakableStaticLine extends ContactStaticLine {
 	public BreakableStaticLine(Creator creator, int contentPower,
 			boolean beControlled, Point p1, Point p2, CssColor color) {
 		super(creator, contentPower, beControlled, p1, p2, color);
-		// TODO Auto-generated constructor stub
 	}
 	@Override
 	public void update(){
@@ -56,7 +60,6 @@ public abstract class BreakableStaticLine extends ContactStaticLine {
 		aabb=null;
 		creator=null;
 		lineColor=null;
-		
 		//the own field
 		impOnNormal=null;
 		
@@ -81,7 +84,7 @@ public abstract class BreakableStaticLine extends ContactStaticLine {
 	 * @see org.jbox2d.callbacks.ContactListener#beginContact(org.jbox2d.dynamics.contacts.Contact)
 	 */
 	@Override
-	public void beginContact(Contact contact) {
+	public void beginContact(Contact contact,Fixture thisFixture, Fixture thatFixture) {
 		// TODO Auto-generated method stub
 
 	}
@@ -90,7 +93,7 @@ public abstract class BreakableStaticLine extends ContactStaticLine {
 	 * @see org.jbox2d.callbacks.ContactListener#endContact(org.jbox2d.dynamics.contacts.Contact)
 	 */
 	@Override
-	public void endContact(Contact contact) {
+	public void endContact(Contact contact,Fixture thisFixture, Fixture thatFixture) {
 		// TODO Auto-generated method stub
 
 	}
@@ -99,10 +102,35 @@ public abstract class BreakableStaticLine extends ContactStaticLine {
 	 * @see org.jbox2d.callbacks.ContactListener#preSolve(org.jbox2d.dynamics.contacts.Contact, org.jbox2d.collision.Manifold)
 	 */
 	@Override
-	public void preSolve(Contact contact, Manifold oldManifold) {
+	public void preSolve(Contact contact, Manifold oldManifold,Fixture thisFixture, Fixture thatFixture) {
 		// TODO Auto-generated method stub
 
 	}
+	@Override
+	public void postSolve(Contact contact, ContactImpulse impulse,Fixture thisFixture, Fixture thatFixture) {
+		if(thatFixture.getBody().getUserData() instanceof Dynamic){
+			for(int i=0;i<impulse.tangentImpulses.length;i++){
+				if(impulse.normalImpulses[i]!=0){
+					if(doesLineBreak(impulse.normalImpulses[i])){
+						WorldManifold wm=new WorldManifold();
+						contact.getWorldManifold(wm);
+								
+						breakPoint=CoordinateConverter.coordWorldToPixels(wm.points[0]);
+						impOnNormal=wm.normal.clone();
+								
+						if(contact.getFixtureA().equals(fixture)){
+							impOnNormal.negateLocal();
+						}
+						impOnNormal.mulLocal(impulse.normalImpulses[i]);
+						//give a bonus!
+						this.creator.bonus(Math.round(impulse.normalImpulses[i]));		
+					}
+					return;
+				}
+			}
+		}
+	}
+	public abstract boolean doesLineBreak(float normalImpulse);
 	
 	private class LineFragment extends FragmentalLine{
 		

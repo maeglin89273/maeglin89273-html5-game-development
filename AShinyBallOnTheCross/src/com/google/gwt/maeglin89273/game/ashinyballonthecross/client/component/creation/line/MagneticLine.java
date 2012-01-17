@@ -6,7 +6,6 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.c
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.collision.shapes.CircleShape;
@@ -25,20 +24,20 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 
 import static com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.area.SensorArea.Checker;
-import static com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations.Color;
+import static com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs.Color;
 /**
  * @author Maeglin Liao
  *
  */
-public class MagneticLine extends ContactStaticLine {
+public class MagneticLine extends ContactStaticLine{
 	private final int MAGNETIC_FIELD_BOUNDS=50;
 	private final float FORCE_MAGNITUDE=20f;
 	
 	private List<Dynamic> creationsInField=new ArrayList<Dynamic>();
-	private  Fixture fixtures[];
+	
 	
 	private Vec2 vecA;
 	private Vec2 vecB;
@@ -46,6 +45,8 @@ public class MagneticLine extends ContactStaticLine {
 	private Vec2 vecBToA;
 	
 	private Vec2[] forces;
+	
+	private Checker checker;
 	public MagneticLine(Creator creator, Point p1, Point p2) {
 		this(creator, 0, false, p1, p2);
 	}
@@ -100,12 +101,9 @@ public class MagneticLine extends ContactStaticLine {
 			cirFixDB.shape=cirShapeB;
 			
 			
-			fixtures=new Fixture[]{body.createFixture(recFixD),body.createFixture(cirFixDA),body.createFixture(cirFixDB)};
-			fixtures[0].setUserData(new Checker(fixtures[1],fixtures[2]));
-			fixtures[1].setUserData(new Checker(fixtures[0],fixtures[2]));
-			fixtures[2].setUserData(new Checker(fixtures[0],fixtures[1]));
-			fixture.setFriction(0.3f);
-			fixture.setRestitution(0.2f);
+			Fixture[] fixtures=new Fixture[]{body.createFixture(recFixD),body.createFixture(cirFixDA),body.createFixture(cirFixDB)};
+			checker=new Checker(fixtures);
+			
 		}
 	}
 	
@@ -170,84 +168,46 @@ public class MagneticLine extends ContactStaticLine {
 	
 	@Override
 	public void destroy(){
-		super.destroy();
-		
-		for(int i=0;i<fixtures.length;i++){
-			fixtures[i].setUserData(null);
-		}
-		fixtures=null;
 		creationsInField.clear();
 		creationsInField=null;
-	}
-	/* (non-Javadoc)
-	 * @see org.jbox2d.callbacks.ContactListener#beginContact(org.jbox2d.dynamics.contacts.Contact)
-	 */
-	@Override
-	public void beginContact(Contact contact) {
-		Fixture fixA=contact.getFixtureA();
-		Fixture fixB=contact.getFixtureB();
-		
-		for(Fixture fix:fixtures){
-			if(fixA.equals(fix)&&(fixB.getUserData() instanceof Dynamic)
-					&&!creationsInField.contains(fixB.getUserData())){
-				creationsInField.add((Dynamic)fixB.getUserData());
-				return;
-			}else if(fixB.equals(fix)&&(fixA.getUserData() instanceof Dynamic)
-					&&!creationsInField.contains(fixA.getUserData())){
-				creationsInField.add((Dynamic)fixA.getUserData());
-				return;
-			}
-		}
-		
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.jbox2d.callbacks.ContactListener#endContact(org.jbox2d.dynamics.contacts.Contact)
-	 */
-	@Override
-	public void endContact(Contact contact) {
-		Fixture fixA=contact.getFixtureA();
-		Fixture fixB=contact.getFixtureB();
-		for(Fixture fix:fixtures){
-			if(fixA.equals(fix)&&(fixB.getUserData() instanceof Dynamic)&&
-					((Checker)fix.getUserData()).checkPointIsOut(fixB.getBody().getWorldCenter())){
-				
-				creationsInField.remove((Dynamic)fixB.getUserData());
-				return;
-			}else if(fixB.equals(fix)&&(fixA.getUserData() instanceof Dynamic)&&
-					((Checker)fix.getUserData()).checkPointIsOut(fixA.getBody().getWorldCenter())){
-				
-				creationsInField.remove((Dynamic)fixA.getUserData());
-				return;
-			}
-		}
+		super.destroy();
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.jbox2d.callbacks.ContactListener#preSolve(org.jbox2d.dynamics.contacts.Contact, org.jbox2d.collision.Manifold)
-	 */
+
 	@Override
-	public void preSolve(Contact contact, Manifold oldManifold) {
-		// TODO Auto-generated method stub
-
+	public void beginContact(Contact contact, Fixture thisFixture,Fixture thatFixture) {
+		if(thatFixture.getBody().getUserData() instanceof Dynamic&&!creationsInField.contains(thatFixture.getBody().getUserData())){
+			creationsInField.add((Dynamic)thatFixture.getBody().getUserData());
+		}
+		
 	}
-
-	/* (non-Javadoc)
-	 * @see org.jbox2d.callbacks.ContactListener#postSolve(org.jbox2d.dynamics.contacts.Contact, org.jbox2d.callbacks.ContactImpulse)
-	 */
 	@Override
-	public void postSolve(Contact contact, ContactImpulse impulse) {
-		// TODO Auto-generated method stub
-
+	public void endContact(Contact contact, Fixture thisFixture,Fixture thatFixture) {
+			
+		if(thatFixture.getBody().getUserData() instanceof Dynamic&&
+				checker.checkPointIsOut(thisFixture, thatFixture.getBody().getWorldCenter())){
+			creationsInField.remove((Dynamic)thatFixture.getBody().getUserData());
+		}
+		
 	}
-	
+	@Override
+	public void preSolve(Contact contact, Manifold oldManifold,
+			Fixture thisFixture, Fixture thatFixture) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void postSolve(Contact contact, ContactImpulse impulse,
+			Fixture thisFixture, Fixture thatFixture) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	public static class MagneticLineDefiner extends StaticLineDefiner{
 
 		public MagneticLineDefiner(Creator creator) {
 				
-			super(creator, ASBOTCConfigurations.CreationPowerComsumption.MAGNETIC_LINE,
+			super(creator, ASBOTXConfigs.CreationPowerComsumption.MAGNETIC_LINE,
 					new Point(3*ICON_BOUNDS_PLUS_SPACING,ICON_BOUNDS_PLUS_SPACING), null);
 			
 		}
@@ -276,4 +236,7 @@ public class MagneticLine extends ContactStaticLine {
 		}
 		
 	}
+
+
+	
 }

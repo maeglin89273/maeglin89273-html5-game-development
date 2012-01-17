@@ -11,7 +11,7 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.c
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.CreationDefiner;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
 
@@ -79,7 +79,7 @@ public abstract class Line extends MainCreation{
 			updatePenPosition(p);
 			if(pointA!=null&&pointB!=null){
 				if(pointA.delta(pointB).getSquare()<MIN_LENGTH_SQUARE){
-					new FragmentalLine(creator, getCreationRequiredPower(), true, pointA, pointB, ASBOTCConfigurations.Color.DARK_GRAY);
+					new FragmentalLine(creator, getCreationRequiredPower(), true, pointA, pointB, ASBOTXConfigs.Color.DARK_GRAY);
 				}else{
 					defineFinished();
 				}

@@ -7,7 +7,6 @@ import org.jbox2d.collision.AABB;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.Fixture;
 
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
@@ -25,7 +24,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 public abstract class PhysicalShape extends Creation implements Dynamic{
 		
 	protected Body body;
-	protected  Fixture fixture;
+	
 	protected  AABB aabb;
 	
 	protected CssColor borderColor;
@@ -50,7 +49,7 @@ public abstract class PhysicalShape extends Creation implements Dynamic{
 			bodyDef.type=BodyType.DYNAMIC;
 			bodyDef.position.set(CoordinateConverter.coordPixelToWorld(position));
 			bodyDef.angle=(float)-angle;
-			
+			bodyDef.userData=this;
 			body=creator.getWorld().getWorld().createBody(bodyDef);
 			
 		}
@@ -84,10 +83,7 @@ public abstract class PhysicalShape extends Creation implements Dynamic{
 	@Override
 	public void destroy() {
 		super.destroy();
-		if(fixture!=null){
-			fixture.setUserData(null);
-			fixture=null;
-		}
+		body.setUserData(null);
 		
 		body=null;
 		aabb=null;

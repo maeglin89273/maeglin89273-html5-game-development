@@ -20,6 +20,7 @@ import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.cr
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.PhysicalShape;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GravityChangedEvent;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GravityChangedListener;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.WorldContactListener;
 import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
 import com.google.gwt.maeglin89273.game.mengine.component.Physical;
 import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
@@ -33,7 +34,7 @@ public class PhysicalWorld extends GeneralComponent implements Spacial,GravityCh
 	
 	private final World world;
 	private final AABB aabb;
-	private static final float STEP=1/60f;
+	private static final float STEP=1/55f;
 	
 	
 	private final List<PhysicalShape> shapes=new ArrayList<PhysicalShape>();
@@ -41,7 +42,6 @@ public class PhysicalWorld extends GeneralComponent implements Spacial,GravityCh
 	private final List<Area> areas=new ArrayList<Area>();
 	private final List<Dot> dots=new ArrayList<Dot>();
 	private final List<Creation> otherCreations=new ArrayList<Creation>();
-	private final List<ContactListener> contactListeners=new ArrayList<ContactListener>();
 	
 	public PhysicalWorld(Point screenCenter,double w,double h,Vec2 gravity){
 		super(screenCenter,w,h);
@@ -223,33 +223,57 @@ public class PhysicalWorld extends GeneralComponent implements Spacial,GravityCh
 	}
 	
 	//contact methods
-	public void addContactListener(ContactListener l){
-		contactListeners.add(l);
+	public void addContactListener(WorldContactListener l){
+		l.getBody().setUserData(l);
 	}
-	public void removeContactListener(ContactListener l){
-		contactListeners.remove(contactListeners.lastIndexOf(l));
+	public void removeContactListener(WorldContactListener l){
+		l.getBody().setUserData(null);
 	}
 	@Override
 	public void beginContact(Contact contact) {
-		for(int i=contactListeners.size()-1;i>=0;i--)
-			contactListeners.get(i).beginContact(contact);
+		Fixture fixA=contact.getFixtureA();
+		Fixture fixB=contact.getFixtureB();
+		if(fixA.getBody().getUserData() instanceof WorldContactListener){
+			((WorldContactListener)fixA.getBody().getUserData()).beginContact(contact, fixA, fixB);
+		}
+		if(fixB.getBody().getUserData() instanceof WorldContactListener){
+			((WorldContactListener)fixB.getBody().getUserData()).beginContact(contact, fixB, fixA);
+		}
 	}
 
 	@Override
 	public void endContact(Contact contact) {
-		for(int i=contactListeners.size()-1;i>=0;i--)
-			contactListeners.get(i).endContact(contact);
+		Fixture fixA=contact.getFixtureA();
+		Fixture fixB=contact.getFixtureB();
+		if(fixA.getBody().getUserData() instanceof WorldContactListener){
+			((WorldContactListener)fixA.getBody().getUserData()).endContact(contact, fixA, fixB);
+		}
+		if(fixB.getBody().getUserData() instanceof WorldContactListener){
+			((WorldContactListener)fixB.getBody().getUserData()).endContact(contact, fixB, fixA);
+		}
 	}
 
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
-		for(int i=contactListeners.size()-1;i>=0;i--)
-			contactListeners.get(i).preSolve(contact, oldManifold);
+		Fixture fixA=contact.getFixtureA();
+		Fixture fixB=contact.getFixtureB();
+		if(fixA.getBody().getUserData() instanceof WorldContactListener){
+			((WorldContactListener)fixA.getBody().getUserData()).preSolve(contact, oldManifold, fixA, fixB);
+		}
+		if(fixB.getBody().getUserData() instanceof WorldContactListener){
+			((WorldContactListener)fixB.getBody().getUserData()).preSolve(contact, oldManifold, fixB, fixA);
+		}
 	}
 
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
-		for(int i=contactListeners.size()-1;i>=0;i--)
-			contactListeners.get(i).postSolve(contact, impulse);
+		Fixture fixA=contact.getFixtureA();
+		Fixture fixB=contact.getFixtureB();
+		if(fixA.getBody().getUserData() instanceof WorldContactListener){
+			((WorldContactListener)fixA.getBody().getUserData()).postSolve(contact, impulse, fixA, fixB);
+		}
+		if(fixB.getBody().getUserData() instanceof WorldContactListener){
+			((WorldContactListener)fixB.getBody().getUserData()).postSolve(contact, impulse, fixB, fixA);
+		}
 	}
 }

@@ -7,10 +7,10 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.u
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.CreationDefiner;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.DefinersFactory;
-import com.google.gwt.maeglin89273.game.mengine.component.GameButton;
+import com.google.gwt.maeglin89273.game.mengine.component.button.BoxButton;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteBlock;
+import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteBlock;
 
 
 
@@ -18,7 +18,7 @@ import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteBlock;
  * @author Maeglin Liao
  *
  */
-public abstract class CreativeKey extends GameButton {
+public abstract class CreativeKey extends BoxButton {
 	protected static final int BLANK_KEY_X=0;
 	protected static final int BLANK_KEY_Y=200+SpriteBlock.SPACING;
 	protected static DefinersFactory definersFactory;
@@ -28,7 +28,7 @@ public abstract class CreativeKey extends GameButton {
 	protected final Point unPressedBlockPos;
 	protected CreativeKey(Point p, double w, double h,Point unPressedBlockPos,CreationDefiner[] definers) {
 		super(p, w, h,new SpriteBlock((int)unPressedBlockPos.getX(),(int)unPressedBlockPos.getY(),200,200,
-				MEngine.getAssetManager().getSpriteSheet("buttons.png")));
+				MEngine.getAssetManager().getSpriteSheet("images/buttons.png")));
 		this.unPressedBlockPos = unPressedBlockPos;
 		
 		this.definers = definers;
@@ -78,15 +78,6 @@ public abstract class CreativeKey extends GameButton {
 		definers[index].reset();
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.game.mengine.component.CanvasButton#contain(com.google.gwt.maeglin89273.game.mengine.physics.Point)
-	 */
-	@Override
-	public boolean contain(Point p) {
-		if(p.getX()>=getLeftX()&&p.getX()<=getRightX()&&p.getY()>=getTopY()&&p.getY()<=getBottomY())
-			return true;
-		return false;
-	}
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.mengine.component.CanvasButton#doTask()
 	 */

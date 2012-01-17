@@ -11,13 +11,13 @@ import org.jbox2d.common.Vec2;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.Context2d.TextAlign;
 import com.google.gwt.canvas.dom.client.Context2d.TextBaseline;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GravityChangedEvent;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GravityChangedListener;
 import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteSheet;
+import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteSheet;
 import com.google.gwt.maeglin89273.game.mengine.timer.RepeatingTimer;
 import com.google.gwt.maeglin89273.game.mengine.timer.TimerTask;
 import com.google.gwt.user.client.Random;
@@ -48,8 +48,8 @@ public class GravityIndicator extends GeneralComponent {
 		this.gravityAngle=this.nextGravityAngle=-angleInDegrees;
 		gravity=getGravityByDegrees(angleInDegrees);
 		
-		img=MEngine.getAssetManager().getSpriteSheet("gravity_indicator.png");
-		textFont=ASBOTCConfigurations.getGameFont((int)(diameter*0.55));
+		img=MEngine.getAssetManager().getSpriteSheet("images/gravity_indicator.png");
+		textFont=ASBOTXConfigs.getGameFont((int)(diameter*0.55));
 		
 	}
 	public static Vec2 getGravityByDegrees(int angleInDegree){
@@ -118,7 +118,7 @@ public class GravityIndicator extends GeneralComponent {
 		context.setTextAlign(TextAlign.CENTER);
 		context.setTextBaseline(TextBaseline.MIDDLE);
 		context.setFont(textFont);
-		context.setFillStyle(ASBOTCConfigurations.Color.TEXT);
+		context.setFillStyle(ASBOTXConfigs.Color.TEXT);
 		context.fillText("G",getX(),getY(),width);
 		context.translate(getX(), getY());
 		context.rotate(getAngle());

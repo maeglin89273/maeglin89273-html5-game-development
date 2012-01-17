@@ -17,12 +17,12 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
-import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteBlock;
+import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteBlock;
 
 
 
@@ -34,7 +34,8 @@ public class ArrowArea extends SensorArea{
 	private static final float FORCE_MAGNITUDE_FACTOR=2f;
 	private final Vec2 forceVec;
 	private final double radius;
-	private final SpriteBlock block=new SpriteBlock(0,0,250,250,MEngine.getAssetManager().getSpriteSheet("areas.png"));
+	private Checker checker;
+	private final SpriteBlock block=new SpriteBlock(0,0,250,250,MEngine.getAssetManager().getSpriteSheet("images/areas.png"));
 	
 	/**
 	 * 
@@ -85,11 +86,10 @@ public class ArrowArea extends SensorArea{
 			recFixD.isSensor=true;
 			triFixD.shape=triShape;
 			recFixD.shape=recShape;
-			fixtures=new Fixture[]{body.createFixture(triFixD),body.createFixture(recFixD)};
 			
-			fixtures[0].setUserData(new Checker(fixtures[1]));
-			fixtures[1].setUserData(new Checker(fixtures[0]));
+			Fixture[] fixtures=new Fixture[]{body.createFixture(triFixD),body.createFixture(recFixD)};
 			
+			this.checker=new Checker(fixtures);
 			
 			body.setTransform(body.getPosition(),(float)-angle);
 			aabb=new AABB();
@@ -135,27 +135,20 @@ public class ArrowArea extends SensorArea{
 	 * @see org.jbox2d.callbacks.ContactListener#endContact(org.jbox2d.dynamics.contacts.Contact)
 	 */
 	@Override
-	public void endContact(Contact contact) {
-		Fixture fixA=contact.getFixtureA();
-		Fixture fixB=contact.getFixtureB();
-		for(Fixture fix:fixtures){
-			if(fixA.equals(fix)&&(fixB.getUserData() instanceof Dynamic)&&
-					((Checker)fix.getUserData()).checkPointIsOut(fixB.getBody().getWorldCenter())){
-				contentCreations.remove((Dynamic)fixB.getUserData());
-				return;
-			}else if(fixB.equals(fix)&&(fixA.getUserData() instanceof Dynamic)&&
-					((Checker)fix.getUserData()).checkPointIsOut(fixA.getBody().getWorldCenter())){
-				contentCreations.remove((Dynamic)fixA.getUserData());
-				return;
-			}
+	public void endContact(Contact contact, Fixture thisFixture, Fixture thatFixture) {
+		if(thatFixture.getBody().getUserData() instanceof Dynamic&&
+				checker.checkPointIsOut(thisFixture,thatFixture.getBody().getWorldCenter())){
+			contentCreations.remove((Dynamic)thatFixture.getBody().getUserData());
+				
 		}
+		
 	}
 	
 	
 	public static class ArrowAreaDefiner extends CircleKindAreaDefiner{
-		private final SpriteBlock block=new SpriteBlock(0,0,250,250,MEngine.getAssetManager().getSpriteSheet("areas.png"));
+		private final SpriteBlock block=new SpriteBlock(0,0,250,250,MEngine.getAssetManager().getSpriteSheet("images/areas.png"));
 		public ArrowAreaDefiner(Creator creator) {
-			super(creator,ASBOTCConfigurations.CreationPowerComsumption.ARROW_AREA,new Point(0,0),60,20);
+			super(creator,ASBOTXConfigs.CreationPowerComsumption.ARROW_AREA,new Point(0,0),60,20);
 		}
 
 		@Override

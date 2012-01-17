@@ -4,36 +4,34 @@
 package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.page;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.canvas.dom.client.Context2d.TextAlign;
 import com.google.gwt.canvas.dom.client.Context2d.TextBaseline;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTCConfigurations;
-import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.Glass;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
-import com.google.gwt.maeglin89273.game.mengine.page.GeneralPage;
+import com.google.gwt.maeglin89273.game.mengine.page.SinglePage;
 
 
 /**
  * @author Maeglin Liao
  *
  */
-public class ASBOTCPausePage extends GeneralPage {
+public class ASBOTXPausePage extends SinglePage{
 	
-	private static final String pauseTextFont=ASBOTCConfigurations.getGameFont(26);
-	private static final String clickTextFont=ASBOTCConfigurations.getGameFont(12);
-	
-	private ASBOTCGamePage gamePage;
+	private static final String pauseTextFont=ASBOTXConfigs.getGameFont(26);
+	private static final String clickTextFont=ASBOTXConfigs.getGameFont(12);
+	private Glass glass;
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GeneralPage#onClick(com.google.gwt.maeglin89273.game.mengine.utility.physics.Point)
 	 */
-	public ASBOTCPausePage(GeneralGame game,ASBOTCGamePage gamePage){
-		super(game);
-		this.gamePage=gamePage;
+	public ASBOTXPausePage(ASBOTXGamePage gamePage){
+		super(gamePage);
+		this.glass=new Glass(getGameWidth(),getGameHeight());
 	}
 	@Override
 	public void onClick(ClickEvent event){
-		this.game.setPage(gamePage);
+		this.toNextPage();
 		MEngine.play();
 
 	}
@@ -53,10 +51,9 @@ public class ASBOTCPausePage extends GeneralPage {
 		context.setTextAlign(TextAlign.CENTER);
 		context.setTextBaseline(TextBaseline.MIDDLE);
 		
-		context.setFillStyle(ASBOTCConfigurations.Color.GLASS);
-		context.fillRect(0, 0,getGameWidth(),getGameHeight());
+		glass.draw(context);
 		
-		context.setFillStyle(ASBOTCConfigurations.Color.WHITE);
+		context.setFillStyle(ASBOTXConfigs.Color.WHITE);
 		context.setFont(pauseTextFont);
 		context.fillText("Pause",getGameWidth()/2,getGameHeight()/2);
 		context.setFont(clickTextFont);
