@@ -2,8 +2,11 @@
 <module>
   <inherits name="com.google.gwt.user.User" />
   <inherits name="org.jbox2d.GwtBox2D"/>
+  <inherits name='com.google.gwt.http.HTTP'/>
+  <inherits name='com.google.gwt.json.JSON'/>
   <inherits name="com.googlecode.gwt.crypto.Crypto"/>
   
+  <source path="asset"/>
   <source path="component"/>
   <source path="core"/>
   <source path="game"/>
@@ -14,7 +17,11 @@
   <source path="timer"/>
   <source path="layer"/>
   
-  <define-linker name="appcache" class="com.google.gwt.maeglin89273.game.mengine.core.AppCacheLinker"/>
+  <generate-with class="com.google.gwt.maeglin89273.game.mengine.rebind.AssetsBundleGenerator">
+  	<when-type-assignable class="com.google.gwt.maeglin89273.game.mengine.asset.AssetsBundleWithLookup"/>
+  </generate-with>
+  <define-linker name="appcache" class="com.google.gwt.maeglin89273.game.mengine.rebind.AppCacheLinker"/>
+  <set-property name="ClientBundle.enableInlining" value="false" />
   
   <!--<add-linker name="appcache"/>-->
   

@@ -5,10 +5,10 @@ package com.google.gwt.maeglin89273.game.mengine.page;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
+import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteSheet;
+import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.layer.ImageLayer;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteSheet;
 import com.google.gwt.maeglin89273.game.mengine.timer.SchedulingTimer;
 import com.google.gwt.maeglin89273.game.mengine.timer.TimerTask;
 
@@ -24,17 +24,19 @@ public class FadingPage extends SinglePage {
 	private boolean fadeIn=true,fadeOut=false;
 	private SchedulingTimer timer;
 	
-	private final ImageLayer layer;
-	
+	private ImageLayer layer;
+	private String path;
+	private int imgWidthInGame;
+	private int imgHeightInGame;
 	/**
 	 * @param game
 	 */
-	public FadingPage(GeneralGame game,SpriteSheet sheet,int imgWidthInGame,int imgHeightInGame,Page nextPage) {
-		super(game,nextPage);
-		this.layer=new ImageLayer(sheet,
-								new Point((game.getGameInfo().getWidth()-imgWidthInGame)/2,(game.getGameInfo().getHeight()-imgHeightInGame)/2),
-								imgWidthInGame,imgHeightInGame);
-		this.layer.setAlpha(0);
+	public FadingPage(String sheetPath,int imgWidthInGame,int imgHeightInGame,Page nextPage) {
+		super(nextPage);
+		path = sheetPath;
+		this.imgWidthInGame = imgWidthInGame;
+		this.imgHeightInGame = imgHeightInGame;
+		
 	}
 
 	/* (non-Javadoc)
@@ -92,7 +94,11 @@ public class FadingPage extends SinglePage {
 
 	@Override
 	public void onScreen() {
-		return;
+		this.layer=new ImageLayer(MEngine.getAssetManager().getSpriteSheet(path),
+				new Point((getGame().getGameInfo().getWidth()-imgWidthInGame)/2,
+						  (getGame().getGameInfo().getHeight()-imgHeightInGame)/2),
+				imgWidthInGame,imgHeightInGame);
+		this.layer.setAlpha(0);
 		
 	}
 }

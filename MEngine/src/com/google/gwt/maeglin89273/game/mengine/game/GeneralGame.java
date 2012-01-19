@@ -44,7 +44,9 @@ public abstract class GeneralGame implements Game {
 		this.page.regHandlers();
 		this.page.onScreen();
 	}
-	
+	public Page getPage(){
+		return this.page;
+	}
 	@Override
 	public GameInfo getGameInfo() {
 		return gameInfo;

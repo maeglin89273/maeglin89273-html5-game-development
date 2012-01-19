@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.maeglin89273.game.mengine.component.GameComponent;
 
 /**
  * @author Liao
@@ -14,12 +15,15 @@ import com.google.gwt.canvas.dom.client.Context2d;
  */
 public class GroupLayer extends Layer {
 	private List<Layer> layers=new ArrayList<Layer>();
+	public void addComponentOnLayer(GameComponent c){
+		this.addLayer(new ComponentLayer(c));
+	}
 	public void addLayer(Layer layer){
 		layer.setIndex(layers.size());
 		layers.add(layer);
 		layer.setParentLayer(this);
 	}
-	public void addLayer(int index,Layer layer){
+	public void insertLayer(int index,Layer layer){
 		layer.setIndex(index);
 		layers.add(index, layer);
 		layer.setParentLayer(this);

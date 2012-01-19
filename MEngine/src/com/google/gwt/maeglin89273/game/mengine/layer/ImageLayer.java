@@ -4,8 +4,8 @@
 package com.google.gwt.maeglin89273.game.mengine.layer;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteSheet;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-import com.google.gwt.maeglin89273.game.mengine.sprite.SpriteSheet;
 
 /**
  * @author Liao
@@ -17,9 +17,9 @@ public class ImageLayer extends Layer {
 	private final Point imgPos;
 	private final int imgWidth;
 	private final int imgHeight;
-	public ImageLayer(SpriteSheet sheet,Point imgPos,int imgWidthInGame,int imgHeightInGame){
+	public ImageLayer(SpriteSheet sheet,Point imgCornerPos,int imgWidthInGame,int imgHeightInGame){
 		this.sheet = sheet;
-		this.imgPos = imgPos;
+		this.imgPos = imgCornerPos;
 		imgWidth = imgWidthInGame;
 		imgHeight = imgHeightInGame;
 		

@@ -5,6 +5,8 @@ package com.google.gwt.maeglin89273.game.mengine.core;
 
 import java.util.HashSet;
 
+
+
 import com.google.gwt.animation.client.AnimationScheduler;
 import com.google.gwt.animation.client.AnimationScheduler.AnimationCallback;
 import com.google.gwt.canvas.client.Canvas;
@@ -12,7 +14,10 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.core.client.Duration;
 import com.google.gwt.dom.client.CanvasElement;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.maeglin89273.game.mengine.game.Game;
+import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
+import com.google.gwt.maeglin89273.game.mengine.page.LoadingAssetsPage;
 import com.google.gwt.maeglin89273.game.mengine.timer.ControlledTimer;
 
 /**
@@ -49,12 +54,11 @@ public class GameExecutor {
 		this.canvas=canvas;
 		this.context=this.canvas.getContext2d();
 		
-		Canvas bufferCanvas=Canvas.createIfSupported();
-		bufferCanvas.setCoordinateSpaceWidth(this.gameWidth);
-		bufferCanvas.setCoordinateSpaceHeight(this.gameHeight);
+		bufferCanvasElement=Document.get().createCanvasElement();
+		bufferCanvasElement.setWidth(this.gameWidth);
+		bufferCanvasElement.setHeight(this.gameHeight);
 		
-		bufferCanvasElement=bufferCanvas.getCanvasElement();
-		bufferContext=bufferCanvas.getContext2d();
+		bufferContext=bufferCanvasElement.getContext2d();
 	}
 	void setRedrawAlpha(float alpha){
 		redrawColor=CssColor.make("hsla(0,100%,100%,"+alpha+")");
@@ -90,7 +94,7 @@ public class GameExecutor {
 			}
 			
 		};
-		if(game.getGameInfo().hasLoadingDataPage()){
+		if(game instanceof GeneralGame&&((GeneralGame)game).getPage() instanceof LoadingAssetsPage){
 			play();
 		}else{
 			if(MEngine.getAssetManager().isDataLoaded()){
