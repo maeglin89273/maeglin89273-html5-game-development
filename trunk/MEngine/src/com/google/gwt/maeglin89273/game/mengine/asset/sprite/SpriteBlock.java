@@ -1,4 +1,4 @@
-package com.google.gwt.maeglin89273.game.mengine.sprite;
+package com.google.gwt.maeglin89273.game.mengine.asset.sprite;
 
 import com.google.gwt.dom.client.ImageElement;
 

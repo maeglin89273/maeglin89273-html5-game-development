@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.google.gwt.maeglin89273.game.mengine.core;
+package com.google.gwt.maeglin89273.game.mengine.rebind;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -49,10 +49,11 @@ public class AppCacheLinker extends AbstractLinker{
 	      throws UnableToCompleteException {
 		if(onePurmutation)
 			return artifacts;
-	    //ArtifactSet toReturn = super.link(logger, context, artifacts);
+	    
 		ArtifactSet toReturn = new ArtifactSet(artifacts);
 	    StringBuilder sb=new StringBuilder("CACHE MANIFEST\n");
 	    
+	    logger.log(Type.INFO, "Start linking appcache manifest...");
 	    sb.append("# Unique id #" + (new Date()).getTime() +"."+ Math.random() + "\n");
 	    sb.append("CACHE:\n");
 	    sb.append("# Note: must change this every time for cache to invalidate\n");
@@ -85,6 +86,7 @@ public class AppCacheLinker extends AbstractLinker{
 				}
 			}
 		}
+		logger.log(Type.INFO, "Linked appcache manifest successfully.");
 		return sb.toString();
 	}
 	private boolean isValidPath(String path){
@@ -99,9 +101,9 @@ public class AppCacheLinker extends AbstractLinker{
 	    }
 
 	    // Whitelisted file extension
-	    int pos = path.lastIndexOf('.');
-	    if (pos != -1) {
-	      String extension = path.substring(pos + 1);
+	    int pos = path.lastIndexOf('.')+1;
+	    if (pos != 0) {
+	      String extension = path.substring(pos);
 	      if (VALID_EXTENSIONS.contains(extension)) {
 	        return true;
 	      }

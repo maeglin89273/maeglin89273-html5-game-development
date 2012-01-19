@@ -1,0 +1,34 @@
+<class-diagram version="1.0.4" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
+  realizations="true" associations="true" dependencies="true" nesting-relationships="true">  
+  <class id="1" corner="BOTTOM_RIGHT" language="java" name="com.google.gwt.maeglin89273.game.mengine.sprite.SpriteSheet" 
+    project="MEngine" file="/MEngine/src/com/google/gwt/maeglin89273/game/mengine/sprite/SpriteSheet.java" 
+    binary="false">    
+    <position height="275" width="222" x="41" y="416"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="com.google.gwt.maeglin89273.game.mengine.sprite.SpriteBlock" 
+    project="MEngine" file="/MEngine/src/com/google/gwt/maeglin89273/game/mengine/sprite/SpriteBlock.java" 
+    binary="false">    
+    <position height="339" width="222" x="41" y="37"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <association>    
+    <end type="SOURCE" nodeId="2" navigable="false">      
+      <attribute name="sheet"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" package="true" initial-value="true" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

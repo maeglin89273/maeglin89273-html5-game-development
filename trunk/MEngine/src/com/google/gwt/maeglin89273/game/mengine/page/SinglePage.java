@@ -3,7 +3,7 @@
  */
 package com.google.gwt.maeglin89273.game.mengine.page;
 
-import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
+import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 
 /**
  * @author Maeglin Liao
@@ -15,13 +15,11 @@ public abstract class SinglePage extends GeneralPage {
 	 * @param game
 	 * @param nextPage
 	 */
-	public SinglePage(GeneralGame game, Page nextPage) {
-		super(game);
+	public SinglePage(Page nextPage) {
 		this.nextPage=nextPage;
 	}
 	protected void toNextPage(){
-		game.setPage(nextPage);
-		this.game=null;
+		getGame().setPage(nextPage);
 		this.nextPage=null;
 	}
 }

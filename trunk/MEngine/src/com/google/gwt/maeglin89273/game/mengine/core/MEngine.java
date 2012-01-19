@@ -3,8 +3,6 @@ package com.google.gwt.maeglin89273.game.mengine.core;
 
 
 import com.google.gwt.canvas.client.Canvas;
-import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ContextMenuEvent;
@@ -21,6 +19,7 @@ import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.maeglin89273.game.mengine.game.Game;
 import com.google.gwt.maeglin89273.game.mengine.game.GameInfo;
+import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
 import com.google.gwt.maeglin89273.game.mengine.layer.Camera;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
@@ -28,7 +27,6 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -36,12 +34,13 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @author Maeglin Liao
  *
  */
-public class MEngine {
+public class MEngine{
 	
 	private static Canvas canvas;
 	private static Storage storage;
 	
 	private static GameInfo gameInfo;
+	private static GeneralGame game;
 	
 	private static GameExecutor gameExecutor;
 	private static AssetManager assetManager;
@@ -67,13 +66,21 @@ public class MEngine {
 		handlersManager=new HandlersManager(canvas);
 		cipher=new Cipher();
 		
-		assetManager.loadSpriteSheets(gameInfo.getSpriteSheets());
+		assetManager.loadAssetsBundle(gameInfo.getAssetsBundle());
 		Camera.setCameraSize(gameInfo.getWidth(), gameInfo.getHeight());
 		CoordinateConverter.init(gameInfo.getWidth(), gameInfo.getHeight());
 		
 		setupCanvas();
 		
 		game.init();
+	}
+	public static void init(GeneralGame game,String assetsPrefix){
+		MEngine.game=game;
+		MEngine.init((Game)game, assetsPrefix);
+	}
+	
+	public static GeneralGame getGeneralGame(){
+		return game;
 	}
 	public static void setRedrawAlpha(float alpha){
 		try{
