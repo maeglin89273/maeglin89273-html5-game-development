@@ -15,8 +15,10 @@ import com.google.gwt.maeglin89273.game.mengine.component.GameComponent;
  */
 public class GroupLayer extends Layer {
 	private List<Layer> layers=new ArrayList<Layer>();
-	public void addComponentOnLayer(GameComponent c){
-		this.addLayer(new ComponentLayer(c));
+	public ComponentLayer addComponentOnLayer(GameComponent c){
+		ComponentLayer layer=new ComponentLayer(c);
+		this.addLayer(layer);
+		return layer;
 	}
 	public void addLayer(Layer layer){
 		layer.setIndex(layers.size());
@@ -33,6 +35,11 @@ public class GroupLayer extends Layer {
 			layers.remove(layer.getIndex());
 			layer.setIndex(-1);
 			layer.setParentLayer(null);
+		}
+	}
+	public void removeLayer(int index){
+		if(index>=0){
+			layers.remove(index);
 		}
 	}
 	public int getSize(){

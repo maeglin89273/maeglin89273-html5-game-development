@@ -17,9 +17,12 @@ public class ImageLayer extends Layer {
 	private final Point imgPos;
 	private final int imgWidth;
 	private final int imgHeight;
-	public ImageLayer(SpriteSheet sheet,Point imgCornerPos,int imgWidthInGame,int imgHeightInGame){
+	public ImageLayer(SpriteSheet sheet,int imgWidthInGame,int imgHeightInGame){
+		this(sheet, new Point(0,0), imgWidthInGame, imgHeightInGame);
+	}
+	public ImageLayer(SpriteSheet sheet,Point imgCornerPosInGame,int imgWidthInGame,int imgHeightInGame){
 		this.sheet = sheet;
-		this.imgPos = imgCornerPos;
+		this.imgPos = imgCornerPosInGame;
 		imgWidth = imgWidthInGame;
 		imgHeight = imgHeightInGame;
 		

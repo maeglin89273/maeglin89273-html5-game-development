@@ -7,6 +7,7 @@
   <inherits name="com.googlecode.gwt.crypto.Crypto"/>
   
   <source path="asset"/>
+  <source path="service"/>
   <source path="component"/>
   <source path="core"/>
   <source path="game"/>
