@@ -92,6 +92,12 @@ public class Vector {
 		return a.getVectorX()*b.getVectorX()+a.getVectorY()*b.getVectorY();
 		
 	}
+	public double crossProduct(Vector v){
+		return y*v.getVectorX()-x*v.getVectorY();
+	}
+	public static double crossProduct(Vector a,Vector b){
+		return a.getVectorY()*b.getVectorX()-a.getVectorX()*b.getVectorY();
+	}
 	public void divided(double divisor){
 		x/=divisor;
 		y/=divisor;

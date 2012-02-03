@@ -14,5 +14,6 @@ public interface Physical extends GameComponent{
 	public Body getBody();
 	public Spacial getSpace();
 	public void destroy();
+	public boolean isDestroyed();
 	public AABB getAABB();
 }

@@ -11,14 +11,16 @@ import com.google.gwt.maeglin89273.game.mengine.component.GameComponent;
  *
  */
 public class ComponentLayer extends Layer {
-	private final GameComponent component;
+	private GameComponent component;
 	public ComponentLayer(GameComponent component){
 		this.component = component;
 	}
 	public GameComponent getComponent(){
 		return component;
 	}
-	
+	public void setComponent(GameComponent component){
+		this.component=component;
+	}
 	@Override
 	public void update() {
 		component.update();

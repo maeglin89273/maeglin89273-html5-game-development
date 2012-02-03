@@ -18,25 +18,24 @@ import com.google.gwt.maeglin89273.game.mengine.timer.TimerTask;
  */
 public class FadingPage extends SinglePage {
 
-	private static final float PER_ALPHA_VALUE=0.0333f;
-	private int count=30;
+	private static final float PER_ALPHA_VALUE=0.04f;
+	private int count=25;
 	
 	private boolean fadeIn=true,fadeOut=false;
 	private SchedulingTimer timer;
 	
 	private ImageLayer layer;
-	private String path;
-	private int imgWidthInGame;
-	private int imgHeightInGame;
-	/**
-	 * @param game
-	 */
-	public FadingPage(String sheetPath,int imgWidthInGame,int imgHeightInGame,Page nextPage) {
+	
+	public FadingPage(ImageLayer img,Page nextPage){
 		super(nextPage);
-		path = sheetPath;
-		this.imgWidthInGame = imgWidthInGame;
-		this.imgHeightInGame = imgHeightInGame;
-		
+		this.layer=img;
+	}
+	public FadingPage(String sheetPath,int imgWidthInGame,int imgHeightInGame,Page nextPage) {
+		this(new ImageLayer(MEngine.getAssetManager().getSpriteSheet(sheetPath),
+			new Point((getGame().getGameInfo().getWidth()-imgWidthInGame)/2,
+					  (getGame().getGameInfo().getHeight()-imgHeightInGame)/2),
+					   imgWidthInGame,imgHeightInGame),nextPage);
+				
 	}
 
 	/* (non-Javadoc)
@@ -77,7 +76,7 @@ public class FadingPage extends SinglePage {
 		if(fadeOut){
 			layer.setAlpha(layer.getAlpha()-PER_ALPHA_VALUE);
 			count++;
-			if(count==30){
+			if(count==25){
 				this.toNextPage();
 			}
 		}
@@ -94,10 +93,7 @@ public class FadingPage extends SinglePage {
 
 	@Override
 	public void onScreen() {
-		this.layer=new ImageLayer(MEngine.getAssetManager().getSpriteSheet(path),
-				new Point((getGame().getGameInfo().getWidth()-imgWidthInGame)/2,
-						  (getGame().getGameInfo().getHeight()-imgHeightInGame)/2),
-				imgWidthInGame,imgHeightInGame);
+		
 		this.layer.setAlpha(0);
 		
 	}

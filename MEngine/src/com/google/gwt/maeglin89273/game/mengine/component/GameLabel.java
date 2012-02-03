@@ -25,7 +25,7 @@ public class GameLabel extends GeneralComponent{
 		super(p, 0,0);
 		this.align=align;
 		this.baseline=baseline;
-		this.text=text;
+		this.text=text==null?"":text;
 		this.textFont=font;
 		this.fillColor=textColor;
 		this.strokeColor=strokeColor;
@@ -45,6 +45,9 @@ public class GameLabel extends GeneralComponent{
 	}
 	public void setText(String text){
 		this.text=text;
+	}
+	public void clearText(){
+		this.text="";
 	}
 	@Override
 	public void update() {

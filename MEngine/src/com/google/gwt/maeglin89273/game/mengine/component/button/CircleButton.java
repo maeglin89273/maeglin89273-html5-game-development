@@ -23,7 +23,9 @@ public abstract class CircleButton extends GameButton{
 		super(p, 2*r,2*r, block);
 		this.radius=r;
 	}
-
+	public double getRadius(){
+		return radius;
+	}
 
 	
 	/* (non-Javadoc)
