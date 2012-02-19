@@ -75,7 +75,6 @@ public class GameExecutor {
 				
 				bufferContext.setFillStyle(redrawColor);
 				bufferContext.fillRect(0, 0,GameExecutor.this.gameWidth,GameExecutor.this.gameHeight);
-				
 				synchronized(this){
 					do{
 						game.update();

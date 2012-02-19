@@ -15,7 +15,7 @@ public abstract class GeneralComponent implements GameComponent {
 	
 	protected final Point position=new Point(0,0);
 	protected GeneralComponent(Point p,double angle,double w,double h){
-		this.position.setPosition(p);
+		this.position.setPosition(p==null?new Point(0,0):p);
 		this.angle=angle;
 		this.setWidth(w);
 		this.setHeight(h);
