@@ -2,7 +2,7 @@
     "world":"INTRO",
     "levelNum":1,
     "gravityAng":90,
-    "fullPower":200,
+    "fullPower":250,
     "reqScore":130,
     "camera":{
         "x":360,
@@ -27,8 +27,11 @@
             "y":125
         },
         "CROSS":{
-            "x":360,
-            "y":400
+        	"pos":{   
+        		"x":360,
+            	"y":400
+            },
+            "ang":0
         },
         "SIMPLE_STATIC_LINE":[
             {

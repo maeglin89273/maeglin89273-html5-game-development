@@ -29,7 +29,7 @@ public class Polygon extends PhysicalShape {
 	 * @param p
 	 */
 	public Polygon(Creator creator,Point p){
-		this(creator,0, p,0, generateRandomInscribedPolygonVertices(3+Random.nextInt(6),12+Random.nextInt(4))
+		this(creator, 0, null, p, 0, generateRandomInscribedPolygonVertices(3+Random.nextInt(6),12+Random.nextInt(4))
 				,ASBOTXConfigs.Color.getRandomShapeBorderColor());
 	}
 	/**
@@ -40,8 +40,8 @@ public class Polygon extends PhysicalShape {
 	 * @param vertices
 	 * @param color
 	 */
-	public Polygon (Creator creator,Point p,double angle,Vector[] vertices,CssColor color){
-		this(creator, Math.round(vertices.length*2.5f), p, angle, vertices, color);
+	public Polygon (Creator creator,ShapesController controller, Point p,double angle,Vector[] vertices,CssColor color){
+		this(creator, Math.round(vertices.length*2.5f), controller, p, angle, vertices, color);
 		
 	}
 	/**
@@ -53,8 +53,8 @@ public class Polygon extends PhysicalShape {
 	 * @param vertices
 	 * @param color
 	 */
-	private Polygon (Creator creator,int contentPower,Point p,double angle,Vector[] vertices,CssColor color){
-		super(creator,contentPower, p, 0, 0, angle, color);
+	private Polygon (Creator creator,int contentPower,ShapesController controller,Point p,double angle,Vector[] vertices,CssColor color){
+		super(creator,contentPower,controller, p, 0, 0, angle, color);
 		if(this.isVerified()){
 			this.vertices=vertices;
 			
@@ -71,7 +71,7 @@ public class Polygon extends PhysicalShape {
 			fixtureDef.shape=shape;
 			fixtureDef.friction=0.7f;
 			fixtureDef.density=1.5f;
-			fixtureDef.restitution=0.5f;
+			fixtureDef.restitution=0.6f;
 			
 			aabb=body.createFixture(fixtureDef).getAABB();
 		}
@@ -95,6 +95,10 @@ public class Polygon extends PhysicalShape {
 		context.stroke();
 		context.restore();
 		
+	}
+	@Override
+	public int hashCode(){
+		return 2;
 	}
 	public static Vector[] generateRandomInscribedPolygonVertices(int verticesCount,double circumscribedCircleRadius){
 		if(verticesCount>8){

@@ -10,24 +10,21 @@ import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.common.Settings;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.contacts.Contact;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-
-import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
-import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.area.SensorArea.Checker;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
-
-import static com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.area.SensorArea.Checker;
-import static com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs.Color;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs.Color;
+import com.google.gwt.maeglin89273.game.mengine.component.Physical;
+import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 /**
  * @author Maeglin Liao
  *
@@ -36,7 +33,7 @@ public class MagneticLine extends ContactStaticLine{
 	private final int MAGNETIC_FIELD_BOUNDS=50;
 	private final float FORCE_MAGNITUDE=20f;
 	
-	private List<Dynamic> creationsInField=new ArrayList<Dynamic>();
+	private List<Physical> creationsInField=new ArrayList<Physical>();
 	
 	
 	private Vec2 vecA;
@@ -115,7 +112,7 @@ public class MagneticLine extends ContactStaticLine{
 		Vec2 shapePos;
 		Vec2 pAToShape;
 		Vec2 pBToShape;
-		Dynamic dc;
+		Physical dc;
 		for(int i=creationsInField.size()-1;i>=0;i--){
 			dc=creationsInField.get(i);
 			if(dc.isDestroyed()){
@@ -125,21 +122,21 @@ public class MagneticLine extends ContactStaticLine{
 				pAToShape=shapePos.sub(vecA);
 				pBToShape=shapePos.sub(vecB);
 				if(Vec2.dot(pAToShape, vecAToB)<0){
-					if(pAToShape.lengthSquared()>Settings.EPSILON*Settings.EPSILON){
+					if(pAToShape.lengthSquared()>ASBOTXConfigs.E_SQUARE){
 						pAToShape.negateLocal();
 						pAToShape.normalize();
 						pAToShape.mulLocal(FORCE_MAGNITUDE);
 						dc.getBody().applyForce(pAToShape,shapePos);
 					}
 				}else if(Vec2.dot(pBToShape, vecBToA)<0){
-					if(pBToShape.lengthSquared()>Settings.EPSILON*Settings.EPSILON){
+					if(pBToShape.lengthSquared()>ASBOTXConfigs.E_SQUARE){
 						pBToShape.negateLocal();
 						pBToShape.normalize();
 						pBToShape.mulLocal(FORCE_MAGNITUDE);
 						dc.getBody().applyForce(pBToShape,shapePos);
 					}
 				}else{
-					dc.getBody().applyForce(pAToShape.y*vecAToB.x-pAToShape.x*vecAToB.y<0?forces[0]:forces[1],shapePos);
+					dc.getBody().applyForce(Vec2.cross(pAToShape,vecAToB)>0?forces[0]:forces[1],shapePos);
 				}
 			}
 		}
@@ -176,17 +173,17 @@ public class MagneticLine extends ContactStaticLine{
 
 	@Override
 	public void beginContact(Contact contact, Fixture thisFixture,Fixture thatFixture) {
-		if(thatFixture.getBody().getUserData() instanceof Dynamic&&!creationsInField.contains(thatFixture.getBody().getUserData())){
-			creationsInField.add((Dynamic)thatFixture.getBody().getUserData());
+		if(thatFixture.getBody().getType()==BodyType.DYNAMIC&&!creationsInField.contains(thatFixture.getBody().getUserData())){
+			creationsInField.add((Physical)thatFixture.getBody().getUserData());
 		}
 		
 	}
 	@Override
 	public void endContact(Contact contact, Fixture thisFixture,Fixture thatFixture) {
 			
-		if(thatFixture.getBody().getUserData() instanceof Dynamic&&
+		if(thatFixture.getBody().getType()==BodyType.DYNAMIC&&
 				checker.checkPointIsOut(thisFixture, thatFixture.getBody().getWorldCenter())){
-			creationsInField.remove((Dynamic)thatFixture.getBody().getUserData());
+			creationsInField.remove((Physical)thatFixture.getBody().getUserData());
 		}
 		
 	}

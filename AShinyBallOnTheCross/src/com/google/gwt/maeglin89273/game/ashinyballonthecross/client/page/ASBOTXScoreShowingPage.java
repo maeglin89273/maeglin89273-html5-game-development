@@ -8,11 +8,12 @@ import com.google.gwt.canvas.dom.client.Context2d.TextAlign;
 import com.google.gwt.canvas.dom.client.Context2d.TextBaseline;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.ASBOTXGame;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.Player;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.LocalPlayer;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.Glass;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.button.LevelMenuButton;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.Level;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.WorldType;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.WorldType;
 import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteBlock;
 import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteSheet;
 import com.google.gwt.maeglin89273.game.mengine.component.button.BoxButton;
@@ -25,6 +26,8 @@ import com.google.gwt.maeglin89273.game.mengine.layer.ComponentLayer;
 import com.google.gwt.maeglin89273.game.mengine.layer.GroupLayer;
 import com.google.gwt.maeglin89273.game.mengine.page.GeneralPage;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
+import com.google.gwt.maeglin89273.game.mengine.service.LoginInfo;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * @author Maeglin Liao
@@ -33,7 +36,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 public class ASBOTXScoreShowingPage extends GeneralPage{
 	private enum Status{NEW_HIGH_SCORE,GENERAL,LEVEL_FAILED}
 	private Status status;
-	private Player player;
+	private LocalPlayer localPlayer;
 	private final int score;
 	private final Level level;
 	private ScoreBoard board;
@@ -48,7 +51,7 @@ public class ASBOTXScoreShowingPage extends GeneralPage{
 		this.layers.addLayer(gameRootLayer);
 		this.level = level;
 		this.score = score;
-		this.player=((ASBOTXGame)getGame()).getPlayer();
+		this.localPlayer=((ASBOTXGame)getGame()).getLocalPlayer();
 	}
 
 	/* (non-Javadoc)
@@ -94,13 +97,35 @@ public class ASBOTXScoreShowingPage extends GeneralPage{
 	}
 	
 	private void saveAndSetStatus(){
-		if(player.getScoreAt(level)<score){
-			player.setScoreAt(level, score);
+		// is it higher than before?
+		if(localPlayer.getScoreAt(level)<score){
+			localPlayer.setScoreAt(level, score);
 			status=Status.NEW_HIGH_SCORE;
 			if(level.getLevelNumber()<9){
 				unlockNextLevel(level,level.getWorldType(),level.getLevelNumber()+1);
 			}else{
 				//unlock at the next world level 1
+			}
+			localPlayer.save();
+			ASBOTXGame game=((ASBOTXGame)getGame());
+			
+			//update the online achievement if the localPlayer has logged in
+			if(game.getLoginInfo().getStatus()==LoginInfo.Status.LOGGED_IN){
+				game.getPlayerService().saveAchievements(localPlayer.getPlayer(),
+				new AsyncCallback<Void>(){
+	
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+					}
+	
+					@Override
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+				});
 			}
 		}else{
 			if(score>=level.getRequiredScore()){
@@ -109,13 +134,13 @@ public class ASBOTXScoreShowingPage extends GeneralPage{
 				status=Status.LEVEL_FAILED;
 			}
 		}
-		player.save();
+		
 	}
 	
 	private void unlockNextLevel(Level thisLevel,WorldType nextWorld,int nextLevelNumber){
-		if(!player.isLevelUnlocked(nextWorld, nextLevelNumber)){
+		if(!localPlayer.isLevelUnlocked(nextWorld, nextLevelNumber)){
 				if(score>=level.getRequiredScore()){
-					player.setScoreAt(nextWorld,nextLevelNumber,0);
+					localPlayer.setScoreAt(nextWorld,nextLevelNumber,0);
 				}else{
 					status=Status.LEVEL_FAILED;
 				}
@@ -124,16 +149,17 @@ public class ASBOTXScoreShowingPage extends GeneralPage{
 	private class ScoreBoard extends GeneralComponent{
 		private static final int BUTTONS_SPACING=180;
 		private static final int BUTTONS_BOUNDS=120;
-		GameButton[] buttons;
-		GameLabel title;
-		GameLabel[] scoreLabels;
-		SpriteSheet board=MEngine.getAssetManager().getSpriteSheet("images/score_board.png");
+		private GameButton[] buttons;
+		private GameLabel title;
+		private GameLabel[] scoreLabels;
+		private SpriteBlock block;
 		
 		ScoreBoard(Point center) {
 			super(center, 540,375);
 			
+			this.block=new SpriteBlock(0,0,720,500,MEngine.getAssetManager().getSpriteSheet("images/boards.png"));
 			this.title=new GameLabel(new Point(getLeftX()+15,getTopY()+25), TextAlign.LEFT, TextBaseline.TOP,
-					level.toString(), ASBOTXConfigs.Color.TRANSLUCENT_DARK_GRAY, ASBOTXConfigs.getGameFont(35));
+					level.toString(), ASBOTXConfigs.Color.TRANSLUCENT_DARK_GRAY, ASBOTXConfigs.getCGFont(35));
 			double buttonsY=getBottomY()-20;
 			Point leftButtonPos=new Point(getX()-BUTTONS_SPACING,buttonsY);
 			Point centerButtonPos=new Point(getX(),buttonsY);
@@ -144,25 +170,25 @@ public class ASBOTXScoreShowingPage extends GeneralPage{
 				case NEW_HIGH_SCORE:
 					
 					scoreLabels=new GameLabel[]{new GameLabel(new Point(getX(),getY()-40), TextAlign.CENTER, TextBaseline.MIDDLE,
-							"New High Score!", ASBOTXConfigs.Color.LIGHT_BLUE,ASBOTXConfigs.Color.DARK_BLUE,0.5f, ASBOTXConfigs.getGameFont(45)),
+							"New High Score!", ASBOTXConfigs.Color.LIGHT_BLUE,ASBOTXConfigs.Color.DARK_BLUE,0.5f, ASBOTXConfigs.getCGFont(45)),
 							new GameLabel(new Point(getX(),getY()+50), TextAlign.CENTER, TextBaseline.MIDDLE,
-									Integer.toString(score),ASBOTXConfigs.Color.LIGHT_YELLOW, ASBOTXConfigs.Color.YELLOW_BORDER,2, ASBOTXConfigs.getGameFont(70))};
+									Integer.toString(score),ASBOTXConfigs.Color.LIGHT_YELLOW, ASBOTXConfigs.Color.YELLOW_BORDER,2, ASBOTXConfigs.getCGFont(70))};
 					buttons=new GameButton[]{new LevelMenuButton(leftButtonPos,BUTTONS_BOUNDS),
 							 new ReplayButton(centerButtonPos,BUTTONS_BOUNDS),
 							 new NextLevelButton(rightButtonPos,BUTTONS_BOUNDS)};
 					break;
 				case GENERAL:
 					scoreLabels=new GameLabel[]{new GameLabel(new Point(getX(),getY()-30), TextAlign.CENTER, TextBaseline.MIDDLE,
-							"High Score "+player.getScoreAt(level), ASBOTXConfigs.Color.LIGHT_BLUE,ASBOTXConfigs.Color.DARK_BLUE,0.5f, ASBOTXConfigs.getGameFont(45)),
+							"High Score "+localPlayer.getScoreAt(level), ASBOTXConfigs.Color.LIGHT_BLUE,ASBOTXConfigs.Color.DARK_BLUE,0.5f, ASBOTXConfigs.getCGFont(45)),
 												new GameLabel(new Point(getX(),getY()+50), TextAlign.CENTER, TextBaseline.MIDDLE,
-									"Score "+score, ASBOTXConfigs.Color.GRAY,ASBOTXConfigs.Color.DARK_GRAY,1, ASBOTXConfigs.getGameFont(45))};
+									"Score "+score, ASBOTXConfigs.Color.GRAY,ASBOTXConfigs.Color.DARK_GRAY,1, ASBOTXConfigs.getCGFont(45))};
 					buttons=new GameButton[]{new LevelMenuButton(leftButtonPos,BUTTONS_BOUNDS),
 											 new ReplayButton(centerButtonPos,BUTTONS_BOUNDS),
 											 new NextLevelButton(rightButtonPos,BUTTONS_BOUNDS)};
 					break;
 				case LEVEL_FAILED:
 					scoreLabels=new GameLabel[]{new GameLabel(new Point(getX(),getY()+20), TextAlign.CENTER, TextBaseline.MIDDLE,
-												"Level Failed!", ASBOTXConfigs.Color.BLACK, ASBOTXConfigs.getGameFont(45))};
+												"Level Failed!", ASBOTXConfigs.Color.BLACK, ASBOTXConfigs.getCGFont(45))};
 					buttons=new GameButton[]{new LevelMenuButton(leftButtonPos,BUTTONS_BOUNDS),
 			 				 new ReplayButton(rightButtonPos,BUTTONS_BOUNDS)};
 							 				 
@@ -184,7 +210,9 @@ public class ASBOTXScoreShowingPage extends GeneralPage{
 
 		@Override
 		public void draw(Context2d context) {
-			context.drawImage(board.getImage(), getLeftX(), getTopY(), getWidth(), getHeight());
+			context.drawImage(block.getSheetImage(),
+					block.getX(), block.getY(), block.getWidth(), block.getHeight(),
+					getLeftX(),getTopY(), getWidth(), getHeight());
 			//draw scores and title...
 			title.draw(context);
 			for(GameLabel scoreLabel:scoreLabels){
@@ -200,17 +228,17 @@ public class ASBOTXScoreShowingPage extends GeneralPage{
 			
 			NextLevelButton(Point p, int d) {
 				super(p, d/2, new SpriteBlock(200+SpriteBlock.SPACING,3*(200+SpriteBlock.SPACING),200,200,
-						MEngine.getAssetManager().getSpriteSheet("images/buttons.png")));
+						ASBOTXConfigs.Utility.getButtonsSpriteSheet()));
 				
 			}
 
 			@Override
 			public void doTask() {
-				if(level.getLevelNumber()<9){
+				//if(level.getLevelNumber()<9){
 					getGame().setPage(new ASBOTXLoadingLevelPage("levels/"+level.getWorldType().toString()+"_level_"+(level.getLevelNumber()+1)+".json"));
-				}else{
+				/*}else{
 					//to the next world level 1
-				}
+				}*/
 				
 			}
 
@@ -225,35 +253,13 @@ public class ASBOTXScoreShowingPage extends GeneralPage{
 
 			public ReplayButton(Point p, int d) {
 				super(p, d/2, new SpriteBlock(2*(200+SpriteBlock.SPACING),3*(200+SpriteBlock.SPACING),200,200,
-						MEngine.getAssetManager().getSpriteSheet("images/buttons.png")));
-				// TODO Auto-generated constructor stub
+						ASBOTXConfigs.Utility.getButtonsSpriteSheet()));
+				
 			}
 
 			@Override
 			public void doTask() {
 				getGame().setPage(new ASBOTXLoadingLevelPage("levels/"+level.getWorldType().toString()+"_level_"+level.getLevelNumber()+".json"));
-				
-			}
-
-			@Override
-			public void update() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		}
-		private class LevelMenuButton extends BoxButton{
-
-			public LevelMenuButton(Point p, double bounds){
-					
-				super(p, bounds,bounds,new SpriteBlock(0,3*(200+SpriteBlock.SPACING),200,200,
-						MEngine.getAssetManager().getSpriteSheet("images/buttons.png")));
-				
-			}
-
-			@Override
-			public void doTask() {
-				getGame().setPage(new ASBOTXLevelSelectPage());//the other constructor of LevelSelectPage require WorldType constant as a parameter
 				
 			}
 

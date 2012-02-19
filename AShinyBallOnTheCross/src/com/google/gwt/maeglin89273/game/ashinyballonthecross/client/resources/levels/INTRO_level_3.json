@@ -1,77 +1,48 @@
 {
     "world":"INTRO",
     "levelNum":3,
-    "gravityAng":90,
-    "fullPower":400,
-    "reqScore":250,
+    "gravityAng":180,
+    "fullPower":300,
+    "reqScore":200,
     "camera":{
         "x":360,
         "y":270
     },
     "bounds":{
-        "width":900,
-        "height":675
+        "width":800,
+        "height":600
     },
     "areaDefs":[
-        "ARROW_AREA",
         "GRAVITATIONAL_AREA"
     ],
     "lineDefs":[
         "SIMPLE_STATIC_LINE",
-        "ELASTIC_LINE",
-        "SHAPES_LINE"
+        "ELASTIC_LINE"
     ],
     "dotDefs":[
-        "CIRCLE_BOMB_DOT"
+        "NONE"
     ],
     "creations":{
         "SHINY_BALL":{
-            "x":360.5,
-            "y":0
+            "x":500,
+            "y":150
         },
         "CROSS":{
-            "x":360,
-            "y":320
+        	"pos":{
+            	"x":360,
+            	"y":385
+            },
+            "ang":90
         },
-        "CEMENT_LINE":[
+        "SIMPLE_STATIC_LINE":[
             {
                 "p1":{
-                    "x":360,
-                    "y":170
+                    "x":160,
+                    "y":270
                 },
                 "p2":{
-                    "x":510,
-                    "y":320
-                }
-            },
-            {
-                "p1":{
-                    "x":510,
-                    "y":320
-                },
-                "p2":{
-                    "x":360,
-                    "y":470
-                }
-            },
-            {
-                "p1":{
-                    "x":360,
-                    "y":470
-                },
-                "p2":{
-                    "x":210,
-                    "y":320
-                }
-            },
-            {
-                "p1":{
-                    "x":210,
-                    "y":320
-                },
-                "p2":{
-                    "x":360,
-                    "y":170
+                    "x":560,
+                    "y":270
                 }
             }
         ]

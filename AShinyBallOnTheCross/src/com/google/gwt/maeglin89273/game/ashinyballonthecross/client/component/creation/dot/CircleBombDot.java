@@ -8,6 +8,7 @@ import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Cr
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Circle;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.PhysicalShape;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.ShapesController;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
@@ -34,12 +35,12 @@ public class CircleBombDot extends BombDot {
 	 */
 	@Override
 	protected PhysicalShape generateShape(Point position, double angle) {
-		return new Circle(this.creator,position,10, this.dotColor);
+		return new Circle(this.creator,this.controller,position,10, this.dotColor);
 	}
 	public static class CircleBombDotDefiner extends BombDotDefiner{
 
 		public CircleBombDotDefiner(Creator creator) {
-			super(creator,null,ASBOTXConfigs.Color.BLUE);
+			super(creator,new Point(0,2*ICON_BOUNDS_PLUS_SPACING),ASBOTXConfigs.Color.BLUE);
 			
 		}
 

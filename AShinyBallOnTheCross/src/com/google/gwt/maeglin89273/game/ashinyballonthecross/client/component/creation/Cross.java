@@ -30,7 +30,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
  * @author Maeglin Liao
  *
  */
-public class Cross extends Creation implements WorldContactListener{
+public final class Cross extends Creation implements WorldContactListener{
 	private static final double SQRT_2=Math.sqrt(2);
 	
 	private GameOverCallback callback;
@@ -40,6 +40,7 @@ public class Cross extends Creation implements WorldContactListener{
 	private Body body;
 	private Fixture[] fixtures=new Fixture[2];
 	private boolean[] contacts=new boolean[]{false,false};
+	private boolean destroyed=false;
 	private CssColor color=ASBOTXConfigs.Color.DARK_GRAY;
 	/**
 	 * @param creator
@@ -47,10 +48,10 @@ public class Cross extends Creation implements WorldContactListener{
 	 * @param p
 	 * @param w
 	 * @param h
-	 * @param gravityInDegrees
+	 * @param angle
 	 */
-	public Cross(Creator creator, Point p,int gravityInDegrees,GameOverCallback callback) {
-		super(creator,0, p, 15*(1+SQRT_2), 15*(1+SQRT_2/2),Math.toRadians(gravityInDegrees-90));
+	public Cross(Creator creator, Point p,double angle,GameOverCallback callback) {
+		super(creator,0, p, 15*(1+SQRT_2), 15*(1+SQRT_2/2),angle);
 		this.callback=callback;
 		
 		Vec2 crossV=CoordinateConverter.vectorPixelToWorld(position.delta(getX(),getTopY()+getWidth()/2));
@@ -103,11 +104,17 @@ public class Cross extends Creation implements WorldContactListener{
 		context.setLineWidth(2);
 		context.setStrokeStyle(color);
 		context.beginPath();
-		context.moveTo(points[0].getX(), points[0].getY());
-		context.lineTo(points[2].getX(), points[2].getY());
-		context.moveTo(points[1].getX(), points[1].getY());
-		context.lineTo(points[3].getX(), points[3].getY());
+		moveTo(context,points[0]);
+		lineTo(context,points[2]);
+		moveTo(context,points[1]);
+		lineTo(context,points[3]);
 		context.stroke();
+	}
+	private void moveTo(Context2d context,Point p){
+		context.moveTo(p.getX(), p.getY());
+	}
+	private void lineTo(Context2d context,Point p){
+		context.lineTo(p.getX(), p.getY());
 	}
 	@Override
 	public void destroy(){
@@ -116,6 +123,7 @@ public class Cross extends Creation implements WorldContactListener{
 		fixtures=null;
 		body=null;
 		callback=null;
+		destroyed=true;
 	}
 	
 	@Override
@@ -159,8 +167,6 @@ public class Cross extends Creation implements WorldContactListener{
 					
 			ball=null;
 		}		
-			
-		
 	}
 
 	@Override
@@ -180,6 +186,11 @@ public class Cross extends Creation implements WorldContactListener{
 				this.color=ASBOTXConfigs.Color.LIGHT_BLUE;
 				return;
 		}
+	}
+
+	@Override
+	public boolean isDestroyed() {
+		return destroyed;
 	}
 
 	

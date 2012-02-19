@@ -19,7 +19,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
  *
  */
 public class ASBOTXLoadingLevelPage extends GeneralPage {
-	private static final String loadingTextFont=ASBOTXConfigs.getGameFont(26);
+	private static final String loadingTextFont=ASBOTXConfigs.getCGFont(26);
 	
 	private boolean firstUpdate=true;
 	private String path;
@@ -50,9 +50,13 @@ public class ASBOTXLoadingLevelPage extends GeneralPage {
 		if(firstUpdate){
 			firstUpdate=false;
 		}else{
-			getGame().setPage(new ASBOTXGamePage(
+			try{
+				getGame().setPage(new ASBOTXGamePage(
 					new Level(new Point(getGameWidth()/2.0,getGameHeight()/2.0),
 							  MEngine.getAssetManager().getJson(path))));
+			}catch(IllegalArgumentException e){//the last level
+				getGame().setPage(new ASBOTXEndingPage());
+			}
 			
 		}
 

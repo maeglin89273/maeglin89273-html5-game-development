@@ -25,7 +25,7 @@ public class Rectangle extends PhysicalShape{
 	 * @param p
 	 */
 	public Rectangle(Creator creator,Point p){
-		this(creator,0, p,Random.nextDouble()*Math.PI, 5+Random.nextInt(21), 5+Random.nextInt(21),ASBOTXConfigs.Color.getRandomShapeBorderColor());
+		this(creator,0,null, p,Random.nextDouble()*Math.PI, 5+Random.nextInt(21), 5+Random.nextInt(21),ASBOTXConfigs.Color.getRandomShapeBorderColor());
 	}
 	/**
 	 * 
@@ -36,8 +36,8 @@ public class Rectangle extends PhysicalShape{
 	 * @param height
 	 * @param color
 	 */
-	public Rectangle(Creator creator, Point p,double angle,double width,double height,CssColor color){
-		this(creator, (int)Math.floor(((width+height)/2)), p, angle, width, height, color);
+	public Rectangle(Creator creator,ShapesController controller, Point p,double angle,double width,double height,CssColor color){
+		this(creator, (int)Math.floor(((width+height)/2)),controller, p, angle, width, height, color);
 		
 	}
 	/**
@@ -50,8 +50,8 @@ public class Rectangle extends PhysicalShape{
 	 * @param height
 	 * @param color
 	 */
-	private Rectangle(Creator creator,int contentPower, Point p,double angle,double width,double height,CssColor color){
-		super(creator,contentPower, p, width, height, angle, color);
+	private Rectangle(Creator creator,int contentPower,ShapesController controller, Point p,double angle,double width,double height,CssColor color){
+		super(creator,contentPower,controller, p, width, height, angle, color);
 		if(this.isVerified()){
 			PolygonShape shape=new PolygonShape();
 			FixtureDef fixtureDef=new FixtureDef();
@@ -66,7 +66,10 @@ public class Rectangle extends PhysicalShape{
 			aabb=body.createFixture(fixtureDef).getAABB();
 		}
 	}
-
+	@Override
+	public int hashCode(){
+		return 1;
+	}
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.GeneralComponent#draw(com.google.gwt.canvas.dom.client.Context2d)
 	 */

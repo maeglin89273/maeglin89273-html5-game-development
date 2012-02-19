@@ -1,0 +1,34 @@
+/**
+ * 
+ */
+package com.google.gwt.maeglin89273.game.ashinyballonthecross.shared;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+/**
+ * @author Maeglin Liao
+ *
+ */
+public class CheckLoginRequest implements IsSerializable {
+	private String reqUrl;
+	private Player localPlayer;
+	
+	
+	public CheckLoginRequest(String requestUrl,Player localPlayer){
+		reqUrl = requestUrl;
+		this.localPlayer=localPlayer;
+		
+		
+	}
+	private CheckLoginRequest(){
+		// TODO Auto-generated constructor stub
+	}
+	
+	public String getRquestUrl(){
+		return reqUrl;
+	}
+	public Player getLocalPlayer(){
+		return localPlayer;
+	}
+	
+}

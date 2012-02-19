@@ -7,12 +7,16 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jbox2d.common.Vec2;
+
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Creation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.Level;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.CreatorPropertiesChangedEvent;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.CreatorPropertiesChangedListener;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GameOverCallback;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GravityChangedEvent;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GravityChangedListener;
 
 
 
@@ -34,16 +38,13 @@ public class Creator {
 	
 	private PhysicalWorld world;
 	private final Level level;
-	
+	private final GravityController gController;
 	private boolean built=false;
-	
+	private GameOverCallback callback;
 	public Creator(Level level){
 		
-		/*use Level as the argument for initializing this creator
-		 * the properties below depends on Level
-		*/
 		this.level = level;
-		
+		this.gController=new GravityController(level.getGravityAngleInDegrees());
 		maxPower=power=score=level.getFullPower();
 		
 		
@@ -54,15 +55,20 @@ public class Creator {
 	public void build(GameOverCallback callback){
 		if(!built){
 			this.world=new PhysicalWorld(level.getScreenCenter(),level.getLevelWidth(),level.getLevelHeight()
-					,GravityIndicator.getGravityByDegrees(level.getGravityAngleInDegrees()));
-			level.buildLevel(this,callback);
+					,gController.getGravity());
+			gController.addGravityChangeListener(this.world);
+			this.callback = callback;
+			
+			level.buildLevel(this);
 		}
 		built=true;
 	}
 	public PhysicalWorld getWorld(){
 		return world;
 	}
-	
+	public GravityController getGravityController(){
+		return gController;
+	}
 	public int getScore(){
 		return score;
 	}
@@ -172,6 +178,88 @@ public class Creator {
 	public void removeLastCreation(){
 		if(!creations.isEmpty()){
 			this.creations.get(creations.size()-1).destroy();
+		}
+	}
+	/**
+	 * @return the callback
+	 */
+	public GameOverCallback getGameOverCallback() {
+		return callback;
+	}
+	public static class GravityController{
+		public static final float GRAVITY_MAGNITUDE=9.8f;
+		
+		private int RotationUnit=0;
+		private int gravityAngle;
+		private int nextGravityAngle;
+		
+		private final Vec2 gravity;
+		
+		private ArrayList<GravityChangedListener> listenerList=new ArrayList<GravityChangedListener>();
+		private GravityController(int angleInDegrees){
+			this.gravityAngle=this.nextGravityAngle=-angleInDegrees;
+			gravity=getGravityByDegrees(angleInDegrees);
+		}
+		public double getAngle(){
+			return Math.toRadians(-gravityAngle);
+		}
+		public void rotate(){
+			if(isRotating()){
+				gravityAngle+=RotationUnit;
+				if(gravityAngle>=360){
+					gravityAngle-=360;
+				}else if(gravityAngle<0){
+					gravityAngle+=360;
+				}
+				
+				rotateGravity();
+				fireGravityChangedEvents();
+			}
+		}
+		private void rotateGravity(){
+			double radians=-getAngle();
+			
+			gravity.set((float)(GRAVITY_MAGNITUDE*Math.cos(radians)),
+						(float)(GRAVITY_MAGNITUDE*Math.sin(radians)));
+		}
+		public boolean isRotating(){
+			return gravityAngle!=nextGravityAngle;
+		}
+		
+		private void fireGravityChangedEvents(){
+			GravityChangedEvent event=new GravityChangedEvent(this,new Vec2(gravity));
+			for(int i=listenerList.size()-1;i>=0;i--){
+				listenerList.get(i).gravityChanged(event);
+			}
+			
+		}
+		public void setAngle(int angleInDegree){
+			int delta;
+			
+			nextGravityAngle=-angleInDegree;
+			if(nextGravityAngle>180){
+				delta=gravityAngle-(nextGravityAngle-180);
+			}else{
+				delta=gravityAngle-(nextGravityAngle+180);
+			}
+			
+			if(delta==0){
+				return;
+			}
+			RotationUnit=delta/Math.abs(delta);
+		}
+		private Vec2 getGravityByDegrees(int angleInDegree){
+			return new Vec2((float)(GRAVITY_MAGNITUDE*Math.cos(Math.toRadians(angleInDegree))),
+					 		(float)(GRAVITY_MAGNITUDE*Math.sin(Math.toRadians(-angleInDegree))));
+		}
+		public void addGravityChangeListener(GravityChangedListener listener){
+			listenerList.add(listener);
+		}
+		public void removeGravityChangeListener(GravityChangedListener listener){
+			listenerList.remove(listener);
+		}
+		public Vec2 getGravity(){
+			return gravity;
 		}
 	}
 }

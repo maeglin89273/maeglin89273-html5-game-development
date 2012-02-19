@@ -32,9 +32,10 @@ public class ShinyBall extends PhysicalShape implements CreatorPropertiesChanged
 	 * @see com.google.gwt.maeglin89273.game.mengine.utility.component.Physical#getBody()
 	 */
 	public ShinyBall(Creator creator,Point p){
-		super(creator,0,p,2*CORE_RADIUS,2*CORE_RADIUS,0,null);
+		super(creator,0,null,p,2*CORE_RADIUS,2*CORE_RADIUS,0,null);
 		
 		if(this.isVerified()){
+			body.setBullet(true);
 			initPos.setPosition(p);
 			portion=creator.getMaxPower()/4;
 			updatePower(creator.getPower());

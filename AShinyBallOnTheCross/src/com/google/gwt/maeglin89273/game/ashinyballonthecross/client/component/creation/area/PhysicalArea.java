@@ -20,7 +20,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 public abstract class PhysicalArea extends Area implements Physical {
 	protected Body body;
 	protected AABB aabb;
-	
+	protected boolean destroyed=false;
 	/**
 	 * @param creator
 	 * @param contentPower TODO
@@ -73,5 +73,11 @@ public abstract class PhysicalArea extends Area implements Physical {
 		
 		body=null;
 		aabb=null;
+		
+		destroyed=true;
+	}
+	@Override 
+	public boolean isDestroyed(){
+		return destroyed;
 	}
 }

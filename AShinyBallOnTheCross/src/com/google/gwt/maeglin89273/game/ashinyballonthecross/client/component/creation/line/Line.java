@@ -23,6 +23,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
 public abstract class Line extends MainCreation{
 	
 	public static final int MAX_LENGTH=250;
+	public static final int MAX_LENGTH_SQUARE=MAX_LENGTH*MAX_LENGTH;
 	public static final int MIN_LENGTH_SQUARE = 13*13;
 	protected final Point pointA=new Point(0,0);
 	protected final Point pointB=new Point(0,0);
@@ -60,13 +61,12 @@ public abstract class Line extends MainCreation{
 		public void updatePenPosition(Point p){
 			if(pointA!=null&&!pointA.equals(p)){
 				Vector v=pointA.delta(p);
-				if(v.getMagnitude()<Line.MAX_LENGTH){
-					pointB=p;
-				}else{
-					pointB=new Point(Line.MAX_LENGTH,Math.atan2(-v.getVectorY(), v.getVectorX()),true);
-					pointB.translate(pointA.getX(), pointA.getY());
+				if(v.getSquare()>Line.MAX_LENGTH_SQUARE){
+					v.setMagnitude(MAX_LENGTH);
+					p=pointA.clone();
+					p.translate(v);
 				}
-				
+				pointB=p;
 			}
 		}
 		@Override
@@ -89,10 +89,7 @@ public abstract class Line extends MainCreation{
 		}
 		@Override 
 		public int getCreationRequiredPower(){
-			if(pointA!=null&&pointB!=null){
-				return Math.max(1,Math.round((float)(requiredFullPower*pointA.delta(pointB).getMagnitude()/Line.MAX_LENGTH)));
-			}
-			return 0;
+			return pointA!=null&&pointB!=null?Math.max(1,Math.round((float)(requiredFullPower*pointA.delta(pointB).getMagnitude()/Line.MAX_LENGTH))):0;
 		}
 	}
 }

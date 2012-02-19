@@ -21,16 +21,16 @@ public abstract class Creation extends GeneralComponent {
 	
 	
 	/**before create it ,please call isVerified() method in the sub class to check whether it is able to be created or not. 
-	 * @param cotentPower TODO
+	 * @param contentPower TODO
 	 * @param addedToWorld TODO
 	 * @param beControlled TODO
 	 * @param p
 	 * @param w
 	 * @param h
 	 */
-	public Creation(Creator creator,int cotentPower, Point p, double w, double h, double a) {
+	public Creation(Creator creator,int contentPower, Point p, double w, double h, double a) {
 		super(p, a, w, h);
-		contentPower = cotentPower;
+		this.contentPower = contentPower>=0?contentPower:0;
 		
 		
 		if(creator.verify(this)){

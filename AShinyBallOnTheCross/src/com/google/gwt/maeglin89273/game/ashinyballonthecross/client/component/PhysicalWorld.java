@@ -81,11 +81,9 @@ public class PhysicalWorld extends GeneralComponent implements Spacial,GravityCh
 	}
 	public void addShape(PhysicalShape shape){
 		shapes.add(shape);
-		
 	}
 	public void addLine(Line line){
 		lines.add(line);
-		
 	}
 	public void addDot(Dot dot){
 		dots.add(dot);
@@ -122,13 +120,14 @@ public class PhysicalWorld extends GeneralComponent implements Spacial,GravityCh
 		}
 	}
 	private void removeOtherCreation(Creation c){
-		int ri=lines.lastIndexOf(c);
+		int ri=otherCreations.lastIndexOf(c);
 		if(ri>=0 && (otherCreations.remove(ri)instanceof Physical)){
 			world.destroyBody(((Physical)c).getBody());
 		}
 	}
 	public void removeShape(PhysicalShape shape){
 		if(shapes.remove(shape)){
+			shape.getBody().setUserData(null);
 			world.destroyBody(shape.getBody());
 		}
 	}
@@ -215,9 +214,20 @@ public class PhysicalWorld extends GeneralComponent implements Spacial,GravityCh
 	
 	@Override
 	public void gravityChanged(GravityChangedEvent event) {
+		
 		for(Physical p:shapes){//and others..
 			p.getBody().setAwake(true);
 			
+		}
+		for(Area area:areas){
+			if(area instanceof Physical){
+				((Physical)area).getBody().setAwake(true);
+			}
+		}
+		for(Line line:lines){
+			if(line instanceof Physical){
+				((Physical)line).getBody().setAwake(true);
+			}
 		}
 		world.setGravity(event.getGravity());
 	}

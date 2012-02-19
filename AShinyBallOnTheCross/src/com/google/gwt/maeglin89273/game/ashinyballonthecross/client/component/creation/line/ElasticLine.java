@@ -7,17 +7,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.jbox2d.callbacks.ContactImpulse;
-
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.Contact;
 
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
+import com.google.gwt.maeglin89273.game.mengine.component.Physical;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
 /**
@@ -27,7 +27,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 public class ElasticLine extends ContactStaticLine {
 	
 	private static final float  IMPULSE_MAGNITUDE=0.3f;
-	private Set<Dynamic> contactShapes=new HashSet<Dynamic>();
+	private Set<Physical> contactShapes=new HashSet<Physical>();
 	
 	
 	/**
@@ -59,12 +59,14 @@ public class ElasticLine extends ContactStaticLine {
 		if(!contactShapes.isEmpty()){
 			Body body;
 			Vec2 imp;
-			for(Dynamic ps:contactShapes){
-				body=ps.getBody();
-				imp=body.getLinearVelocity().clone();
-				
-				imp.mulLocal(IMPULSE_MAGNITUDE);
-				body.applyLinearImpulse(imp, body.getWorldCenter());
+			for(Physical ps:contactShapes){
+				if(!ps.isDestroyed()){
+					body=ps.getBody();
+					imp=body.getLinearVelocity().clone();
+					
+					imp.mulLocal(IMPULSE_MAGNITUDE);
+					body.applyLinearImpulse(imp, body.getWorldCenter());
+				}
 			}
 			contactShapes.clear();
 			
@@ -77,9 +79,8 @@ public class ElasticLine extends ContactStaticLine {
 	}
 	@Override
 	public void endContact(Contact contact, Fixture thisFixture, Fixture thatFixture) {
-		if(thatFixture.getBody().getUserData() instanceof Dynamic)
-		contactShapes.add((Dynamic)thatFixture.getBody().getUserData());
-		
+		if(thatFixture.getBody().getType()==BodyType.DYNAMIC&&thatFixture.getBody().getUserData()!=null)//null happens when the creation is destroying
+			contactShapes.add((Physical)thatFixture.getBody().getUserData());
 	}
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold, Fixture thisFixture, Fixture thatFixture) {

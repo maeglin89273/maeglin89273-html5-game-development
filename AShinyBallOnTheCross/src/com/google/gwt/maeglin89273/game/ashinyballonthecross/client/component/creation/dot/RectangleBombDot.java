@@ -36,12 +36,12 @@ public class RectangleBombDot extends BombDot {
 	 */
 	@Override
 	protected PhysicalShape generateShape(Point position, double angle) {
-		return new Rectangle(creator, position , angle, 5+Random.nextInt(16), 5+Random.nextInt(16), this.dotColor);
+		return new Rectangle(this.creator,this.controller, position , angle, 5+Random.nextInt(16), 5+Random.nextInt(16), this.dotColor);
 	}
 	public static class RectangleBombDotDefiner extends BombDotDefiner{
 
 		public RectangleBombDotDefiner(Creator creator) {
-			super(creator,null,ASBOTXConfigs.Color.YELLOW_BORDER);
+			super(creator,new Point(ICON_BOUNDS_PLUS_SPACING,2*ICON_BOUNDS_PLUS_SPACING),ASBOTXConfigs.Color.YELLOW_BORDER);
 			
 		}
 
