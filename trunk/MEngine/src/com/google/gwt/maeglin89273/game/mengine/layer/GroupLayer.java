@@ -29,17 +29,27 @@ public class GroupLayer extends Layer {
 		layer.setIndex(index);
 		layers.add(index, layer);
 		layer.setParentLayer(this);
+		for(index++;index<layers.size();index++){
+			layers.get(index).setIndex(index);
+		}
 	}
 	public void removeLayer(Layer layer){
 		if(layer.getIndex()>=0){
-			layers.remove(layer.getIndex());
+			int index=layer.getIndex();
+			layers.remove(index);
 			layer.setIndex(-1);
 			layer.setParentLayer(null);
+			for(;index<layers.size();index++){
+				layers.get(index).setIndex(index);
+			}
 		}
 	}
 	public void removeLayer(int index){
 		if(index>=0){
 			layers.remove(index);
+			for(;index<layers.size();index++){
+				layers.get(index).setIndex(index);
+			}
 		}
 	}
 	public int getSize(){

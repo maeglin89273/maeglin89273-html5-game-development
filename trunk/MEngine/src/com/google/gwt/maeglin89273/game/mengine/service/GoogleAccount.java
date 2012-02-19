@@ -23,6 +23,7 @@ public class GoogleAccount implements IsSerializable{
 		this.userId = userId;
 		this.nickname = nickname;
 	}
+	
 	/**
 	 * for RPC
 	 */

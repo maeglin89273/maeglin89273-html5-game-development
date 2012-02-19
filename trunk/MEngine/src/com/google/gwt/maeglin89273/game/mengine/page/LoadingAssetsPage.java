@@ -26,4 +26,8 @@ public abstract class LoadingAssetsPage extends SinglePage implements DataLoaded
 		return;
 		
 	}
+	@Override
+	public void done() {
+		toNextPage();
+	}
 }

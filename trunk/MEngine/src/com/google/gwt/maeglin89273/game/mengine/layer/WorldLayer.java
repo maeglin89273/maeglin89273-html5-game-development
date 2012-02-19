@@ -4,7 +4,7 @@
 package com.google.gwt.maeglin89273.game.mengine.layer;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
+import com.google.gwt.maeglin89273.game.mengine.component.GameComponent;
 import com.google.gwt.maeglin89273.game.mengine.layer.Camera.WorldBounds;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
@@ -15,16 +15,16 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
  */
 public class WorldLayer extends GroupLayer {
 	private final Camera camera;
-	public WorldLayer(Spacial s,float maxScale){
-		this.camera=new Camera(s, maxScale);
-		this.addLayer(new ComponentLayer(s));
+	public WorldLayer(GameComponent space,float maxScale){
+		this.camera=new Camera(space, maxScale);
+		this.addLayer(new ComponentLayer(space));
 	}
 	public WorldLayer(WorldBounds bounds,float maxScale){
 		this.camera=new Camera(bounds, maxScale);
 	}
-	public WorldLayer(Spacial s,Point cameraPosition,float maxScale,float minScale){
-		this.camera=new Camera(s, cameraPosition, maxScale,minScale);
-		this.addLayer(new ComponentLayer(s));
+	public WorldLayer(GameComponent space,Point cameraPosition,float maxScale,float minScale){
+		this.camera=new Camera(space, cameraPosition, maxScale,minScale);
+		this.addLayer(new ComponentLayer(space));
 	}
 	public WorldLayer(WorldBounds bounds,Point cameraPosition,float maxScale,float minScale){
 		this.camera=new Camera(bounds, cameraPosition, maxScale,minScale);
