@@ -7,6 +7,7 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.c
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.area.ArrowArea;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.area.GravitationalArea;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.area.TriangleArea;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.dot.CircleBombDot;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.dot.PolygonBombDot;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.dot.RectangleBombDot;
@@ -26,8 +27,9 @@ import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.cr
 public class DefinersFactory {
 	public enum LineDefinerType{CEMENT_LINE,SIMPLE_STATIC_LINE,ELASTIC_LINE,SHAPES_LINE,MAGNETIC_LINE,NONE};
 	public enum DotDefinerType{POLYGON_BOMB_DOT,CIRCLE_BOMB_DOT,RECTANGLE_BOMB_DOT,NONE};
-	public enum AreaDefinerType{GRAVITATIONAL_AREA,ARROW_AREA,NONE};
+	public enum AreaDefinerType{GRAVITATIONAL_AREA,ARROW_AREA,TRIANGLE_AREA,NONE};
 	
+	private static final String WRONG_TYPE_MESSAGE="It is a wrong type.";
 	private Creator creator;
 	public DefinersFactory(Creator creator){
 		this.creator=creator;
@@ -45,10 +47,12 @@ public class DefinersFactory {
 				return new GravitationalArea.GravitationalAreaDefiner(creator);
 			case ARROW_AREA:
 				return new ArrowArea.ArrowAreaDefiner(creator);
+			case TRIANGLE_AREA:
+				return new TriangleArea.TriangleAreaDefiner(creator);
 			case NONE:
 				return new CreationDefiner.NoneDefiner();
 		}
-		throw new IllegalArgumentException("It is a wrong type.");
+		throw new IllegalArgumentException(WRONG_TYPE_MESSAGE);
 	}
 	public CreationDefiner[] getLineDefiners(LineDefinerType... types){
 		CreationDefiner[] definers =new CreationDefiner[types.length];
@@ -72,7 +76,7 @@ public class DefinersFactory {
 			case NONE:
 				return new CreationDefiner.NoneDefiner();
 		}
-		throw new IllegalArgumentException("It is a wrong type.");
+		throw new IllegalArgumentException(WRONG_TYPE_MESSAGE);
 	}
 	public CreationDefiner[] getDotDefiners(DotDefinerType... types){
 		CreationDefiner[] definers =new CreationDefiner[types.length];
@@ -92,6 +96,6 @@ public class DefinersFactory {
 			case NONE:
 				return new CreationDefiner.NoneDefiner();
 		}
-		throw new IllegalArgumentException("It is a wrong type.");
+		throw new IllegalArgumentException(WRONG_TYPE_MESSAGE);
 	}
 }

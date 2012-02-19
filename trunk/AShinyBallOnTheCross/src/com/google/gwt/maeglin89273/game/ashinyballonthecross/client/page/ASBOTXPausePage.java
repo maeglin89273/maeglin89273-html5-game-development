@@ -19,8 +19,8 @@ import com.google.gwt.maeglin89273.game.mengine.page.SinglePage;
  */
 public class ASBOTXPausePage extends SinglePage{
 	
-	private static final String pauseTextFont=ASBOTXConfigs.getGameFont(26);
-	private static final String clickTextFont=ASBOTXConfigs.getGameFont(12);
+	private static final String pauseTextFont=ASBOTXConfigs.getCGFont(26);
+	private static final String clickTextFont=ASBOTXConfigs.getCGFont(12);
 	private Glass glass;
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.GeneralPage#onClick(com.google.gwt.maeglin89273.game.mengine.utility.physics.Point)

@@ -16,8 +16,8 @@ import org.jbox2d.dynamics.contacts.Contact;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
+import com.google.gwt.maeglin89273.game.mengine.component.Physical;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
@@ -72,7 +72,7 @@ public class ArrowArea extends SensorArea{
 			PolygonShape triShape=new PolygonShape();
 			PolygonShape recShape=new PolygonShape();
 			
-			Vector[] verticesP=new Vector[]{new Vector(rSin15,rCos15),new Vector(radius,0),new Vector(rSin15,rCos15)};
+			Vector[] verticesP=new Vector[]{new Vector(rSin15,rCos15),new Vector(radius,0),new Vector(rSin15,-rCos15)};
 			Vec2[] verticesW=new Vec2[3];
 			for(int i=0;i<3;i++){
 				verticesW[i]=CoordinateConverter.vectorPixelToWorld(verticesP[i]);
@@ -80,7 +80,7 @@ public class ArrowArea extends SensorArea{
 			triShape.set(verticesW, verticesW.length);
 			recShape.setAsBox(CoordinateConverter.scalerPixelsToWorld(hw),
 					CoordinateConverter.scalerPixelsToWorld(radius*0.6) ,
-					CoordinateConverter.vectorPixelToWorld(new Vector(Math.sin(Math.PI/12)-hw,0)),0);
+					CoordinateConverter.vectorPixelToWorld(new Vector(rSin15-hw,0)),0);
 			
 			triFixD.isSensor=true;
 			recFixD.isSensor=true;
@@ -108,7 +108,7 @@ public class ArrowArea extends SensorArea{
 	@Override
 	public void update() {
 		
-		Dynamic dc;
+		Physical dc;
 		for(int i=contentCreations.size()-1;i>=0;i--){
 			dc=contentCreations.get(i);
 			if(dc.isDestroyed()){
@@ -136,9 +136,9 @@ public class ArrowArea extends SensorArea{
 	 */
 	@Override
 	public void endContact(Contact contact, Fixture thisFixture, Fixture thatFixture) {
-		if(thatFixture.getBody().getUserData() instanceof Dynamic&&
+		if(thatFixture.getBody().getType()==BodyType.DYNAMIC&&
 				checker.checkPointIsOut(thisFixture,thatFixture.getBody().getWorldCenter())){
-			contentCreations.remove((Dynamic)thatFixture.getBody().getUserData());
+			contentCreations.remove((Physical)thatFixture.getBody().getUserData());
 				
 		}
 		

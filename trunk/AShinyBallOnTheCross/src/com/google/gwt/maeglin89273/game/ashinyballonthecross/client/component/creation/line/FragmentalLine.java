@@ -8,12 +8,11 @@ import org.jbox2d.dynamics.FixtureDef;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
 
-class FragmentalLine extends PhysicalLine implements Dynamic{
+class FragmentalLine extends PhysicalLine{
 	/**
 	 * 
 	 */
@@ -26,7 +25,9 @@ class FragmentalLine extends PhysicalLine implements Dynamic{
 		
 		if(isVerified()){	
 			body.setType(BodyType.DYNAMIC);
+			this.body.setUserData(this);
 			body.setBullet(true);
+			
 			FixtureDef fixD=new FixtureDef();
 				
 			PolygonShape lineP=new PolygonShape();
@@ -40,7 +41,7 @@ class FragmentalLine extends PhysicalLine implements Dynamic{
 			fixD.shape=lineP;
 			fixD.restitution=0.75f;
 			fixD.friction=0.4f;
-			fixD.userData=this;
+			
 			aabb=body.createFixture(fixD).getAABB();
 			body.setTransform(body.getPosition(), (float) -getAngle());
 		}else{
@@ -76,12 +77,8 @@ class FragmentalLine extends PhysicalLine implements Dynamic{
 	}
 	@Override
 	public void destroy(){
-		body.getFixtureList().setUserData(null);
+		body.setUserData(null);
 		super.destroy();
-		destroyed=true;
-	}
-	@Override
-	public boolean isDestroyed(){
-		return destroyed;
+		
 	}
 }

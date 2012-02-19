@@ -3,40 +3,37 @@
  */
 package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level;
 
+import static com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.LevelBuilder.X;
+import static com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.LevelBuilder.Y;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Cross;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.DefinersFactory.AreaDefinerType;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.DefinersFactory.DotDefinerType;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.DefinersFactory.LineDefinerType;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.ShinyBall;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.AreaBuilder;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.LineBuilder;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GameOverCallback;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.AreaBuilder.ArrowAreaBuilder;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.LevelBuilder;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.LineBuilder.CementLineBuilder;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.LineBuilder.MagneticLineBuilder;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.LineBuilder.SimpleStaticLineBuilder;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.LineBuilder.ElasticLineBuilder;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.LineBuilder.WoodLineBuilder;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.WorldType;
 import com.google.gwt.maeglin89273.game.mengine.asset.JsonFile;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
-
-import static com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.LineBuilder.*;
-import static com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.AreaBuilder.*;
 /**
  * @author Maeglin Liao
  *
  */
 public class Level {
-	private enum CreationType{
-		SHINY_BALL,CROSS,
-		SIMPLE_STATIC_LINE,CEMENT_LINE,WOOD_LINE,MAGNETIC_LINE,ELASTIC_LINE,
-		ARROW_AREA
-	}
-	
 	
 	public static final int LEVEL_COUNT=9;
-	
-	public static final String X="x";
-	public static final String Y="y";
 	
 	private final JSONObject jsonContext;
 	
@@ -55,6 +52,21 @@ public class Level {
 	private final AreaDefinerType[] areaDefs;
 	private final LineDefinerType[] lineDefs;
 	private final DotDefinerType[] dotDefs;
+	
+	private static final Map<String,LevelBuilder> BUILDER_MAP=new HashMap<String,LevelBuilder>();
+	static{
+		BUILDER_MAP.put("SIMPLE_STATIC_LINE", new SimpleStaticLineBuilder());
+		BUILDER_MAP.put("CEMENT_LINE", new CementLineBuilder());
+		BUILDER_MAP.put("WOOD_LINE", new WoodLineBuilder());
+		BUILDER_MAP.put("MAGNETIC_LINE", new MagneticLineBuilder());
+		BUILDER_MAP.put("ELASTIC_LINE", new ElasticLineBuilder());
+		
+		BUILDER_MAP.put("ARROW_AREA", new ArrowAreaBuilder());
+		
+		BUILDER_MAP.put("SHINY_BALL", new LevelBuilder.ShinyBallBuilder());
+		BUILDER_MAP.put("CROSS", new LevelBuilder.CrossBuilder());
+		BUILDER_MAP.put("RED_GOBLET", new LevelBuilder.RedGobletBuilder());
+	}
 	/**
 	 * 
 	 */
@@ -144,76 +156,26 @@ public class Level {
 	public String toString(){
 		return world.getTitle()+"-"+levelNumber;
 	}
-	public void buildLevel(Creator creator,GameOverCallback callback){
+	public void buildLevel(Creator creator){
 		JSONObject levelCreations=jsonContext.get("creations").isObject();
-		JSONValue unkonwnCreation;
-		JSONObject creation;
+		JSONValue unknownCreation;
+		LevelBuilder builder;
+		
 		JSONArray creationArray;
+		
 		int i;
 		
 		for(String key:levelCreations.keySet()){
-			unkonwnCreation=levelCreations.get(key);
-			
-			
-			if(key.endsWith("LINE")){
-				Point p1;
-				Point p2;
-				JSONObject point;
-				creationArray=unkonwnCreation.isArray();
-				LineBuilder lc;
-				
-				switch(CreationType.valueOf(key)){
-					case SIMPLE_STATIC_LINE:
-						lc=new SimpleStaticLineBuilder();
-						break;
-					case CEMENT_LINE:
-						lc =new CementLineBuilder();
-						break;
-					case WOOD_LINE:
-						lc=new WoodLineBuidler();
-						break;
-					case MAGNETIC_LINE:
-						lc=new MagneticLineBuidler();
-						break;
-						
-					default:
-						lc=new SimpleStaticLineBuilder();
-				}
+			unknownCreation=levelCreations.get(key);
+			builder=BUILDER_MAP.get(key);
+			if(unknownCreation.isArray()!=null){
+				creationArray=unknownCreation.isArray();
 				
 				for(i=0;i<creationArray.size();i++){
-					creation=creationArray.get(i).isObject();
-					point=creation.get("p1").isObject();
-					p1=new Point(point.get(X).isNumber().doubleValue(),
-								 point.get(Y).isNumber().doubleValue());
-					point=creation.get("p2").isObject();
-					p2=new Point(point.get(X).isNumber().doubleValue(),
-								 point.get(Y).isNumber().doubleValue());
-					lc.buildLine(creator, p1, p2);
-				}
-			}else if(key.endsWith("AREA")){
-				creationArray=unkonwnCreation.isArray();
-				AreaBuilder ab=null;
-				switch(CreationType.valueOf(key)){
-					case ARROW_AREA:
-						ab=new ArrowAreaBuilder();
-					
-				}
-				for(i=0;i<creationArray.size();i++){
-					ab.buildArea(creator, creationArray.get(i).isObject());
+					builder.build(creator, creationArray.get(i).isObject());
 				}
 			}else{
-				switch(CreationType.valueOf(key)){
-					case SHINY_BALL:
-						creation=unkonwnCreation.isObject();
-						new ShinyBall(creator, new Point(creation.get(X).isNumber().doubleValue(),
-														 creation.get(Y).isNumber().doubleValue()));
-						break;
-					case CROSS:
-						creation=unkonwnCreation.isObject();
-						new Cross(creator, new Point(creation.get(X).isNumber().doubleValue(),
-													 creation.get(Y).isNumber().doubleValue()),
-								  gravityAngle, callback);
-				}
+				builder.build(creator, unknownCreation.isObject());
 			}
 		}
 	}

@@ -8,8 +8,10 @@ import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Circle;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.PhysicalShape;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Polygon;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.Rectangle;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.ShapesController;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
@@ -25,14 +27,21 @@ public class ShapesLine extends Line {
 		super(creator, 0,false, p1, p2);
 		
 		ShapesLineDefiner.ShapeDefiner shapeDefiner;
+		PhysicalShape shape;
+		ShapesController controller=new ShapesController(creator);
 		for(int i=0;i<count;i++){
 			shapeDefiner=shapeSketches[i];
 			if(shapeDefiner instanceof ShapesLineDefiner.CircleDefiner){
-				new Circle(creator,shapeDefiner.getPosition(),((ShapesLineDefiner.CircleDefiner)shapeDefiner).getRadius(),shapeDefiner.getColor());
+				shape=new Circle(creator,controller,shapeDefiner.getPosition(),((ShapesLineDefiner.CircleDefiner)shapeDefiner).getRadius(),shapeDefiner.getColor());
 			}else if(shapeDefiner instanceof ShapesLineDefiner.RectangleDefiner){
-				new Rectangle(creator,shapeDefiner.getPosition(),shapeDefiner.getAngle(),((ShapesLineDefiner.RectangleDefiner)shapeDefiner).getWidth(),((ShapesLineDefiner.RectangleDefiner)shapeDefiner).getHeight(),shapeDefiner.getColor());
+				shape=new Rectangle(creator,controller,shapeDefiner.getPosition(),shapeDefiner.getAngle(),((ShapesLineDefiner.RectangleDefiner)shapeDefiner).getWidth(),((ShapesLineDefiner.RectangleDefiner)shapeDefiner).getHeight(),shapeDefiner.getColor());
 			}else{
-				new Polygon(creator,shapeDefiner.getPosition(),shapeDefiner.getAngle(),((ShapesLineDefiner.PolygonDefiner)shapeDefiner).getVertices(),shapeDefiner.getColor());
+				shape=new Polygon(creator,controller,shapeDefiner.getPosition(),shapeDefiner.getAngle(),((ShapesLineDefiner.PolygonDefiner)shapeDefiner).getVertices(),shapeDefiner.getColor());
+			}
+			if(!shape.isVerified()){
+				if(i==0)
+					controller.destroy();
+				break;
 			}
 		}
 		shapeSketches=null;
@@ -64,7 +73,7 @@ public class ShapesLine extends Line {
 		private ShapeDefiner[] shapes;
 		
 		public ShapesLineDefiner(Creator creator){
-			super(creator,75,null);
+			super(creator,75,new Point(4*ICON_BOUNDS_PLUS_SPACING,ICON_BOUNDS_PLUS_SPACING));
 			
 			this.shapesMaxCount=(int)Math.floor(Line.MAX_LENGTH/SPACING);//200 is the max length of line
 			shapes=new ShapeDefiner[shapesMaxCount];

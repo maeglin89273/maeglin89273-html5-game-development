@@ -25,6 +25,7 @@ public abstract class PhysicalLine extends Line implements Physical {
 	protected Body body;
 	protected Fixture fixture; 
 	protected AABB aabb;
+	protected boolean destroyed=false;
 	
 	protected CssColor lineColor;
 	/**
@@ -73,6 +74,7 @@ public abstract class PhysicalLine extends Line implements Physical {
 		body=null;
 		aabb=null;
 		lineColor=null;
+		destroyed=true;
 	}
 
 	/* (non-Javadoc)
@@ -81,5 +83,9 @@ public abstract class PhysicalLine extends Line implements Physical {
 	@Override
 	public AABB getAABB() {
 		return aabb;
+	}
+	@Override 
+	public boolean isDestroyed(){
+		return destroyed;
 	}
 }

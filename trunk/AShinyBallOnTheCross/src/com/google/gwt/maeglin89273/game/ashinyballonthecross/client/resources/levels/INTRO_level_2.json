@@ -1,48 +1,82 @@
 {
     "world":"INTRO",
     "levelNum":2,
-    "gravityAng":180,
-    "fullPower":300,
-    "reqScore":200,
+    "gravityAng":90,
+    "fullPower":200,
+    "reqScore":160,
     "camera":{
         "x":360,
         "y":270
     },
     "bounds":{
-        "width":800,
-        "height":600
+        "width":720,
+        "height":540
     },
     "areaDefs":[
-        "ARROW_AREA",
-        "GRAVITATIONAL_AREA"
+        "NONE"
     ],
     "lineDefs":[
-        "SIMPLE_STATIC_LINE",
-        "ELASTIC_LINE"
+        "SIMPLE_STATIC_LINE"
     ],
     "dotDefs":[
         "NONE"
     ],
     "creations":{
         "SHINY_BALL":{
-            "x":500,
-            "y":150
+            "x":75,
+            "y":85
         },
         "CROSS":{
-            "x":360,
-            "y":385
+            
+			"pos":{        
+            	"x":600,
+            	"y":420
+            },
+            "ang":0
+            
         },
         "SIMPLE_STATIC_LINE":[
             {
                 "p1":{
-                    "x":160,
-                    "y":270
+                    "x":50,
+                    "y":100
                 },
                 "p2":{
-                    "x":560,
-                    "y":270
+                    "x":250,
+                    "y":400
+                }
+            },
+            {
+                "p1":{
+                    "x":250,
+                    "y":400
+                },
+                "p2":{
+                    "x":330,
+                    "y":450
+                }
+            },
+            {
+                "p1":{
+                    "x":330,
+                    "y":450
+                },
+                "p2":{
+                    "x":400,
+                    "y":450
+                }
+            },
+            {
+                "p1":{
+                    "x":400,
+                    "y":450
+                },
+                "p2":{
+                    "x":485,
+                    "y":410
                 }
             }
         ]
+        
     }
 }

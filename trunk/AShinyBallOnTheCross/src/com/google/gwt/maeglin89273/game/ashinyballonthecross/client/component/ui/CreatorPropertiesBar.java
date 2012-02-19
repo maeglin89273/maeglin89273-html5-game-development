@@ -29,6 +29,7 @@ public class CreatorPropertiesBar extends GeneralComponent implements CreatorPro
 	private float hue=HUE_OFFSET+HUE_RANGE;
 	private final int maxPower; 
 	private final int lastScore;
+	private final int requiredScore;
 	private int score;
 	private final double barLength;
 	
@@ -54,15 +55,16 @@ public class CreatorPropertiesBar extends GeneralComponent implements CreatorPro
 	 * @param w
 	 * @param h
 	 */
-	public CreatorPropertiesBar(int screenWidth, int screenHeight,int maxPower,int lastScore) {
+	public CreatorPropertiesBar(int screenWidth, int screenHeight,int maxPower,int lastScore,int requiredScore) {
 		super(new Point(screenWidth*7/8f-20,screenHeight*25/54f), screenWidth/4f, screenHeight*25/27f);
 		this.barLength=this.powerBarLength=this.expectativePowerBarLength=this.scoreFlagPos=getHeight()*0.9;
 		this.powerBarX=getRightX()-1.5;
 		this.expectativePowerBarX=getRightX()-4.5;
 		this.textBaselineY=(float)getHeight()*0.05f;
-		this.font=ASBOTXConfigs.getGameFont((int)(screenWidth*13/360f));
+		this.font=ASBOTXConfigs.getCGFont((int)(screenWidth*13/360f));
 		this.maxPower=this.score=maxPower;
 		this.lastScore = lastScore;
+		this.requiredScore=requiredScore;
 		this.detectScoreColor();
 	}
 
@@ -124,8 +126,9 @@ public class CreatorPropertiesBar extends GeneralComponent implements CreatorPro
 	}
 
 	private void detectScoreColor(){
-		
-		if(score>lastScore){
+		if(score<requiredScore){
+			scoreColor=ASBOTXConfigs.Color.TRANSPARENT_RED;
+		}else if(score>lastScore){
 			scoreColor=ASBOTXConfigs.Color.TRANSPARENT_BLUE;
 		}else{
 			scoreColor=ASBOTXConfigs.Color.GRAY;

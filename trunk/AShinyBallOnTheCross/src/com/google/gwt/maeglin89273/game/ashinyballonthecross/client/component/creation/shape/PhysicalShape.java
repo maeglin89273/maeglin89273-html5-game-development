@@ -11,7 +11,7 @@ import org.jbox2d.dynamics.BodyType;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Creation;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
+import com.google.gwt.maeglin89273.game.mengine.component.Physical;
 import com.google.gwt.maeglin89273.game.mengine.component.Spacial;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
@@ -21,7 +21,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
  * @author Maeglin Liao
  *
  */
-public abstract class PhysicalShape extends Creation implements Dynamic{
+public abstract class PhysicalShape extends Creation implements Physical{
 		
 	protected Body body;
 	
@@ -30,6 +30,8 @@ public abstract class PhysicalShape extends Creation implements Dynamic{
 	protected CssColor borderColor;
 	
 	private boolean destroyed=false;
+	
+	private ShapesController controller;
 	/**
 	 * 
 	 * @param creator
@@ -40,18 +42,22 @@ public abstract class PhysicalShape extends Creation implements Dynamic{
 	 * @param angle
 	 * @param color
 	 */
-	protected PhysicalShape(Creator creator,int contentPower, Point p, double w,double h,double angle, CssColor color) {
+	protected PhysicalShape(Creator creator,int contentPower,ShapesController controller, Point p, double w,double h,double angle, CssColor color) {
 		super(creator,contentPower,p, w, h, angle);
 		if(this.isVerified()){
 			this.borderColor=color;
+			this.controller=controller;
 			
 			BodyDef bodyDef=new BodyDef();
 			bodyDef.type=BodyType.DYNAMIC;
+			bodyDef.userData=this;
 			bodyDef.position.set(CoordinateConverter.coordPixelToWorld(position));
 			bodyDef.angle=(float)-angle;
-			bodyDef.userData=this;
-			body=creator.getWorld().getWorld().createBody(bodyDef);
 			
+			body=creator.getWorld().getWorld().createBody(bodyDef);
+			if(controller!=null){
+				controller.addShape(this);
+			}
 		}
 		
 	}
@@ -83,6 +89,10 @@ public abstract class PhysicalShape extends Creation implements Dynamic{
 	@Override
 	public void destroy() {
 		super.destroy();
+		if(controller!=null){
+			controller.removeShape(this);
+			controller=null;
+		}
 		body.setUserData(null);
 		
 		body=null;

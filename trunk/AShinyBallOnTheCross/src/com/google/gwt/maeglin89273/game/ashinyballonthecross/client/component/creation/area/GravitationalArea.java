@@ -16,8 +16,8 @@ import org.jbox2d.dynamics.contacts.Contact;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.MainCreation;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
+import com.google.gwt.maeglin89273.game.mengine.component.Physical;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
@@ -27,7 +27,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
  */
 public class GravitationalArea extends SensorArea {
 	private final double radius;
-	private static float K=1.3f;
+	private static float K=1.2f;
 	private Vec2 center;
 	
 	/**
@@ -85,7 +85,7 @@ public class GravitationalArea extends SensorArea {
 	@Override
 	public void update() {
 		Vec2 v;
-		Dynamic dc;
+		Physical dc;
 		for(int i=contentCreations.size()-1;i>=0;i--){
 			dc=contentCreations.get(i);
 			if(dc.isDestroyed()){
@@ -93,7 +93,7 @@ public class GravitationalArea extends SensorArea {
 			}else{
 				v=center.sub(dc.getBody().getPosition());
 				float lengthS=v.lengthSquared();
-				if(lengthS>Settings.EPSILON*Settings.EPSILON){
+				if(lengthS>ASBOTXConfigs.E_SQUARE){
 					v.normalize();
 					v.mulLocal((float)radius*K*dc.getBody().getMass());
 					dc.getBody().applyForce(v, dc.getBody().getWorldCenter());
@@ -122,8 +122,8 @@ public class GravitationalArea extends SensorArea {
 	 */
 	@Override
 	public void endContact(Contact contact, Fixture thisFixture, Fixture thatFixture) {
-		if(thatFixture.getBody().getUserData() instanceof Dynamic){
-			contentCreations.remove((Dynamic)thatFixture.getBody().getUserData());
+		if(thatFixture.getBody().getType()==BodyType.DYNAMIC){
+			contentCreations.remove((Physical)thatFixture.getBody().getUserData());
 		}
 	}
 	public static class GravitationalAreaDefiner extends CircleKindAreaDefiner{

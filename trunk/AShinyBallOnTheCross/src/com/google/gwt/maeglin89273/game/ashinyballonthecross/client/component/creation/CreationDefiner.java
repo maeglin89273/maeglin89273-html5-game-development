@@ -24,7 +24,7 @@ public abstract class CreationDefiner {
 		this.creator = creator;
 		this.requiredFullPower = requiredFullPower;
 		if(iconCorner==null){
-			this.icon=new SpriteBlock(420, 420, ICON_BOUNDS, ICON_BOUNDS, MEngine.getAssetManager().getSpriteSheet("images/definers_icons.png"));
+			this.icon=new SpriteBlock(840, 840, ICON_BOUNDS, ICON_BOUNDS, MEngine.getAssetManager().getSpriteSheet("images/definers_icons.png"));
 		}else{
 			this.icon=new SpriteBlock((int)iconCorner.getX(), (int)iconCorner.getY(), ICON_BOUNDS, ICON_BOUNDS,
 					MEngine.getAssetManager().getSpriteSheet("images/definers_icons.png"));

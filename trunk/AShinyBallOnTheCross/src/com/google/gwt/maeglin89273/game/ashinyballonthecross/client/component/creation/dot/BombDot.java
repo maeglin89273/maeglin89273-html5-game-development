@@ -8,6 +8,7 @@ import org.jbox2d.common.Vec2;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.PhysicalShape;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.ShapesController;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 import com.google.gwt.maeglin89273.game.mengine.physics.Vector;
 
@@ -21,10 +22,12 @@ public abstract class BombDot extends Dot {
 	protected static final double PORTION_ANGLE=2*Math.PI/15;
 	protected final float impulseMag;
 	protected final float spoutDistance;
+	protected ShapesController controller;
 	protected BombDot(Creator creator,Point p,CssColor color,float impulseMag, float spoutDistance){
 		super(creator,0,false,p, color);
 		this.impulseMag=impulseMag;
 		this.spoutDistance=spoutDistance;
+		this.controller=new ShapesController(creator);
 	}
 	@Override
 	public void update() {
@@ -39,11 +42,19 @@ public abstract class BombDot extends Dot {
 				shape.getBody().applyLinearImpulse(impulse,shape.getBody().getWorldCenter());
 				lastShapesCount--;
 			}else{
+				if(lastShapesCount==15){
+					controller.destroy();
+				}
 				lastShapesCount=0;
 			}
 		}else{
 			destroy();
 		}
+	}
+	@Override
+	public void destroy(){
+		super.destroy();
+		this.controller=null;
 	}
 	protected abstract PhysicalShape generateShape(Point position, double angle);
 	

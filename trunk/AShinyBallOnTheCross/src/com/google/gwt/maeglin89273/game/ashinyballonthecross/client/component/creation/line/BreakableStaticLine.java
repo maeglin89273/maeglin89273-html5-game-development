@@ -7,12 +7,12 @@ import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.collision.WorldManifold;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.Contact;
 
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
 import com.google.gwt.maeglin89273.game.mengine.physics.CoordinateConverter;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
@@ -108,7 +108,7 @@ public abstract class BreakableStaticLine extends ContactStaticLine {
 	}
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse,Fixture thisFixture, Fixture thatFixture) {
-		if(thatFixture.getBody().getUserData() instanceof Dynamic){
+		if(thatFixture.getBody().getType()==BodyType.DYNAMIC){
 			for(int i=0;i<impulse.tangentImpulses.length;i++){
 				if(impulse.normalImpulses[i]!=0){
 					if(doesLineBreak(impulse.normalImpulses[i])){

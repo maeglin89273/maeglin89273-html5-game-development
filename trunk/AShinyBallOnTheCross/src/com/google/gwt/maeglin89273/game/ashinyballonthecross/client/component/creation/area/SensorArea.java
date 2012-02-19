@@ -6,17 +6,16 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.c
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.contacts.Contact;
 
-
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Dynamic;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.WorldContactListener;
+import com.google.gwt.maeglin89273.game.mengine.component.Physical;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
 
@@ -25,7 +24,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
  *
  */
 public abstract class SensorArea extends PhysicalArea implements WorldContactListener{
-	protected List<Dynamic> contentCreations=new ArrayList<Dynamic>();
+	protected List<Physical> contentCreations=new ArrayList<Physical>();
 	
 	/**
 	 * @param creator
@@ -55,8 +54,8 @@ public abstract class SensorArea extends PhysicalArea implements WorldContactLis
 	 */
 	@Override
 	public void beginContact(Contact contact,Fixture thisFixture, Fixture thatFixture) {
-		if((thatFixture.getBody().getUserData() instanceof Dynamic)&&!contentCreations.contains(thatFixture.getBody().getUserData())){
-			contentCreations.add((Dynamic)thatFixture.getBody().getUserData());
+		if(thatFixture.getBody().getType()==BodyType.DYNAMIC&&!contentCreations.contains(thatFixture.getBody().getUserData())){
+			contentCreations.add((Physical)thatFixture.getBody().getUserData());
 		}
 		
 

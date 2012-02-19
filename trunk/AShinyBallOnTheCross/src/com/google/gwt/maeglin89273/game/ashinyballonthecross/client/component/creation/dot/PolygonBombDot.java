@@ -36,12 +36,12 @@ public class PolygonBombDot extends BombDot {
 	 */
 	@Override
 	protected PhysicalShape generateShape(Point position, double angle) {
-		return new Polygon(creator, position, angle ,Polygon.generateRandomInscribedPolygonVertices(3+Random.nextInt(6), 13+Random.nextInt(3)), dotColor);
+		return new Polygon(this.creator,this.controller, position, angle ,Polygon.generateRandomInscribedPolygonVertices(3+Random.nextInt(6), 13+Random.nextInt(3)), dotColor);
 	}
 	public static class PolygonBombDotDefiner extends BombDotDefiner{
 
 		public PolygonBombDotDefiner(Creator creator) {
-			super(creator,null, ASBOTXConfigs.Color.RED);
+			super(creator,new Point(2*ICON_BOUNDS_PLUS_SPACING,2*ICON_BOUNDS_PLUS_SPACING), ASBOTXConfigs.Color.RED);
 			
 		}
 

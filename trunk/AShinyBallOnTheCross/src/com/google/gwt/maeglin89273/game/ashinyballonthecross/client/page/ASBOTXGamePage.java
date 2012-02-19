@@ -24,6 +24,7 @@ import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.*;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.DefinersFactory;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.CreatorPanel;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.CreatorPropertiesBar;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.GravityIndicator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.key.CreativeKey;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.Level;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
@@ -46,11 +47,11 @@ public class ASBOTXGamePage extends GamePage implements MouseDownHandler,MouseUp
 	private GravityIndicator gravityIndicator;
 	private CreatorPanel creatorPanel;
 	
-	private GroupLayer rootLayer;
 	private WorldLayer worldLayer;
 	private Camera camera;
 	
 	private Point grabPos=null;
+	private boolean inited=false;
 	public ASBOTXGamePage(Level level){
 		
 		this.level=level;
@@ -167,17 +168,10 @@ public class ASBOTXGamePage extends GamePage implements MouseDownHandler,MouseUp
 			grabPos.setPosition(mP);
 		}
 		creator.restore();
-		rootLayer.update();
+		super.update();
+		
 	}
 
-	/* (non-Javadoc)
-	 * @see com.google.gwt.maeglin89273.game.mengine.utility.page.Page#draw(com.google.gwt.canvas.dom.client.Context2d)
-	 */
-	@Override
-	public void draw(Context2d context) {
-		rootLayer.draw(context);
-	}
-	
 	@Override
 	public void regHandlers() {
 		MEngine.addMouseDownHandler(this);
@@ -190,6 +184,9 @@ public class ASBOTXGamePage extends GamePage implements MouseDownHandler,MouseUp
 	}
 	@Override
 	public void onScreen(){
+		if(inited){
+			return;
+		}
 		creator.build(new GameOverCallback(){
 
 			@Override
@@ -199,19 +196,19 @@ public class ASBOTXGamePage extends GamePage implements MouseDownHandler,MouseUp
 			
 		});
 		//initialize UIs
-		gravityIndicator=new GravityIndicator(creator.getWorld().getPosition(),250,30,level.getGravityAngleInDegrees());
+		gravityIndicator=new GravityIndicator(creator.getWorld().getPosition(),250,creator.getGravityController());
 				
 		CreativeKey.setSketchersFactory(new DefinersFactory(creator));
 		CreatorPropertiesBar creatorPropertiesBar=new CreatorPropertiesBar(getGameWidth(),
 																			getGameHeight(),
 																			creator.getMaxPower(),
-																			((ASBOTXGame)getGame()).getPlayer().getScoreAt(level));
+																			((ASBOTXGame)getGame()).getLocalPlayer().getScoreAt(level),
+																			level.getRequiredScore());
 																			
 						
 		creatorPanel=new CreatorPanel(creator,getGameWidth(), getGameHeight());
 				
 		//add listeners
-		gravityIndicator.addGravityChangeListener(creator.getWorld());
 		creator.addPropertiesChangeListener(creatorPropertiesBar);
 		creatorPanel.setDefiningListener(creatorPropertiesBar);
 		//initialize layers
@@ -239,5 +236,6 @@ public class ASBOTXGamePage extends GamePage implements MouseDownHandler,MouseUp
 		rootLayer.addComponentOnLayer(creatorPropertiesBar);
 		rootLayer.addLayer(worldLayer);
 		
+		inited=true;
 	}
 }

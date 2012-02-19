@@ -8,14 +8,16 @@ import com.google.gwt.canvas.dom.client.Context2d.TextAlign;
 import com.google.gwt.canvas.dom.client.Context2d.TextBaseline;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.ASBOTXGame;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.Player;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.button.LevelSelectButton;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.WorldType;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.LocalPlayer;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.button.WelcomeButton;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.Level;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.WorldType;
 import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteBlock;
 import com.google.gwt.maeglin89273.game.mengine.component.GameLabel;
 import com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent;
 import com.google.gwt.maeglin89273.game.mengine.component.button.BoxButton;
+import com.google.gwt.maeglin89273.game.mengine.component.button.GameButton;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.layer.GroupLayer;
 import com.google.gwt.maeglin89273.game.mengine.page.GeneralPage;
@@ -27,16 +29,17 @@ import com.google.gwt.user.client.Window;
  *
  */
 public class ASBOTXLevelSelectPage extends GeneralPage {
-	private Player player;
+	private LocalPlayer localPlayer;
 	private ButtonBoard board;
-	private LeaderboardButton leaderboardButton;
+	private GameButton[] buttons=new GameButton[2];
+	
 	private GroupLayer layers=new GroupLayer();
 	/**
 	 * @param game
 	 */
 	public ASBOTXLevelSelectPage() {
 		
-		this.player=((ASBOTXGame)getGame()).getPlayer();
+		this.localPlayer=((ASBOTXGame)getGame()).getLocalPlayer();
 	}
 
 	/* (non-Javadoc)
@@ -46,7 +49,7 @@ public class ASBOTXLevelSelectPage extends GeneralPage {
 	public void onClick(ClickEvent event) {
 		Point p=MEngine.getMousePosition();
 		if(!board.select(p))
-			leaderboardButton.onClick(p);
+			for(int i=0;i<buttons.length&&!buttons[i].onClick(p);i++);
 		
 	}
 	
@@ -74,25 +77,27 @@ public class ASBOTXLevelSelectPage extends GeneralPage {
 	@Override
 	public void onScreen() {
 		layers.addComponentOnLayer(new GameLabel(new Point(getGameWidth()/2,60),TextAlign.CENTER,TextBaseline.MIDDLE,
-														 WorldType.INTRO.getTitle(),ASBOTXConfigs.Color.GRAY,ASBOTXConfigs.getGameFont(32)));
-		leaderboardButton=new LeaderboardButton();
-		board=new ButtonBoard(400,getGameWidth()/2-200,120);
+														 WorldType.INTRO.getTitle(),ASBOTXConfigs.Color.GRAY,ASBOTXConfigs.getCGFont(32)));
+		buttons[0]=new LeaderboardButton();
+		buttons[1]=new WelcomeButton(new Point(getGameWidth()-25,25),50);
+		board=new ButtonBoard(400,getGameWidth()/2-200,110);
 		layers.addComponentOnLayer(board);
-		layers.addComponentOnLayer(leaderboardButton);
+		for(GameButton  button:buttons){
+			layers.addComponentOnLayer(button);
+		}
 		
 		
 	}
 	private class LeaderboardButton extends BoxButton{
 
 		public LeaderboardButton() {
-			super(new Point(70,25f), 140f, 50,new SpriteBlock(630,0,280,100,MEngine.getAssetManager().getSpriteSheet("images/buttons.png")));
+			super(new Point(67.5f,25f), 135, 50,new SpriteBlock(630,0,272,100,ASBOTXConfigs.Utility.getButtonsSpriteSheet()));
 			
 		}
 
 		@Override
 		public void doTask() {
-			Window.alert("Total="+player.getTotalInWorld(WorldType.INTRO));
-			
+			getGame().setPage(new ASBOTXLeaderboardPage());
 		}
 
 		@Override
@@ -119,19 +124,14 @@ public class ASBOTXLevelSelectPage extends GeneralPage {
 			bounds-=2*SPACING;
 			bounds/=3;
 			int counter=0;
-			outerLoop:
+			
 			for(int i=0;i<buttons.length;i++){
 				for(int j=0;j<buttons[i].length;j++){
 				buttons[i][j]=new LevelSelectButton(new Point(cornerX+bounds/2+j*(bounds+SPACING),
 													cornerY+bounds/2+i*(bounds+SPACING)),
 													bounds,WorldType.INTRO,++counter,
-													player.isLevelUnlocked(WorldType.INTRO,counter));//adjust later
-				
-				//remove it after finishing designing 9 levels
-				if(counter==5)
-					break outerLoop;
+													localPlayer.isLevelUnlocked(WorldType.INTRO,counter));//adjust later
 				}
-				
 			}
 		}
 		 boolean select(Point p){
@@ -169,4 +169,81 @@ public class ASBOTXLevelSelectPage extends GeneralPage {
 		}
 	}
 	
+	
+	private class LevelSelectButton extends BoxButton{
+		private final WorldType world;	
+		
+		private final int levelNum;
+		private final String scoreText;
+		
+		private final String numberFont;
+		private final String bestScoreFont;
+		
+		private final float scoreY;
+		private final boolean unlocked;
+		/**
+		 * @param p
+		 * @param w
+		 * @param h
+		 * @param block
+		 */
+		private LevelSelectButton(Point p,double bounds,WorldType world,int level,boolean unlocked) {
+			super(p,(int)bounds,(int)bounds,
+					(unlocked?new SpriteBlock(200+SpriteBlock.SPACING,200+SpriteBlock.SPACING,200,200,ASBOTXConfigs.Utility.getButtonsSpriteSheet()):
+							new SpriteBlock(2*(200+SpriteBlock.SPACING),200+SpriteBlock.SPACING,200,200,ASBOTXConfigs.Utility.getButtonsSpriteSheet())));
+			this.unlocked=unlocked;
+			this.world = world;
+			this.levelNum = level;
+			this.numberFont=ASBOTXConfigs.getCGFont((int)(bounds/4));
+			if(unlocked){
+				this.bestScoreFont=ASBOTXConfigs.getCGFont((int)(bounds/6));
+				this.scoreText=((ASBOTXGame)MEngine.getGeneralGame()).getLocalPlayer().getScoreAt(world, level)+"/"+Level.queryFullPower(world,level);
+				this.scoreY=(float)(getBottomY()+bounds/12+2.5f);
+			}else{
+				this.bestScoreFont=null;
+				this.scoreText=null;
+				this.scoreY=0;
+			}
+		}
+
+		/* (non-Javadoc)
+		 * @see com.google.gwt.maeglin89273.game.mengine.component.GameButton#doTask()
+		 */
+		@Override
+		public void doTask() {
+			if(unlocked){
+				MEngine.getGeneralGame().setPage(new ASBOTXLoadingLevelPage("levels/"+world.toString()+"_level_"+levelNum+".json"));
+			}
+		}
+
+		
+
+		/* (non-Javadoc)
+		 * @see com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent#update()
+		 */
+		
+		@Override
+		public void draw(Context2d context){
+			super.draw(context);
+			if(unlocked){
+				context.save();
+				context.setTextAlign(TextAlign.CENTER);
+				context.setTextBaseline(TextBaseline.MIDDLE);
+				context.setFillStyle(ASBOTXConfigs.Color.GRAY);
+				context.setFont(numberFont);
+				context.fillText(Integer.toString(levelNum),getX(),getY());
+				context.setFillStyle(ASBOTXConfigs.Color.TRANSPARENT_BLUE);
+				context.setFont(bestScoreFont);
+				context.fillText(scoreText, getX(), scoreY);
+				context.restore();
+			}
+		}
+
+		@Override
+		public void update() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 }
