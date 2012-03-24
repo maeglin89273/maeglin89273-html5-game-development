@@ -4,48 +4,48 @@
 package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.page;
 
 
+import org.jbox2d.common.Vec2;
+
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Cross;
-import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.core.Creator;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.core.creation.shape.Circle;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.core.creation.shape.PhysicalShape;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.Level;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GameOverCallback;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.layer.WorldLayer;
 import com.google.gwt.maeglin89273.game.mengine.page.GamePage;
+import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
 
 /**
  * @author Maeglin Liao
  *
  */
-public class ASBOTXTestingPage extends GamePage implements MouseDownHandler,MouseWheelHandler {
+public class ASBOTXTestingPage extends GamePage implements MouseDownHandler,MouseUpHandler,MouseWheelHandler {
 	private Creator creator;
-	private Cross cross;
 	private WorldLayer worldLayer;
-	private int hits=0;
-	/**
-	 * @param game
-	 */
-	public ASBOTXTestingPage() {
-		
-		
-		/*creator=new Creator(new DefaultLevel(game.getWidth(),game.getHeight()));
-		worldLayer=new WorldLayer(creator.getWorld(), 2.5f);*/
-		
-	}
+	
+	private boolean mousePressed=false;
 
 	/* (non-Javadoc)
 	 * @see com.google.gwt.event.dom.client.MouseDownHandler#onMouseDown(com.google.gwt.event.dom.client.MouseDownEvent)
 	 */
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
-		//MEngine.play();
-		MEngine.getLocalStorage().setItem("testSuccessfully!"+(++hits), "nice!"+hits);
+		this.mousePressed=true;
+		
 	}
-
+	@Override
+	public void onMouseUp(MouseUpEvent event) {
+		this.mousePressed=false;
+	}
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.mengine.page.Page#initHandlers()
 	 */
@@ -53,7 +53,7 @@ public class ASBOTXTestingPage extends GamePage implements MouseDownHandler,Mous
 	public void regHandlers() {
 		MEngine.addMouseDownHandler(this);
 		MEngine.addMouseWheelHandler(this);
-
+		MEngine.addMouseUpHandler(this);
 	}
 
 	/* (non-Javadoc)
@@ -61,7 +61,23 @@ public class ASBOTXTestingPage extends GamePage implements MouseDownHandler,Mous
 	 */
 	@Override
 	public void update() {
-		//worldLayer.update();
+		if(mousePressed){
+			PhysicalShape shape=null;
+			/*switch(Random.nextInt(3)){
+				case 0:*/
+					shape=new Circle(MEngine.getMousePosition());
+					/*break;
+				case 1:
+					shape=new Rectangle(MEngine.getMousePosition());
+					break;
+				case 2:
+					shape=new Polygon(MEngine.getMousePosition());
+					
+			}*/
+			shape.getBody().applyLinearImpulse(new Vec2(0,-1), shape.getBody().getWorldCenter());
+		}
+		
+		worldLayer.update();
 		
 	}
 
@@ -70,25 +86,30 @@ public class ASBOTXTestingPage extends GamePage implements MouseDownHandler,Mous
 	 */
 	@Override
 	public void draw(Context2d context) {
-		//worldLayer.draw(context);
+		worldLayer.draw(context);
 		
 	}
 
 	@Override
 	public void onMouseWheel(MouseWheelEvent event) {
-		/*if(event.isNorth())
-			worldLayer.getCamera().zoomIn();
-		if(event.isSouth())
-			worldLayer.getCamera().zoomOut();
-		*/
+		
 	}
 
 	@Override
 	public void onScreen() {
-		/*new ShinyBall(creator, new Point(125,0));
-		
-		new WoodLine(creator,new Point(100,150),new Point(200,100));*/
-		
+		Point center=new Point(getGameWidth()/2,getGameHeight()/2);
+		this.creator=new Creator(new Level(MEngine.getAssetManager().getJson("levels/testing.json"),center));
+		creator.build(new GameOverCallback(){
+
+			@Override
+			public void showScore(int score) {
+								
+			}
+			
+		});
+		worldLayer=new WorldLayer(creator.getWorld(),center,1,1);
 	}
+
+	
 	
 }

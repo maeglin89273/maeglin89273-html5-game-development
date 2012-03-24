@@ -5,7 +5,7 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.eve
 
 import java.util.EventObject;
 
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.core.Creator;
 
 /**
  * @author Maeglin Liao

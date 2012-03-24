@@ -4,6 +4,7 @@
     "gravityAng":90,
     "fullPower":400,
     "reqScore":250,
+    "hint":false,
     "camera":{
         "x":360,
         "y":270
@@ -13,16 +14,16 @@
         "height":675
     },
     "areaDefs":[
-        "ARROW_AREA",
-        "GRAVITATIONAL_AREA"
+        "ArrowArea",
+        "GravitationalArea"
     ],
     "lineDefs":[
-        "SIMPLE_STATIC_LINE",
-        "ELASTIC_LINE",
-        "SHAPES_LINE"
+        "SimpleStaticLine",
+        "ElasticLine",
+        "ShapesLine"
     ],
     "dotDefs":[
-        "CIRCLE_BOMB_DOT"
+        "CircleBombDot"
     ],
     "creations":{
         "SHINY_BALL":{

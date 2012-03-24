@@ -12,10 +12,6 @@ import java.util.Map;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.DefinersFactory.AreaDefinerType;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.DefinersFactory.DotDefinerType;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.DefinersFactory.LineDefinerType;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.AreaBuilder.ArrowAreaBuilder;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.LevelBuilder;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder.LineBuilder.CementLineBuilder;
@@ -42,6 +38,7 @@ public class Level {
 	private final int gravityAngle;
 	private final int requiredScore;
 	private final int  fullPower;
+	private final boolean hint;
 	
 	private final double width;
 	private final double height;
@@ -49,9 +46,9 @@ public class Level {
 	private final Point screenCenter;
 	private final Point viewPoint;
 	
-	private final AreaDefinerType[] areaDefs;
-	private final LineDefinerType[] lineDefs;
-	private final DotDefinerType[] dotDefs;
+	private final String[] areaDefs;
+	private final String[] lineDefs;
+	private final String[] dotDefs;
 	
 	private static final Map<String,LevelBuilder> BUILDER_MAP=new HashMap<String,LevelBuilder>();
 	static{
@@ -70,7 +67,7 @@ public class Level {
 	/**
 	 * 
 	 */
-	public Level(Point screenCenter,JsonFile file) {
+	public Level(JsonFile file ,Point screenCenter) {
 		this.screenCenter = screenCenter;
 		this.jsonContext=file.getJsonValue().isObject();
 		
@@ -79,6 +76,7 @@ public class Level {
 		this.gravityAngle=(int)jsonContext.get("gravityAng").isNumber().doubleValue();
 		this.fullPower=(int)jsonContext.get("fullPower").isNumber().doubleValue();
 		this.requiredScore=(int)jsonContext.get("reqScore").isNumber().doubleValue();
+		this.hint=jsonContext.get("hint").isBoolean().booleanValue();
 		
 		JSONObject bounds=jsonContext.get("bounds").isObject();
 		this.width = bounds.get("width").isNumber().doubleValue();
@@ -91,21 +89,21 @@ public class Level {
 		int i;
 		
 		defs=jsonContext.get("areaDefs").isArray();
-		areaDefs=new AreaDefinerType[defs.size()];
+		areaDefs=new String[defs.size()];
 		for(i=0;i<areaDefs.length;i++){
-			areaDefs[i]=AreaDefinerType.valueOf(defs.get(i).isString().stringValue());
+			areaDefs[i]=defs.get(i).isString().stringValue();
 		}
 		
 		defs=jsonContext.get("lineDefs").isArray();
-		lineDefs=new LineDefinerType[defs.size()];
+		lineDefs=new String[defs.size()];
 		for(i=0;i<lineDefs.length;i++){
-			lineDefs[i]=LineDefinerType.valueOf(defs.get(i).isString().stringValue());
+			lineDefs[i]=defs.get(i).isString().stringValue();
 		}
 		
 		defs=jsonContext.get("dotDefs").isArray();
-		dotDefs=new DotDefinerType[defs.size()];
+		dotDefs=new String[defs.size()];
 		for(i=0;i<dotDefs.length;i++){
-			dotDefs[i]=DotDefinerType.valueOf(defs.get(i).isString().stringValue());
+			dotDefs[i]=defs.get(i).isString().stringValue();
 		}
 		
 		
@@ -123,7 +121,6 @@ public class Level {
 	public double getLevelHeight(){
 		return height;
 	}
-	
 	public int getFullPower(){
 		return fullPower;
 	}
@@ -140,23 +137,26 @@ public class Level {
 	public int getLevelNumber(){
 		return levelNumber;
 	}
+	public boolean hasHint(){
+		return hint;
+	}
 	public WorldType getWorldType(){
 		return world;
 	}
-	public AreaDefinerType[] getAreaDefinerTypes(){
+	public String[] getAreaDefinerKinds(){
 		return areaDefs;
 	}
-	public LineDefinerType[] getLineDefinerTypes(){
+	public String[] getLineDefinerKinds(){
 		return lineDefs;
 	}
-	public DotDefinerType[] getDotDefinerTypes(){
+	public String[] getDotDefinerKinds(){
 		return dotDefs;
 	}
 	@Override
 	public String toString(){
 		return world.getTitle()+"-"+levelNumber;
 	}
-	public void buildLevel(Creator creator){
+	public void buildLevel(){
 		JSONObject levelCreations=jsonContext.get("creations").isObject();
 		JSONValue unknownCreation;
 		LevelBuilder builder;
@@ -172,10 +172,10 @@ public class Level {
 				creationArray=unknownCreation.isArray();
 				
 				for(i=0;i<creationArray.size();i++){
-					builder.build(creator, creationArray.get(i).isObject());
+					builder.build(creationArray.get(i).isObject());
 				}
 			}else{
-				builder.build(creator, unknownCreation.isObject());
+				builder.build(unknownCreation.isObject());
 			}
 		}
 	}

@@ -4,10 +4,9 @@
 package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.builder;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.Cross;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.RedGoblet;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.shape.ShinyBall;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.core.creation.Cross;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.core.creation.RedGoblet;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.core.creation.shape.ShinyBall;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
 /**
@@ -20,13 +19,13 @@ public interface LevelBuilder {
 	public static final String ANGLE="ang";
 	public static final String POSITION="pos";
 	
-	public void build(Creator creator,JSONObject creation);
+	public void build(JSONObject creation);
 	
 	public static class ShinyBallBuilder implements LevelBuilder{
 
 		@Override
-		public void build(Creator creator, JSONObject creation) {
-			new ShinyBall(creator, new Point(creation.get(X).isNumber().doubleValue(),
+		public void build(JSONObject creation) {
+			new ShinyBall( new Point(creation.get(X).isNumber().doubleValue(),
 					 						 creation.get(Y).isNumber().doubleValue()));
 			
 		}
@@ -35,13 +34,13 @@ public interface LevelBuilder {
 	public static class CrossBuilder implements LevelBuilder{
 
 		@Override
-		public void build(Creator creator, JSONObject creation) {
+		public void build(JSONObject creation) {
 			JSONObject pos=creation.get(POSITION).isObject();
-			new Cross(creator,
+			new Cross(
 					new Point(pos.get(X).isNumber().doubleValue(),
 					 		  pos.get(Y).isNumber().doubleValue()),
-					 		  Math.toRadians(creation.get(ANGLE).isNumber().doubleValue()),
-					 		  creator.getGameOverCallback());
+					Math.toRadians(creation.get(ANGLE).isNumber().doubleValue()));
+					 		  
 			
 		}
 		
@@ -49,9 +48,9 @@ public interface LevelBuilder {
 	public static class RedGobletBuilder implements LevelBuilder{
 		
 		@Override
-		public void build(Creator creator, JSONObject creation) {
+		public void build(JSONObject creation) {
 			JSONObject pos=creation.get(POSITION).isObject();
-			new RedGoblet(creator,
+			new RedGoblet(
 					new Point(pos.get(X).isNumber().doubleValue(),
 					 		  pos.get(Y).isNumber().doubleValue()),
 					 		 Math.toRadians(creation.get(ANGLE).isNumber().doubleValue()),

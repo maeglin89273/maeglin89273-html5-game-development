@@ -4,6 +4,7 @@
     "gravityAng":90,
     "fullPower":750,
     "reqScore":600,
+    "hint":false,
     "camera":{
         "x":360,
         "y":420
@@ -13,16 +14,16 @@
         "height":840
     },
     "areaDefs":[
-        "TRIANGLE_AREA",
-        "GRAVITATIONAL_AREA"
+        "TriangleArea",
+        "GravitationalArea"
     ],
     "lineDefs":[
-        "MAGNETIC_LINE"
+        "MagneticLine"
     ],
     "dotDefs":[
-        "CIRCLE_BOMB_DOT",
-        "RECTANGLE_BOMB_DOT",
-        "POLYGON_BOMB_DOT"
+        "CircleBombDot",
+        "RectangleBombDot",
+        "PolygonBombDot"
     ],
     "creations":{
         "SHINY_BALL":{

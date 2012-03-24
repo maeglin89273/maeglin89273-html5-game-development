@@ -4,6 +4,7 @@
     "gravityAng":90,
     "fullPower":600,
     "reqScore":430,
+    "hint":false,
     "camera":{
         "x":360,
         "y":270
@@ -13,15 +14,15 @@
         "height":800
     },
     "areaDefs":[
-        "ARROW_AREA",
-        "GRAVITATIONAL_AREA"
+        "ArrowArea",
+        "GravitationalArea"
     ],
     "lineDefs":[
-        "ELASTIC_LINE",
-        "MAGNETIC_LINE"
+        "ElasticLine",
+        "MagneticLine"
     ],
     "dotDefs":[
-        "NONE"
+        "None"
     ],
     "creations":{
         "SHINY_BALL":{

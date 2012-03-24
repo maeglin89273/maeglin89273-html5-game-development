@@ -3,18 +3,14 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client;
 
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.page.ASBOTXWelcomePage;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.page.ASBOTXLoadingAssetsPage;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.resources.ASBOTXAssetsBundleWithLookup;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.LeaderboardService;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.LeaderboardServiceAsync;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.PlayerService;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.PlayerServiceAsync;
 
 import com.google.gwt.maeglin89273.game.mengine.game.GameInfo;
 import com.google.gwt.maeglin89273.game.mengine.game.GeneralGame;
-import com.google.gwt.maeglin89273.game.mengine.page.MEngineLogoPage;
-import com.google.gwt.maeglin89273.game.mengine.page.MaeglinStudiosPage;
 import com.google.gwt.maeglin89273.game.mengine.service.LoginInfo;
 
 
@@ -35,7 +31,6 @@ public class ASBOTXGame extends GeneralGame {
 	@Override
 	public void init() {
 		setPage(new ASBOTXLoadingAssetsPage());
-		
 	}
 	public LocalPlayer getLocalPlayer(){
 		return localPlayer;
