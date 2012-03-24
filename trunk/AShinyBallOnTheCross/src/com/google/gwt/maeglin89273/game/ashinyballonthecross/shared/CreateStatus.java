@@ -3,6 +3,7 @@
  */
 package com.google.gwt.maeglin89273.game.ashinyballonthecross.shared;
 
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
@@ -10,7 +11,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  *
  */
 public enum CreateStatus implements IsSerializable {
-	DUPLICATED("Duplicated ID. Please choose another ID."),
+	DUPLICATED("The ID has been used. Please choose another ID."),
 	SUCCESS("Created a player successfully."),
 	NOT_LOGGED_IN("You haven't logged in yet. Please login first.");
 	private String message;

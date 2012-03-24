@@ -11,10 +11,10 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  */
 public class CheckLoginRequest implements IsSerializable {
 	private String reqUrl;
-	private Player localPlayer;
+	private TransportablePlayer localPlayer;
 	
 	
-	public CheckLoginRequest(String requestUrl,Player localPlayer){
+	public CheckLoginRequest(String requestUrl,TransportablePlayer localPlayer){
 		reqUrl = requestUrl;
 		this.localPlayer=localPlayer;
 		
@@ -27,7 +27,7 @@ public class CheckLoginRequest implements IsSerializable {
 	public String getRquestUrl(){
 		return reqUrl;
 	}
-	public Player getLocalPlayer(){
+	public TransportablePlayer getLocalPlayer(){
 		return localPlayer;
 	}
 	
