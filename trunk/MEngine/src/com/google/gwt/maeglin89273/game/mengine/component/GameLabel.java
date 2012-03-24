@@ -44,7 +44,7 @@ public class GameLabel extends GeneralComponent{
 		this.fillColor=color;
 	}
 	public void setText(String text){
-		this.text=text;
+		this.text=text==null?"":text;;
 	}
 	public void clearText(){
 		this.text="";

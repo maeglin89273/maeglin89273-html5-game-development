@@ -15,7 +15,7 @@ import com.google.gwt.maeglin89273.game.mengine.physics.PixelAABB;
  * @author Maeglin Liao
  *
  */
-public interface Spacial extends GameComponent {
+public interface Spatial extends GameComponent {
 	
 	public abstract boolean isOutOfBounds(AABB aabb);
 	public abstract void add(Physical c);
