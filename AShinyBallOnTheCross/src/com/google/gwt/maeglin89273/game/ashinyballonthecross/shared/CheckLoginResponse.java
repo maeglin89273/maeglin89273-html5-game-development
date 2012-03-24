@@ -15,9 +15,9 @@ public class CheckLoginResponse implements IsSerializable {
 	public enum Status implements IsSerializable{NOT_LOGGED_IN,NEW_PLAYER,DOWNLOAD,UPLOAD}
 	private Status status;
 	private LoginInfo info;
-	private Player player;
+	private TransportablePlayer player;
 	
-	public CheckLoginResponse(Status status,LoginInfo info,Player player){
+	public CheckLoginResponse(Status status,LoginInfo info,TransportablePlayer player){
 		this.status = status;
 		this.info = info;
 		this.player=player;
@@ -36,17 +36,18 @@ public class CheckLoginResponse implements IsSerializable {
 	public LoginInfo getLoginInfo(){
 		return info;
 	}
-	public Player getPlayer(){
+	public TransportablePlayer getPlayer(){
 		return player;
 	}
 	
 	public void handleThis(LocalPlayer localPlayer){
 		switch(getStatus()){
-		case NEW_PLAYER:
 		case DOWNLOAD:
 			localPlayer.overwite(player);
 			break;
 		case UPLOAD:
+			localPlayer.setTimestamp(player.getTimestamp());
+		case NEW_PLAYER:
 			localPlayer.setKey(player.getKey());
 			break;
 		case NOT_LOGGED_IN:
