@@ -20,12 +20,10 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.ASBOTXGame;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.*;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.DefinersFactory;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.CreatorPanel;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.CreatorPropertiesBar;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.GravityIndicator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.ui.key.CreativeKey;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.core.*;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.core.ui.CreatorPanel;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.core.ui.CreatorPropertiesBar;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.core.ui.GravityIndicator;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.Level;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.ASBOTXConfigs;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.utility.event.GameOverCallback;
@@ -39,7 +37,8 @@ import com.google.gwt.maeglin89273.game.mengine.layer.*;
  * @author Maeglin Liao
  *
  */
-public class ASBOTXGamePage extends GamePage implements MouseDownHandler,MouseUpHandler,KeyDownHandler,KeyUpHandler,MouseOutHandler,MouseWheelHandler{
+public class ASBOTXGamePage extends GamePage implements MouseDownHandler,
+MouseUpHandler,KeyDownHandler,KeyUpHandler,MouseOutHandler,MouseWheelHandler{
 	
 	private final Creator creator;
 	private final Level level;
@@ -132,7 +131,7 @@ public class ASBOTXGamePage extends GamePage implements MouseDownHandler,MouseUp
 			getGame().setPage(new ASBOTXGamePage(level));
 			break;
 		case ASBOTXConfigs.KeysConfiguration.RETURN:
-			getGame().setPage(new ASBOTXLevelSelectPage());
+			getGame().setPage(new LevelSelectPage(level.getWorldType()));
 			
 		}
 	}
@@ -153,7 +152,7 @@ public class ASBOTXGamePage extends GamePage implements MouseDownHandler,MouseUp
 	}
 	@Override
 	public void onMouseOut(MouseOutEvent event){
-		getGame().setPage(new ASBOTXPausePage(this));
+		getGame().setPage(new PausePage(this));
 	}
 	
 	
@@ -191,14 +190,13 @@ public class ASBOTXGamePage extends GamePage implements MouseDownHandler,MouseUp
 
 			@Override
 			public void showScore(int score) {
-				getGame().setPage(new ASBOTXScoreShowingPage(rootLayer,level,score));
+				getGame().setPage(new ScoreShowingPage(rootLayer,level,score));
 			}
 			
 		});
 		//initialize UIs
 		gravityIndicator=new GravityIndicator(creator.getWorld().getPosition(),250,creator.getGravityController());
 				
-		CreativeKey.setSketchersFactory(new DefinersFactory(creator));
 		CreatorPropertiesBar creatorPropertiesBar=new CreatorPropertiesBar(getGameWidth(),
 																			getGameHeight(),
 																			creator.getMaxPower(),
@@ -210,7 +208,7 @@ public class ASBOTXGamePage extends GamePage implements MouseDownHandler,MouseUp
 				
 		//add listeners
 		creator.addPropertiesChangeListener(creatorPropertiesBar);
-		creatorPanel.setDefiningListener(creatorPropertiesBar);
+		creatorPanel.addDefiningListener(creatorPropertiesBar);
 		//initialize layers
 		worldLayer=new WorldLayer(creator.getWorld(),level.getCameraViewPoint(),2,0.45f);
 		camera=worldLayer.getCamera();
@@ -237,5 +235,9 @@ public class ASBOTXGamePage extends GamePage implements MouseDownHandler,MouseUp
 		rootLayer.addLayer(worldLayer);
 		
 		inited=true;
+	}
+	
+	public Level getLevel(){
+		return level;
 	}
 }

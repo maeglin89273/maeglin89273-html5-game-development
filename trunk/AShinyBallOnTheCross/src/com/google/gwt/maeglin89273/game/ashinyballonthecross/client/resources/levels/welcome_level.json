@@ -4,6 +4,7 @@
     "gravityAng":90,
     "fullPower":100,
     "reqScore":0,
+    "hint":false,
     "camera":{
         "x":360,
         "y":270
@@ -13,13 +14,13 @@
         "height":540
     },
     "areaDefs":[
-        "NONE"
+        "None"
     ],
     "lineDefs":[
-        "NONE"
+        "None"
     ],
     "dotDefs":[
-        "NONE"
+        "None"
     ],
     "creations":{
         "SHINY_BALL":{

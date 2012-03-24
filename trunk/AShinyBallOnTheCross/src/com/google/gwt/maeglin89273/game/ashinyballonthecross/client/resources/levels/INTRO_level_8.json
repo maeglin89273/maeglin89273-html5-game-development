@@ -4,6 +4,7 @@
     "gravityAng":90,
     "fullPower":300,
     "reqScore":200,
+    "hint":false,
     "camera":{
         "x":360,
         "y":270
@@ -13,13 +14,13 @@
         "height":540
     },
     "areaDefs":[
-        "TRIANGLE_AREA"
+        "TriangleArea"
     ],
     "lineDefs":[
-        "ELASTIC_LINE"
+        "ElasticLine"
     ],
     "dotDefs":[
-        "NONE"
+        "None"
     ],
     "creations":{
         "SHINY_BALL":{
@@ -27,9 +28,9 @@
             "y":50
         },
         "CROSS":{
-			"pos":{            
-            	"x":550,
-            	"y":250
+            "pos":{
+                "x":550,
+                "y":250
             },
             "ang":0
         },
@@ -97,12 +98,10 @@
                     "x":490,
                     "y":280
                 }
-                
             }
-            
         ],
         "ELASTIC_LINE":[
-          {
+            {
                 "p1":{
                     "x":400,
                     "y":200
@@ -121,8 +120,7 @@
                     "x":300,
                     "y":330
                 }
-                
-            }  
+            }
         ],
         "ARROW_AREA":[
             {
@@ -133,7 +131,6 @@
                 "ang":0,
                 "r":60
             }
-            
         ]
     }
 }

@@ -5,9 +5,7 @@ package com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.build
 
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.Creator;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.component.creation.area.ArrowArea;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.level.Level;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.core.creation.area.ArrowArea;
 import com.google.gwt.maeglin89273.game.mengine.physics.Point;
 
 /**
@@ -15,17 +13,17 @@ import com.google.gwt.maeglin89273.game.mengine.physics.Point;
  *
  */
 public abstract class AreaBuilder implements LevelBuilder{
-	public void build(Creator creator,JSONObject creation){
-		this.buildArea(creator, creation);
+	public void build(JSONObject creation){
+		this.buildArea(creation);
 	}
-	public abstract void buildArea(Creator creator,JSONObject jsonArea);
+	public abstract void buildArea(JSONObject jsonArea);
 	
 	public static class ArrowAreaBuilder extends AreaBuilder{
 
 		@Override
-		public void buildArea(Creator creator,JSONObject jsonArea) {
+		public void buildArea(JSONObject jsonArea) {
 			JSONObject pos=jsonArea.get(POSITION).isObject();
-			new ArrowArea(creator, 
+			new ArrowArea( 
 					new Point(pos.get(X).isNumber().doubleValue(),
 							  pos.get(Y).isNumber().doubleValue()),
 							  Math.toRadians(jsonArea.get(ANGLE).isNumber().doubleValue()),

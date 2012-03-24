@@ -8,10 +8,12 @@ import org.jbox2d.common.Settings;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteBlock;
 import com.google.gwt.maeglin89273.game.mengine.asset.sprite.SpriteSheet;
 import com.google.gwt.maeglin89273.game.mengine.core.MEngine;
 import com.google.gwt.maeglin89273.game.mengine.service.LoginInfo;
 import com.google.gwt.user.client.Random;
+import com.google.gwt.user.client.Window;
 
 /**
  * @author Maeglin Liao
@@ -19,7 +21,7 @@ import com.google.gwt.user.client.Random;
  */
 public final class ASBOTXConfigs {
 	public static final String CLOSE_PAGE_PATH=GWT.getHostPageBaseURL()+"/AutoClose.html";
-	public static final String VERSION="v1.3.1";
+	public static final String VERSION="v1.6.2";
 	public static final float E_SQUARE=Settings.EPSILON*Settings.EPSILON;
 	public static class Color{
 		public static final CssColor TEXT=CssColor.make("rgba(208,210,211,0.5)");
@@ -85,10 +87,16 @@ public final class ASBOTXConfigs {
 		return pt+"pt Century Gothic Bold";
 	}
 	public static class Utility{
+		public static final int BUTTON_SPACING=200+SpriteBlock.SPACING;
 		public static final SpriteSheet getButtonsSpriteSheet(){
 			return MEngine.getAssetManager().getSpriteSheet("images/buttons.png");
 		}
-		
+		public static final int buttonSpacingTimes(int a){
+			return a*BUTTON_SPACING;
+		}
+		public static final void alertError(Throwable caught){
+			Window.alert(caught.getMessage());
+		}
 		public static LoginInfo.Status switchStatus(LoginInfo.Status status){
 			switch(status){
 				case LOGGED_IN:
