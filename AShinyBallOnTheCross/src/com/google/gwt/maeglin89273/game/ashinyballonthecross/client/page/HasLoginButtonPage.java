@@ -145,15 +145,15 @@ public abstract class HasLoginButtonPage extends GeneralPage implements KeyDownH
 		MEngine.addKeyPressHandler(this);
 		MEngine.addKeyDownHandler(this);
 	}
-	private void checkIsUserANewPlayer(CheckLoginResponse result){
+	private boolean checkIsUserANewPlayer(CheckLoginResponse result){
 		if(result.getStatus()==CheckLoginResponse.Status.NEW_PLAYER){
 			root.insertLayer(0, new ComponentLayer(new Glass(game.getWidth(),game.getHeight())));
 			root.insertLayer(0,new ComponentLayer(getBoard()));
 			game.getLocalPlayer().setID(null);
 			blocked=true;
-		}else{
-			progressFinished();
+			return true;
 		}
+		return false;
 	}
 	
 	private void closeIDBoard(){
@@ -169,7 +169,9 @@ public abstract class HasLoginButtonPage extends GeneralPage implements KeyDownH
 	private void handleResponseSuccess(CheckLoginResponse result){
 		game.setLoginInfo(result.getLoginInfo());
 		result.handleThis(game.getLocalPlayer());
-		checkIsUserANewPlayer(result);
+		if(!checkIsUserANewPlayer(result)){
+			progressFinished();
+		}
 	}
 	
 	
