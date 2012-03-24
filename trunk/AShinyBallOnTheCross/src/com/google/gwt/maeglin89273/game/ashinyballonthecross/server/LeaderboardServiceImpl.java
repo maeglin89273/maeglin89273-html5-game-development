@@ -18,7 +18,7 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.Leader;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.LeaderboardService;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.Player;
-import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.WorldType;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.TransportablePlayer;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -26,22 +26,23 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  *
  */
 public class LeaderboardServiceImpl extends RemoteServiceServlet implements LeaderboardService {
+	
 	private static final int LIMITED_LEADER_COUNT=10;
 	
 	@Override
 	public Leader[] getLeaderboard() {
 		Query query=new Query(Player.class.getSimpleName())
-					.addSort(Player.TOTAL_PROPERTY,SortDirection.DESCENDING)
-					.addSort(Player.DATE_PROPERTY, SortDirection.DESCENDING);
+					.addSort(TransportablePlayer.TOTAL_PROPERTY,SortDirection.DESCENDING)
+					.addSort(TransportablePlayer.DATE_PROPERTY, SortDirection.DESCENDING);
 		List<Entity> leaderList=getDatastoreService().prepare(query).asList(FetchOptions.Builder.withLimit(LIMITED_LEADER_COUNT));
 		Leader[] toReturn=new Leader[leaderList.size()];
 		int offset=1;//a variable for leader's position
 		for(int i=0;i<toReturn.length;i++){
 			Entity entity=leaderList.get(i);
 			toReturn[i]=new Leader(offset++,
-					((String)entity.getProperty(Player.ID_PROPERTY)),
-					(Date)entity.getProperty(Player.DATE_PROPERTY),
-					((Long)entity.getProperty(Player.TOTAL_PROPERTY)));
+					((String)entity.getProperty(TransportablePlayer.ID_PROPERTY)),
+					(Date)entity.getProperty(TransportablePlayer.DATE_PROPERTY),
+					((Long)entity.getProperty(TransportablePlayer.TOTAL_PROPERTY)));
 		}
 		return toReturn;
 	}
@@ -54,7 +55,7 @@ public class LeaderboardServiceImpl extends RemoteServiceServlet implements Lead
 		try {
 			player = datastore.get(KeyFactory.stringToKey(encodedKey));
 			Query query=new Query(Player.class.getSimpleName());
-			query.addFilter(Player.TOTAL_PROPERTY, Query.FilterOperator.GREATER_THAN,player.getProperty(Player.TOTAL_PROPERTY));
+			query.addFilter(TransportablePlayer.TOTAL_PROPERTY, Query.FilterOperator.GREATER_THAN,player.getProperty(TransportablePlayer.TOTAL_PROPERTY));
 			return 1+datastore.prepare(query).countEntities(FetchOptions.Builder.withDefaults());
 		} catch (EntityNotFoundException e) {
 			e.printStackTrace();

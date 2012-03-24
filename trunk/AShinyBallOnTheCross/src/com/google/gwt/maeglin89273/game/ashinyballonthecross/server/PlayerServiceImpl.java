@@ -4,7 +4,6 @@
 package com.google.gwt.maeglin89273.game.ashinyballonthecross.server;
 
 import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.appengine.api.datastore.DatastoreService;
@@ -19,10 +18,12 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.CheckLoginRequest;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.CheckLoginResponse;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.PlayerCreatedResponse;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.CreateStatus;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.Player;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.PlayerService;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.CheckLoginResponse.Status;
+import com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.TransportablePlayer;
 import com.google.gwt.maeglin89273.game.mengine.service.GoogleAccount;
 import com.google.gwt.maeglin89273.game.mengine.service.LoginInfo;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -33,7 +34,11 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  */
 public class PlayerServiceImpl extends RemoteServiceServlet implements PlayerService {
 		
-	public static final Logger LOG=Logger.getLogger(LeaderboardServiceImpl.class.getCanonicalName());
+	
+	/**
+	 * 
+	 */
+	public static final Logger LOG=Logger.getLogger(PlayerServiceImpl.class.getCanonicalName());
 	/* (non-Javadoc)
 	 * @see com.google.gwt.maeglin89273.game.ashinyballonthecross.shared.PlayerService#getLoginInfo(java.lang.String)
 	 */
@@ -43,39 +48,43 @@ public class PlayerServiceImpl extends RemoteServiceServlet implements PlayerSer
 		User user=svc.getCurrentUser();
 		LoginInfo loginInfo;
 		CheckLoginResponse response;
+		
 		if(user!=null){
 			loginInfo=new LoginInfo(LoginInfo.Status.LOGGED_IN,svc.createLogoutURL(request.getRquestUrl()),new GoogleAccount(user.getEmail(),user.getNickname()));
 			DatastoreService datastore=getDatastoreService();
-			Player localPlayer=request.getLocalPlayer();
+			TransportablePlayer localPlayer=request.getLocalPlayer();
 			Key key=KeyFactory.createKey(Player.class.getSimpleName(), user.getEmail());
 			String keyString=KeyFactory.keyToString(key);
+			
 			try{
 				Entity player=datastore.get(key);
 				
-				if(localPlayer.getID().equals(player.getProperty(Player.ID_PROPERTY))){
+				if(localPlayer.getID().equals(player.getProperty(TransportablePlayer.ID_PROPERTY))){
 					//the achievement has changed
-					if(!localPlayer.getEncryptedAchievements().equals(player.getProperty(Player.ACHIEVEMENT_PROPERTY))){
-						//do upload
-						player.setProperty(Player.DATE_PROPERTY, new Date());
-						player.setProperty(Player.ACHIEVEMENT_PROPERTY, localPlayer.getEncryptedAchievements());
-						player.setProperty(Player.TOTAL_PROPERTY, localPlayer.getTotal());
-						
-						datastore.put(player);
+					if(!player.getProperty(TransportablePlayer.ACHIEVEMENT_PROPERTY).equals(localPlayer.getEncryptedAchievements())){
+						//if the date is greater than client timestamp, do download. Else, do upload 
+						if(localPlayer.getTimestamp()!=null&&((Date)player.getProperty(TransportablePlayer.DATE_PROPERTY)).compareTo(localPlayer.getTimestamp())>0){
+							//do download
+							response=doDownload(player,loginInfo,keyString);
+						}else{
+							//do upload
+							response=doUpload(datastore, player, loginInfo, keyString, localPlayer);
+						}
+					}else{
+						//local player patch
+						if(localPlayer.getTimestamp()==null){
+							localPlayer.setTimestamp((Date)player.getProperty(TransportablePlayer.DATE_PROPERTY));
+						}
+						localPlayer.setKey(keyString);
+						response=new CheckLoginResponse(Status.UPLOAD,loginInfo,localPlayer);
 					}
-					localPlayer.setKey(keyString);
-					response=new CheckLoginResponse(Status.UPLOAD,loginInfo,localPlayer);
 				}else{
 					//do download
-					String id=(String)player.getProperty(Player.ID_PROPERTY);
-					long total=((Long)player.getProperty(Player.TOTAL_PROPERTY)).longValue();
-					String achv=(String)player.getProperty(Player.ACHIEVEMENT_PROPERTY);
-					
-					response=new CheckLoginResponse(Status.DOWNLOAD,loginInfo,new Player(keyString,id,total,achv));
+					response=doDownload(player,loginInfo,keyString);
 				}
 			}catch(EntityNotFoundException e){
-				localPlayer.setKey(keyString);
-				localPlayer.setID(null);
-				response=new CheckLoginResponse(Status.NEW_PLAYER,loginInfo,localPlayer);
+				//request to create a new player
+				response=requestNewPlayer(keyString, loginInfo, localPlayer);
 			}
 			
 		}else{
@@ -85,57 +94,98 @@ public class PlayerServiceImpl extends RemoteServiceServlet implements PlayerSer
 		return response;
 	}
 	
-	@Override
-	public CreateStatus createNewPlayer(Player player) {
-		User user=getUser();
-		CreateStatus status;
-		try{
-			checkUser(user);
-		}catch(IllegalStateException e){
-			status=CreateStatus.NOT_LOGGED_IN;
-		}
+	private CheckLoginResponse doDownload(Entity player,LoginInfo loginInfo,String keyString){
+		String id=(String)player.getProperty(TransportablePlayer.ID_PROPERTY);
+		long total=((Long)player.getProperty(TransportablePlayer.TOTAL_PROPERTY)).longValue();
+		String achv=(String)player.getProperty(TransportablePlayer.ACHIEVEMENT_PROPERTY);
+		Date timestamp=(Date)player.getProperty(TransportablePlayer.DATE_PROPERTY);
 		
-		DatastoreService datastore=getDatastoreService();
-		Query query=new Query(Player.class.getSimpleName()).addFilter(Player.ID_PROPERTY, Query.FilterOperator.EQUAL,player.getID());
-		if(datastore.prepare(query).asSingleEntity()==null){
-			// Player id is not duplicated. Create a new player
-			Entity newPlayer =new Entity(KeyFactory.stringToKey(player.getKey()));
-			newPlayer.setProperty(Player.USER_PROPERTY, user);
-			newPlayer.setProperty(Player.ID_PROPERTY, player.getID());
-			newPlayer.setProperty(Player.DATE_PROPERTY, new Date());
-			newPlayer.setProperty(Player.TOTAL_PROPERTY, player.getTotal());
-			newPlayer.setProperty(Player.ACHIEVEMENT_PROPERTY, player.getEncryptedAchievements());
-			
-			datastore.put(newPlayer);
-			LOG.log(Level.INFO,"new player is created.");
-			status=CreateStatus.SUCCESS;
-		}else{
-			// Player id is duplicated. Send the status back
-			status=CreateStatus.DUPLICATED;
-		}
+		return new CheckLoginResponse(Status.DOWNLOAD,loginInfo,new TransportablePlayer(keyString,id,total,achv, timestamp));
+	}
+	private CheckLoginResponse doUpload(DatastoreService datastore, Entity player,LoginInfo loginInfo,String keyString, TransportablePlayer localPlayer){
+		Date timestamp=new Date();
+		player.setProperty(TransportablePlayer.DATE_PROPERTY, timestamp);
+		player.setProperty(TransportablePlayer.ACHIEVEMENT_PROPERTY, localPlayer.getEncryptedAchievements());
+		player.setProperty(TransportablePlayer.TOTAL_PROPERTY, localPlayer.getTotal());
 		
-		return status;
+		datastore.put(player);
+		
+		localPlayer.setKey(keyString);
+		localPlayer.setTimestamp(timestamp);
+		return new CheckLoginResponse(Status.UPLOAD,loginInfo,localPlayer);
+	}
+	private CheckLoginResponse requestNewPlayer(String keyString, LoginInfo loginInfo, TransportablePlayer localPlayer){
+		localPlayer.setKey(keyString);
+		localPlayer.setID(null);
+		return new CheckLoginResponse(Status.NEW_PLAYER,loginInfo,localPlayer);
 	}
 	
 	@Override
-	public void saveAchievements(Player player) {
+	public PlayerCreatedResponse createNewPlayer(Player player) {
+		User user=getUser();
+		PlayerCreatedResponse response;
+		try{
+			checkLoggedIn(user);
+		}catch(IllegalStateException e){
+			response=new PlayerCreatedResponse(CreateStatus.NOT_LOGGED_IN);
+		}
+		
+		DatastoreService datastore=getDatastoreService();
+		Query query=new Query(Player.class.getSimpleName()).addFilter(TransportablePlayer.ID_PROPERTY, Query.FilterOperator.EQUAL,player.getID());
+		if(datastore.prepare(query).asSingleEntity()==null){
+			// TransportablePlayer id is not duplicated. Create a new player
+			Entity newPlayer =new Entity(KeyFactory.stringToKey(player.getKey()));
+			Date createTime =new Date();
+			newPlayer.setProperty(TransportablePlayer.USER_PROPERTY, user);
+			newPlayer.setProperty(TransportablePlayer.ID_PROPERTY, player.getID());
+			newPlayer.setProperty(TransportablePlayer.DATE_PROPERTY, createTime);
+			newPlayer.setProperty(TransportablePlayer.TOTAL_PROPERTY, player.getTotal());
+			newPlayer.setProperty(TransportablePlayer.ACHIEVEMENT_PROPERTY, player.getEncryptedAchievements());
+			
+			datastore.put(newPlayer);
+			LOG.info("new player \""+player.getID()+"\" is created.");
+			response=new PlayerCreatedResponse(createTime);
+		}else{
+			// TransportablePlayer id is duplicated. Send the status back
+			response=new PlayerCreatedResponse(CreateStatus.DUPLICATED);
+		}
+		
+		return response;
+	}
+	
+	@Override
+	public Date saveAchievements(Player player) {
+		checkLoggedIn();
 		DatastoreService datastore=getDatastoreService();
 		try{
+			Date timestamp=new Date();
 			Entity playerE=datastore.get(KeyFactory.stringToKey(player.getKey()));
-			playerE.setProperty(Player.ACHIEVEMENT_PROPERTY, player.getEncryptedAchievements());
-			playerE.setProperty(Player.TOTAL_PROPERTY, player.getTotal());
-			playerE.setProperty(Player.DATE_PROPERTY, new Date());
+			playerE.setProperty(TransportablePlayer.ACHIEVEMENT_PROPERTY, player.getEncryptedAchievements());
+			playerE.setProperty(TransportablePlayer.TOTAL_PROPERTY, player.getTotal());
+			playerE.setProperty(TransportablePlayer.DATE_PROPERTY, timestamp);
 			datastore.put(playerE);
+			
+			LOG.info("The achievements have been saved.");
+			
+			return timestamp;
 		}catch(EntityNotFoundException e){
 			e.printStackTrace();
-			LOG.log(Level.WARNING,"cannot find the player who want to query his position.");
+			LOG.warning("Cannot save this player's achievements.");
+			throw new IllegalArgumentException("cannot save this player's achievements at the server.");
 		}
 	}
+	
+	
 	private User getUser(){
 		return getUserService().getCurrentUser();
 	}
-	private void checkUser(User user)throws IllegalStateException{
+	private void checkLoggedIn(User user)throws IllegalStateException{
 		if(user==null){
+			throw new IllegalStateException("There is no user logging in currently.");
+		}
+	}
+	private void checkLoggedIn()throws IllegalStateException{
+		if(getUser()==null){
 			throw new IllegalStateException("There is no user logging in currently.");
 		}
 	}
