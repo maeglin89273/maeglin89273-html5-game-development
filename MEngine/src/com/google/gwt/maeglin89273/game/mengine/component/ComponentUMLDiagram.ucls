@@ -1,0 +1,105 @@
+<class-diagram version="1.0.4" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
+  realizations="true" associations="true" dependencies="true" nesting-relationships="true">  
+  <interface id="1" corner="BOTTOM_RIGHT" language="java" 
+    name="com.google.gwt.maeglin89273.game.mengine.component.Physical" project="MEngine" 
+    file="/MEngine/src/com/google/gwt/maeglin89273/game/mengine/component/Physical.java" binary="false">    
+    <position height="115" width="245" x="47" y="731"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class id="2" corner="BOTTOM_RIGHT" language="java" 
+    name="com.google.gwt.maeglin89273.game.mengine.component.GameButton" project="MEngine" 
+    file="/MEngine/src/com/google/gwt/maeglin89273/game/mengine/component/GameButton.java" binary="false">    
+    <position height="131" width="249" x="399" y="496"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <interface id="3" corner="BOTTOM_RIGHT" language="java" 
+    name="com.google.gwt.maeglin89273.game.mengine.component.Spacial" project="MEngine" 
+    file="/MEngine/src/com/google/gwt/maeglin89273/game/mengine/component/Spacial.java" binary="false">    
+    <position height="115" width="245" x="313" y="982"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface id="4" corner="BOTTOM_RIGHT" language="java" 
+    name="com.google.gwt.maeglin89273.game.mengine.component.Component" project="MEngine" 
+    file="/MEngine/src/com/google/gwt/maeglin89273/game/mengine/component/Component.java" binary="false">    
+    <position height="211" width="245" x="114" y="37"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <enumeration id="7" corner="BOTTOM_RIGHT" language="java" 
+    name="com.google.gwt.maeglin89273.game.mengine.component.CanvasComponent.PositionType" project="MEngine" 
+    file="/MEngine/src/com/google/gwt/maeglin89273/game/mengine/component/CanvasComponent.java" binary="false">    
+    <position height="211" width="245" x="425" y="731"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <interface id="8" corner="BOTTOM_RIGHT" language="java" 
+    name="com.google.gwt.maeglin89273.game.mengine.component.CanvasComponent" project="MEngine" 
+    file="/MEngine/src/com/google/gwt/maeglin89273/game/mengine/component/CanvasComponent.java" binary="false">    
+    <position height="195" width="245" x="114" y="496"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class id="9" corner="BOTTOM_RIGHT" language="java" 
+    name="com.google.gwt.maeglin89273.game.mengine.component.GeneralComponent" project="MEngine" 
+    file="/MEngine/src/com/google/gwt/maeglin89273/game/mengine/component/GeneralComponent.java" binary="false">    
+    <position height="419" width="245" x="425" y="37"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <generalization>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="8"/>  
+  </generalization>  
+  <dependency>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="3"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="8"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="322" y="731"/>    
+    <end type="SOURCE" nodeId="3"/>    
+    <end type="TARGET" nodeId="8"/>  
+  </generalization>  
+  <nesting>    
+    <end type="SOURCE" nodeId="8"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </nesting>  
+  <realization>    
+    <end type="SOURCE" nodeId="9"/>    
+    <end type="TARGET" nodeId="8"/>  
+  </realization>  
+  <dependency>    
+    <bendpoint x="678" y="496"/>    
+    <end type="SOURCE" nodeId="9"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="9"/>  
+  </generalization>  
+  <classifier-display autosize="true" package="true" initial-value="true" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

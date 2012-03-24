@@ -12,7 +12,7 @@ import org.jbox2d.dynamics.Body;
  */
 public interface Physical extends GameComponent{
 	public Body getBody();
-	public Spacial getSpace();
+	public Spatial getSpace();
 	public void destroy();
 	public boolean isDestroyed();
 	public AABB getAABB();
