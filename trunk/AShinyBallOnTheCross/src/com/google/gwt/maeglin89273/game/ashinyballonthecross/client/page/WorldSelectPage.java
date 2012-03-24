@@ -223,7 +223,7 @@ public class WorldSelectPage extends HasLoginButtonPage implements MouseDownHand
 			};
 		}
 		public void updateWorldButtons(){
-			for(int i=1;i<buttons.length-1;i++){
+			for(int i=0;i<buttons.length-1;i++){
 				((WorldButton)buttons[i]).updateTotalText();
 			}
 		}
