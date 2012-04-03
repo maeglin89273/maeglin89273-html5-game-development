@@ -43,6 +43,9 @@ public class GameLabel extends GeneralComponent{
 	public void setFillColor(CssColor color){
 		this.fillColor=color;
 	}
+	public String getText(){
+		return this.text;
+	}
 	public void setText(String text){
 		this.text=text==null?"":text;;
 	}
