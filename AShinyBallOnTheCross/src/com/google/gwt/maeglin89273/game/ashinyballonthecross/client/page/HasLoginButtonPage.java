@@ -13,6 +13,8 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.ASBOTXGame;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.LocalPlayer;
 import com.google.gwt.maeglin89273.game.ashinyballonthecross.client.core.ui.Glass;
@@ -39,7 +41,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Maeglin Liao
  *
  */
-public abstract class HasLoginButtonPage extends GeneralPage implements KeyDownHandler,KeyPressHandler {
+public abstract class HasLoginButtonPage extends GeneralPage implements KeyDownHandler,KeyPressHandler,MouseMoveHandler {
 	private boolean blocked=false;
 	
 	private IDEnteredBoard board;
@@ -102,6 +104,11 @@ public abstract class HasLoginButtonPage extends GeneralPage implements KeyDownH
 			}
 		}
 	}
+	
+	@Override
+	public void onMouseMove(MouseMoveEvent event){
+		loginButton.detectMouseOver(MEngine.getMousePosition());
+	}
 	protected abstract void onClick(Point p);
 	protected abstract void progressFinished();
 	/* (non-Javadoc)
@@ -144,6 +151,7 @@ public abstract class HasLoginButtonPage extends GeneralPage implements KeyDownH
 		super.regHandlers();
 		MEngine.addKeyPressHandler(this);
 		MEngine.addKeyDownHandler(this);
+		MEngine.addMouseMoveHandler(this);
 	}
 	private boolean checkIsUserANewPlayer(CheckLoginResponse result){
 		if(result.getStatus()==CheckLoginResponse.Status.NEW_PLAYER){
@@ -176,6 +184,7 @@ public abstract class HasLoginButtonPage extends GeneralPage implements KeyDownH
 	
 	
 	public class LoginButtonAndIDDisplay extends BoxButton{
+		private static final String DESCRIPTION="Store your achievements on the cloud.";
 		private GameLabel label;
 		private boolean enabled=true;
 		
@@ -190,6 +199,16 @@ public abstract class HasLoginButtonPage extends GeneralPage implements KeyDownH
 						labelColor, ASBOTXConfigs.getCGFont(12));
 			}else{
 				setEnabled(false);
+			}
+		}
+		
+		private void detectMouseOver(Point p){
+			if(game.getLoginInfo().getStatus()==LoginInfo.Status.LOGGED_OUT){
+				if(this.contains(p)){
+					label.setText(DESCRIPTION);
+				}else{
+					label.clearText();
+				}
 			}
 		}
 		
