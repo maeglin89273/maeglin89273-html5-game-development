@@ -21,7 +21,7 @@ import com.google.gwt.user.client.Window;
  */
 public final class ASBOTXConfigs {
 	public static final String CLOSE_PAGE_PATH=GWT.getHostPageBaseURL()+"/AutoClose.html";
-	public static final String VERSION="v1.6.2";
+	public static final String VERSION="v1.6.3";
 	public static final float E_SQUARE=Settings.EPSILON*Settings.EPSILON;
 	public static class Color{
 		public static final CssColor TEXT=CssColor.make("rgba(208,210,211,0.5)");
